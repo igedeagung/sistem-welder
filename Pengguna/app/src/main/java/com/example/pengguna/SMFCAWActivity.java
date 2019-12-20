@@ -1,0 +1,257 @@
+package com.example.pengguna;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+public class SMFCAWActivity extends AppCompatActivity {
+    private String fin1, fin2, fin3;
+    private EditText mulai, selesai ;
+    private Calendar myCalendar ;
+    private boolean kliked;
+    private TextView angka1;
+    private TextView angka2;
+    private int countsf1=0, countsf2=0;
+    private TextView hargaField;
+    private Button submitt;
+    private DatabaseReference database;
+    private String uid;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+        setContentView(R.layout.activity_smfcaw);
+
+        final String proyek1="Posisi 1G, 2G, 3G, 4G (FCAW)";
+        final String proyek2="Posisi 1G, 2G, 3G, 4G (FCAW)\nPosisi 1G, 2G, 5G, 6G (SMAW)";
+        final String proyek3="0";
+        final String proyek4="0";
+        final String proyek5="0";
+
+        Bundle bundle=getIntent().getExtras();
+        fin1=bundle.getString("final1");
+        fin2=bundle.getString("final2");
+        fin3=bundle.getString("final3");
+
+        angka1=findViewById(R.id.textView59);
+        angka2=findViewById(R.id.textView61);
+
+        mulai = findViewById(R.id.editText16);
+        selesai = findViewById(R.id.editText19);
+        myCalendar = Calendar.getInstance();
+
+        database = FirebaseDatabase.getInstance().getReference().child("Proyek");
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        hargaField=findViewById(R.id.textView63);
+        submitt=findViewById(R.id.button23);
+        submitt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String jumlah1=angka1.getText().toString();
+                String jumlah2=angka2.getText().toString();
+                String jumlah3="0";
+                String jumlah4="0";
+                String jumlah5="0";
+                String hargaa=hargaField.getText().toString();
+                String wid="0";
+                String tmul=mulai.getText().toString();
+                String tsel=selesai.getText().toString();
+                String tipe="SMAW/FCAW";
+
+                submitProyek(new Proyek(tipe, proyek1,proyek2, proyek3, proyek4, proyek5, jumlah1,
+                        jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
+            }
+        });
+
+        ImageButton plus1=findViewById(R.id.imageButton24);
+        plus1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countsf1++;
+                String aa=Integer.toString(countsf1);
+                angka1.setText(aa);
+                update();
+            }
+        });
+
+        ImageButton plus2=findViewById(R.id.imageButton26);
+        plus2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countsf2++;
+                String aa=Integer.toString(countsf2);
+                angka2.setText(aa);
+                update();
+            }
+        });
+
+        ImageButton min1=findViewById(R.id.imageButton23);
+        min1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(countsf1>0){
+                    countsf1--;
+                }
+                String aa=Integer.toString(countsf1);
+                angka1.setText(aa);
+                update();
+            }
+        });
+
+        ImageButton min2=findViewById(R.id.imageButton25);
+        min2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(countsf2>0){
+                    countsf2--;
+                }
+                String aa=Integer.toString(countsf2);
+                angka2.setText(aa);
+                update();
+            }
+        });
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            private void updateLabel() {
+                String myFormat = "yyyy-MM-dd"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                if(kliked){
+                    selesai.setText(sdf.format(myCalendar.getTime()));
+                    update();
+                }
+                else {
+                    mulai.setText(sdf.format(myCalendar.getTime()));
+                    update();
+                }
+
+            }
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+        selesai.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, -1);
+
+                kliked=true;
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SMFCAWActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+            }
+        });
+        mulai.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                kliked=false;
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SMFCAWActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+
+            }
+        });
+    }
+    public void update(){
+        String mulaii=mulai.getText().toString();
+        String selesaii= selesai.getText().toString();
+
+
+        Date date=new Date(), date2=new Date();
+        if(!mulaii.equals("Tanggal Mulai") && !selesaii.equals("Tanggal Selesai")){
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(mulaii);
+                date2 = new SimpleDateFormat("yyyy-MM-dd").parse(selesaii);
+                long beda= (date2.getTime()-date.getTime())/86400000;
+                if(beda<0){
+                    selesai.setText("Tanggal Selesai");
+                    mulai.setText("Tanggal Mulai");
+                    hargaField.setText("0");
+                }
+                else {
+                    long harga=(160000*countsf1+160000*countsf2)*beda;
+                    String aa=Long.toString(harga);
+                    hargaField.setText(aa);
+                }
+                String cek=hargaField.getText().toString();
+                if(cek.equals("0")){
+                    submitt.setEnabled(false);
+                }
+                else
+                {
+                    submitt.setEnabled(true);
+                }
+            } catch (ParseException e) {              // Insert this block.
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+    private void submitProyek(Proyek proyek) {
+        if(!fin2.equals("yha")){
+            if (!fin3.equals("yha")){
+                database.child(fin1).child(fin2).child(fin3).push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Snackbar.make(findViewById(R.id.button23), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+            }
+            else{
+                database.child(fin1).child(fin2).push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Snackbar.make(findViewById(R.id.button23), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }
+        else{
+            database.child(fin1).push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Snackbar.make(findViewById(R.id.button23), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
+
+
+    }
+}

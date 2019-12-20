@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".SMFCAWActivity">
+
+    <TextView
+        android:id="@+id/textView58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/smaw_fcaw"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView67"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout11"
+        android:layout_width="330sp"
+        android:layout_height="100sp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/buttton2"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButton23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="245sp"
+            android:layout_marginTop="37sp"
+            android:background="@android:color/white"
+            app:srcCompat="@drawable/minus" />
+
+        <ImageButton
+            android:id="@+id/imageButton24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="300sp"
+            android:layout_marginTop="37sp"
+            android:background="@android:color/white"
+            app:srcCompat="@drawable/add" />
+
+        <TextView
+            android:id="@+id/textView59"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="281sp"
+            android:layout_marginTop="40sp"
+            android:text="@string/_0" />
+
+        <TextView
+            android:id="@+id/textView60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12sp"
+            android:layout_marginTop="40sp"
+            android:text="Posisi 1G, 2G, 3G, 4G (FCAW)" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout12"
+        android:layout_width="330sp"
+        android:layout_height="100sp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/buttton2"
+        app:layout_constraintBottom_toTopOf="@+id/editText16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButton25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="245sp"
+            android:layout_marginTop="37sp"
+            android:background="@android:color/white"
+            app:srcCompat="@drawable/minus" />
+
+        <ImageButton
+            android:id="@+id/imageButton26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="300sp"
+            android:layout_marginTop="37sp"
+            android:background="@android:color/white"
+            app:srcCompat="@drawable/add" />
+
+        <TextView
+            android:id="@+id/textView61"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="281sp"
+            android:layout_marginTop="40sp"
+            android:text="@string/_0" />
+
+        <TextView
+            android:id="@+id/textView62"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12sp"
+            android:layout_marginTop="30sp"
+            android:text="Posisi 1G, 2G, 3G, 4G (FCAW)\nPosisi 1G, 2G, 5G, 6G (SMAW)" />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/editText16"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@android:color/white"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/tanggal_mulai"
+        android:textColor="@android:color/white"
+        android:clickable="true"
+        android:focusable="false"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout13"
+        app:layout_constraintEnd_toStartOf="@+id/editText19"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText19"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@android:color/white"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/tanggal_selesai"
+        android:textColor="@android:color/white"
+        android:clickable="true"
+        android:focusable="false"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout13"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/buttton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView65"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50sp"
+            android:layout_marginTop="15sp"
+            android:text="@string/rp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/textView63"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80sp"
+            android:layout_marginTop="15sp"
+            android:text="@string/_0"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/button23"
+            android:layout_width="50sp"
+            android:layout_height="35sp"
+            android:layout_marginStart="260sp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/buttton2"
+            android:text="@android:string/ok"
+            android:enabled="false"/>
+
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView67"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="Material Carbon Steel dan Stainless Steel"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
