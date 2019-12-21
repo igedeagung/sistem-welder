@@ -91,8 +91,19 @@ public class GTAWActivity extends AppCompatActivity {
                 String tmul=mulai.getText().toString();
                 String tsel=selesai.getText().toString();
                 String tipe="GTAW";
-
-                submitProyek(new Proyek(tipe, proyek1,proyek2, proyek3, proyek4, proyek5, jumlah1,
+                String namaproyek;
+                if(!fin2.equals("yha")){
+                    if (!fin3.equals("yha")){
+                        namaproyek=fin3;
+                    }
+                    else{
+                        namaproyek=fin2;
+                    }
+                }
+                else{
+                    namaproyek=fin1;
+                }
+                submitProyek(new Proyek(namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }
         });
@@ -288,43 +299,11 @@ public class GTAWActivity extends AppCompatActivity {
         }
     }
     private void submitProyek(Proyek proyek) {
-        if(!fin2.equals("yha")){
-            if (!fin3.equals("yha")){
-                database.child(fin1).child(fin2).child(fin3).push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Snackbar.make(findViewById(R.id.button21), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
-                    }
-                });
+        database.push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Snackbar.make(findViewById(R.id.button20), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
             }
-            else{
-                if(fin2.equals("Onshore/Offshore")){
-                    database.child(fin1).child("Onshore Offshore").push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Snackbar.make(findViewById(R.id.button21), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                else{
-                    database.child(fin1).child(fin2).push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Snackbar.make(findViewById(R.id.button21), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }
-        }
-        else{
-            database.child(fin1).push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Snackbar.make(findViewById(R.id.button21), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
-                }
-            });
-        }
-
-
+        });
     }
 }

@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
 
 public class Proyek implements Serializable{
+    private String namaproyek;
     private String tipe;
     private String tanggalmulai;
     private String tanggalselesai;
@@ -24,6 +25,12 @@ public class Proyek implements Serializable{
 
     public Proyek()
     {
+    }
+    public String getNamaproyek() {
+        return namaproyek;
+    }
+    public void setNamaproyek(String namaproyek) {
+        this.namaproyek = namaproyek;
     }
 
     public String getTipe() {
@@ -141,7 +148,8 @@ public class Proyek implements Serializable{
 
     public String toString()
     {
-        return " "+tipe+"" +
+        return " "+namaproyek+"" +
+                "" +tipe+"" +
                 "" +proyek1+"" +
                 "" +proyek2+"" +
                 "" +proyek3+"" +
@@ -158,10 +166,11 @@ public class Proyek implements Serializable{
                 "" +uid+"" +
                 "" +wid;
     }
-    public Proyek(String tp,String p1, String p2, String p3, String p4,String p5,String j1,
+    public Proyek(String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1,
                   String j2, String j3, String j4, String j5, String tm, String ts, String hg,
                   String ui, String wi)
     {
+        namaproyek=nmprk;
         tipe=tp;
         proyek1=p1;
         proyek2=p2;

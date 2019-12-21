@@ -102,15 +102,15 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 if(!isEmailValid(eemail)){
-                    notelp.setError("Email anda tidak valid");
+                    email.setError("Email anda tidak valid");
                     return;
                 }
                 if(ppassword.length()<6){
-                    notelp.setError("Password anda terlalu singkat");
+                    password.setError("Password anda terlalu singkat");
                     return;
                 }
                 if(ppassword.compareTo(kkpassword)!=0){
-                    password.setError("Password dan Konfirmasi Password anda tidak sama");
+                    kpassword.setError("Password dan Konfirmasi Password anda tidak sama");
                     return;
                 }
                 database.orderByChild("username")
@@ -138,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         id_db.child("username").setValue(userrname);
                                                         id_db.child("email").setValue(eemail);
                                                         id_db.child("notelp").setValue(nnotelp);
+                                                        id_db.child("status").setValue(0);
 
                                                         Intent intent2 = new Intent(RegisterActivity.this, VerifActivity.class);
                                                         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
