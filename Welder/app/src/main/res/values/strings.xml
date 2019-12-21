@@ -1,4 +1,32 @@
 <resources>
     <string name="app_name">Welder</string>
     <string name="action_settings">Settings</string>
+    <string name="butuh_juru_las">Butuh Juru Las</string>
+    <string name="punya_akun">Punya Akun</string>
+    <string name="buat_akun">Buat Akun</string>
+    <string name="nama_belakang">Nama Belakang</string>
+    <string name="register">Register</string>
+    <string name="nama_depan">Nama Depan</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="nomor_telepon">Nomor Telepon</string>
+    <string name="password">Password</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="daftar">Daftar</string>
+    <string name="kembali">Kembali</string>
+    <array name="proyek">
+        <item>SMAW</item>
+        <item>FCAW</item>
+        <item>GTAW</item>
+        <item>OAW</item>
+        <item>SMAW/FCAW</item>
+        <item>SMAW/GTAW</item>
+    </array>
+    <array name="tingkatan">
+        <item>Posisi 1G, 2G</item>
+        <item>Posisi 1G, 2G, 3G, 4G</item>
+        <item>Posisi 1G, 2G, 3G, 4G dan 1G, 2G, 5G, 6G</item>
+        <item>Posisi 1G, 2G, 3G, 4G; 1G, 2G, 5G, 6G dan 6GR</item>
+        <item>OAW</item>
+    </array>
 </resources>
