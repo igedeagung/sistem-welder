@@ -230,7 +230,7 @@ public class FCAWActivity extends AppCompatActivity {
 
         if(fin2.equals("Pressure Tank")){
             ctrr.clone(constraintt2);
-            ctrr.connect(R.id.textView66, ConstraintSet.BOTTOM, R.id.frameLayout3, ConstraintSet.TOP, 50);
+            ctrr.connect(R.id.textView66, ConstraintSet.BOTTOM, R.id.frameLayout3, ConstraintSet.TOP, 20);
             ctrr.connect(R.id.textView31, ConstraintSet.BOTTOM, R.id.textView66, ConstraintSet.TOP, 0);
             ctrr.connect(R.id.frameLayout3, ConstraintSet.BOTTOM, R.id.editText12, ConstraintSet.TOP, 50);
             ctrr.applyTo(constraintt2);

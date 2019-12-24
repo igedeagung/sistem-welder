@@ -2,6 +2,7 @@ package com.example.welder;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,83 +22,76 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private int flag=1;
     private FirebaseAuth mauth;
+    private ProgressDialog progressDialog;
+    private int flag1, flag2;
+    private ProgressBar pgb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Tunggu Sebentar...");
-        progressDialog.show();
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final TextView text=findViewById(R.id.text1);
+        pgb = findViewById(R.id.progressBar);
+        pgb.setVisibility(View.VISIBLE);
+
         mauth=FirebaseAuth.getInstance();
         FirebaseUser user=mauth.getCurrentUser();
 
         if (user==null){
-            progressDialog.dismiss();
             Intent intro=new Intent(MainActivity.this, IntroActivity.class);
             startActivity(intro);
             finish();
         }
 
-
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
+
         ref.child("status").addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int keys;
                 keys=dataSnapshot.getValue(int.class);
-                if(keys==1){
+                if(keys==0){
+                    pgb.setVisibility(View.INVISIBLE);
+                    Intent pindah= new Intent(MainActivity.this, VerifActivity.class);
+                    startActivity(pindah);
+                    finish();
+                }
+                else{
                     ref.child("acc").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             int keys;
                             keys=dataSnapshot.getValue(int.class);
                             if(keys==0){
-                                progressDialog.dismiss();
-                                Intent pindah= new Intent(MainActivity.this, TungguAdminActivity.class);
-                                startActivity(pindah);
-                                finish();
+                                TextView veww= findViewById(R.id.textView11);
+                                veww.setVisibility(View.VISIBLE);
+                                pgb.setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                pgb.setVisibility(View.INVISIBLE);
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
                         }
                     });
                 }
-                else{
-                    progressDialog.dismiss();
-                    Intent pindah= new Intent(MainActivity.this, VerifActivity.class);
-                    startActivity(pindah);
-                    finish();
-                }
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        progressDialog.dismiss();
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
     }
@@ -118,9 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            mauth.signOut();
+            Intent loginintent= new Intent(MainActivity.this, IntroActivity.class);
+            startActivity(loginintent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 }
+

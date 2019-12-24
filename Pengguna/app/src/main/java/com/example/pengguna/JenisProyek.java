@@ -43,6 +43,7 @@ public class JenisProyek extends AppCompatActivity {
         startActivity(pindahsteel);
     }
     public void umum(View view){
-
+        Intent pindahsteel=new Intent(JenisProyek.this, LasUmumActivity.class);
+        startActivity(pindahsteel);
     }
 }

@@ -83,7 +83,7 @@ public class SMAWActivity extends AppCompatActivity {
         selesai = findViewById(R.id.editText11);
         myCalendar = Calendar.getInstance();
 
-        database = FirebaseDatabase.getInstance().getReference().child("Proyek");
+        database = FirebaseDatabase.getInstance().getReference();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         hargaField=findViewById(R.id.textView34);
         submitt=findViewById(R.id.button19);
@@ -421,10 +421,10 @@ public class SMAWActivity extends AppCompatActivity {
     }
 
     private void submitProyek(Proyek proyek) {
-        database.push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+        database.child("Proyek").push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Snackbar.make(findViewById(R.id.button20), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.button19), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
             }
         });
     }

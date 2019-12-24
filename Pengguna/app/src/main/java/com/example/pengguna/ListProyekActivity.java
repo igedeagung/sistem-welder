@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,12 +27,12 @@ public class ListProyekActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_proyek);
+
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //Get your reference to the node with all the entries
-        ref = FirebaseDatabase.getInstance().getReference().child("Proyek").child("Steel Structure");
+        ref = FirebaseDatabase.getInstance().getReference().child("Proyek");
 
         // Query for all entries with a certain child with value equal to something
         Query allPostFromAuthor = ref.orderByChild("uid").equalTo(uid);
@@ -70,5 +71,6 @@ public class ListProyekActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+        setContentView(R.layout.activity_list_proyek);
     }
 }

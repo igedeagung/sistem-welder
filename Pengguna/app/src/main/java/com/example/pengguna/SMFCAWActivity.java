@@ -239,7 +239,7 @@ public class SMFCAWActivity extends AppCompatActivity {
         database.push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Snackbar.make(findViewById(R.id.button20), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.button23), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
             }
         });
     }

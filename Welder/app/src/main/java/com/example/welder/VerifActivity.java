@@ -71,8 +71,12 @@ public class VerifActivity extends AppCompatActivity {
     private String spesifik;
     private String posisi;
     private String sertifikasi;
-
-    private FirebaseAuth mauth;
+    private String spek1="0";
+    private String spek2="0";
+    private String spek3="0";
+    private String spek4="0";
+    private String spek5="0";
+    private String spek6="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +127,24 @@ public class VerifActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         String item = "";
                         for (int i = 0; i < mUserItems.size(); i++) {
+                            if (listItems[mUserItems.get(i)].equals("SMAW")){
+                                spek1="SMAW";
+                            }
+                            if (listItems[mUserItems.get(i)].equals("FCAW")){
+                                spek2="FCAW";
+                            }
+                            if (listItems[mUserItems.get(i)].equals("GTAW")){
+                                spek3="GTAW";
+                            }
+                            if (listItems[mUserItems.get(i)].equals("SMAW/FCAW")){
+                                spek4="SMAW/FCAW";
+                            }
+                            if (listItems[mUserItems.get(i)].equals("SMAW/GTAW")){
+                                spek5="SMAW/GTAW";
+                            }
+                            if (listItems[mUserItems.get(i)].equals("OAW")){
+                                spek6="OAW";
+                            }
                             item = item + listItems[mUserItems.get(i)];
                             if (i != mUserItems.size() - 1) {
                                 item = item + ", ";
@@ -223,6 +245,7 @@ public class VerifActivity extends AppCompatActivity {
                     return;
                 }
 
+
                 uploadImage();
 
             }
@@ -231,7 +254,8 @@ public class VerifActivity extends AppCompatActivity {
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mauth.signOut();
+
+                auth.signOut();
                 Intent loginIntent= new Intent(VerifActivity.this, IntroActivity.class);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(loginIntent);
@@ -297,13 +321,18 @@ public class VerifActivity extends AppCompatActivity {
                             id_db.child("noktp").setValue(nomktp);
                             id_db.child("alamatlengkap").setValue(alamlkp);
                             id_db.child("alamatdomisili").setValue(alamdms);
-                            id_db.child("spesifikasi").setValue(spesifik);
+                            id_db.child("spesifikasi1").setValue(spek1);
+                            id_db.child("spesifikasi2").setValue(spek2);
+                            id_db.child("spesifikasi3").setValue(spek3);
+                            id_db.child("spesifikasi4").setValue(spek4);
+                            id_db.child("spesifikasi5").setValue(spek5);
+                            id_db.child("spesifikasi6").setValue(spek6);
                             id_db.child("posisi").setValue(posisi);
                             id_db.child("sertifikasi").setValue(name);
                             id_db.child("status").setValue(1);
                             id_db.child("acc").setValue(0);
-                            Intent pindahtunggu=new Intent(VerifActivity.this, TungguAdminActivity.class);
-
+                            Intent pindahtunggu=new Intent(VerifActivity.this, MainActivity.class);
+                            pindahtunggu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(pindahtunggu);
                         }
                     })
