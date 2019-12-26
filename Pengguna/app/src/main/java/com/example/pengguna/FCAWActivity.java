@@ -92,6 +92,12 @@ public class FCAWActivity extends AppCompatActivity {
                 String jumlah3=angka3.getText().toString();
                 String jumlah4=angka4.getText().toString();
                 String jumlah5="0";
+                String jumlah1f=jumlah1;
+                String jumlah2f=jumlah2;
+                String jumlah3f=jumlah3;
+                String jumlah4f=jumlah4;
+                String jumlah5f=jumlah5;
+
                 String hargaa=hargaField.getText().toString();
                 String wid="0";
                 String tmul=mulai.getText().toString();
@@ -109,7 +115,9 @@ public class FCAWActivity extends AppCompatActivity {
                 else{
                     namaproyek=fin1;
                 }
-                submitProyek(new Proyek(namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5, jumlah1,
+                String jenisproyek=fin1;
+                submitProyek(new Proyek(jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+                        jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }
         });

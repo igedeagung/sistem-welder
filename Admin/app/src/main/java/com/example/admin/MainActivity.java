@@ -31,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(welderku);
             }
         });
+
+        Button buttonnya=findViewById(R.id.button15);
+        buttonnya.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent welderku=new Intent(MainActivity.this, HomeListProyekActivity.class);
+                startActivity(welderku);
+            }
+        });
     }
 
     @Override

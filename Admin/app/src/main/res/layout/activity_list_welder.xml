@@ -57,24 +57,13 @@
         android:id="@+id/button6"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="150dp"
         android:background="@drawable/button"
         android:text="Hapus"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="250sp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:background="@drawable/button2"
-        android:text="Kembali"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

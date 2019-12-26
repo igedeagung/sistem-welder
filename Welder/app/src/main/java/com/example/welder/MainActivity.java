@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -80,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else{
                                 pgb.setVisibility(View.INVISIBLE);
+                                Button lihat=findViewById(R.id.button4);
+                                lihat.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent pindah=new Intent(MainActivity.this, LihatActivity.class);
+                                        startActivity(pindah);
+                                    }
+                                });
                             }
                         }
 

@@ -20,6 +20,7 @@ public class ClassWelderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(ClassWelderActivity.this, SMAWListActivity.class);
                 pindahsmaw.putExtra("pesan", "SMAW");
+                pindahsmaw.putExtra("tipe", "welder");
                 startActivity(pindahsmaw);
             }
         });
@@ -30,6 +31,7 @@ public class ClassWelderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(ClassWelderActivity.this, SMAWListActivity.class);
                 pindahsmaw.putExtra("pesan", "FCAW");
+                pindahsmaw.putExtra("tipe", "welder");
                 startActivity(pindahsmaw);
             }
         });
@@ -40,6 +42,7 @@ public class ClassWelderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(ClassWelderActivity.this, SMAWListActivity.class);
                 pindahsmaw.putExtra("pesan", "GTAW");
+                pindahsmaw.putExtra("tipe", "welder");
                 startActivity(pindahsmaw);
             }
         });
@@ -50,6 +53,7 @@ public class ClassWelderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(ClassWelderActivity.this, SMAWListActivity.class);
                 pindahsmaw.putExtra("pesan", "SMAW/GTAW");
+                pindahsmaw.putExtra("tipe", "welder");
                 startActivity(pindahsmaw);
             }
         });
@@ -60,6 +64,7 @@ public class ClassWelderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(ClassWelderActivity.this, SMAWListActivity.class);
                 pindahsmaw.putExtra("pesan", "SMAW/FCAW");
+                pindahsmaw.putExtra("tipe", "welder");
                 startActivity(pindahsmaw);
             }
         });
@@ -70,6 +75,7 @@ public class ClassWelderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(ClassWelderActivity.this, SMAWListActivity.class);
                 pindahsmaw.putExtra("pesan", "OAW");
+                pindahsmaw.putExtra("tipe", "welder");
                 startActivity(pindahsmaw);
             }
         });

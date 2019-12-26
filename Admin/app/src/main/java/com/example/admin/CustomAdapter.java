@@ -15,13 +15,15 @@ public class CustomAdapter extends BaseAdapter {
     String[] data;
     String[] data2;
     String[] data3;
+    String tipes;
     LayoutInflater inflater;
 
-    public CustomAdapter(Context context, String[] data, String[] data2, String[] data3){
+    public CustomAdapter(Context context, String[] data, String[] data2, String[] data3, String tipes){
         this.con=context;
         this.data=data;
         this.data2=data2;
         this.data3=data3;
+        this.tipes=tipes;
         inflater=(LayoutInflater.from(context));
     }
 
@@ -53,9 +55,17 @@ public class CustomAdapter extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent detil= new Intent(parent.getContext(),DetilWelderctivity.class);
-                detil.putExtra("email", data3[position]);
-                parent.getContext().startActivity(detil);
+                if (tipes.equals("welder")){
+                    Intent detil= new Intent(parent.getContext(),DetilWelderctivity.class);
+                    detil.putExtra("email", data3[position]);
+                    parent.getContext().startActivity(detil);
+                }
+                if (tipes.equals("proyek")){
+                    Intent detil= new Intent(parent.getContext(),DetilProyekActivity.class);
+                    detil.putExtra("email", data3[position]);
+                    parent.getContext().startActivity(detil);
+                }
+
 
             }
         });

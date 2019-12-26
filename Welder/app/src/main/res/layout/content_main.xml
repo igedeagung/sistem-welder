@@ -10,7 +10,7 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
+        style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="168dp"
         android:layout_height="186dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,6 +24,19 @@
         android:layout_height="wrap_content"
         android:text="Akun anda belum bisa dipakai\ntunggu proses dari admin"
         android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="Lihat Proyek"
+        android:textColor="@android:color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

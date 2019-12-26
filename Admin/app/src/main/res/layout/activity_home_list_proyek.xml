@@ -45,23 +45,12 @@
         android:id="@+id/button16"
         android:layout_width="200sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="150dp"
         android:background="@drawable/button"
         android:text="Hapus"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/button17"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button17"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/button2"
-        android:text="Kembali"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

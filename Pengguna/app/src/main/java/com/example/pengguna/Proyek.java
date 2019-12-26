@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
 
 public class Proyek implements Serializable{
+    private String jenisproyek;
     private String namaproyek;
     private String tipe;
     private String tanggalmulai;
@@ -19,6 +20,11 @@ public class Proyek implements Serializable{
     private String jumlah3;
     private String jumlah4;
     private String jumlah5;
+    private String jumlah1f;
+    private String jumlah2f;
+    private String jumlah3f;
+    private String jumlah4f;
+    private String jumlah5f;
     private String key;
     private String uid;
     private String wid;
@@ -26,6 +32,13 @@ public class Proyek implements Serializable{
     public Proyek()
     {
     }
+    public String getJenisproyek() {
+        return jenisproyek;
+    }
+    public void setJenisproyek(String jenisproyek) {
+        this.jenisproyek = jenisproyek;
+    }
+
     public String getNamaproyek() {
         return namaproyek;
     }
@@ -125,6 +138,37 @@ public class Proyek implements Serializable{
         this.jumlah5 = jumlah5;
     }
 
+    public String getJumlah1f() {
+        return jumlah1f;
+    }
+    public void setJumlah1f(String jumlah1f) {
+        this.jumlah1f = jumlah1f;
+    }
+    public String getJumlah2f() {
+        return jumlah2f;
+    }
+    public void setJumlah2f(String jumlah2f) {
+        this.jumlah2f = jumlah2f;
+    }
+    public String getJumlah3f() {
+        return jumlah3f;
+    }
+    public void setJumlah3f(String jumlah3f) {
+        this.jumlah3f = jumlah3f;
+    }
+    public String getJumlah4f() {
+        return jumlah4f;
+    }
+    public void setJumlah4f(String jumlah4f) {
+        this.jumlah4f = jumlah4f;
+    }
+    public String getJumlah5f() {
+        return jumlah5f;
+    }
+    public void setJumlah5f(String jumlah5f) {
+        this.jumlah5f = jumlah5f;
+    }
+
     public String getUID() {
         return uid;
     }
@@ -148,7 +192,8 @@ public class Proyek implements Serializable{
 
     public String toString()
     {
-        return " "+namaproyek+"" +
+        return " "+jenisproyek+"" +
+                "" +namaproyek+"" +
                 "" +tipe+"" +
                 "" +proyek1+"" +
                 "" +proyek2+"" +
@@ -160,16 +205,23 @@ public class Proyek implements Serializable{
                 "" +jumlah3+"" +
                 "" +jumlah4+"" +
                 "" +jumlah5+"" +
+                "" +jumlah1f+"" +
+                "" +jumlah2f+"" +
+                "" +jumlah3f+"" +
+                "" +jumlah4f+"" +
+                "" +jumlah5f+"" +
                 "" +tanggalmulai+"" +
                 "" +tanggalselesai+"" +
                 "" +harga+"" +
                 "" +uid+"" +
                 "" +wid;
     }
-    public Proyek(String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1,
+    public Proyek(String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
+                  String j2f, String j3f, String j4f, String j5f,String j1,
                   String j2, String j3, String j4, String j5, String tm, String ts, String hg,
                   String ui, String wi)
     {
+        jenisproyek=jnsprk;
         namaproyek=nmprk;
         tipe=tp;
         proyek1=p1;
@@ -182,6 +234,11 @@ public class Proyek implements Serializable{
         jumlah3=j3;
         jumlah4=j4;
         jumlah5=j5;
+        jumlah1f=j1f;
+        jumlah2f=j2f;
+        jumlah3f=j3f;
+        jumlah4f=j4f;
+        jumlah5f=j5f;
         tanggalmulai=tm;
         tanggalselesai=ts;
         harga=hg;

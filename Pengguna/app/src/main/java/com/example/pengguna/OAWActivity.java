@@ -68,13 +68,20 @@ public class OAWActivity extends AppCompatActivity {
                 String jumlah3="0";
                 String jumlah4="0";
                 String jumlah5="0";
+                String jumlah1f=jumlah1;
+                String jumlah2f=jumlah2;
+                String jumlah3f=jumlah3;
+                String jumlah4f=jumlah4;
+                String jumlah5f=jumlah5;
                 String hargaa=hargaField.getText().toString();
                 String wid="0";
                 String tmul=mulai.getText().toString();
                 String tsel=selesai.getText().toString();
                 String tipe="OAW";
                 String namaproyek="Las Umum";
-                submitProyek(new Proyek(namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5, jumlah1,
+                String jenisproyek="Las Umum";
+                submitProyek(new Proyek(jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+                        jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }
         });

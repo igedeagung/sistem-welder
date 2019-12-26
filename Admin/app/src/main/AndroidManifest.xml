@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.admin">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,9 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".JenisProyekActivity"></activity>
+        <activity android:name=".CariWelderActivity"></activity>
+        <activity android:name=".DetilProyekActivity" />
+        <activity android:name=".JenisProyekActivity" />
         <activity android:name=".DetilWelderctivity" />
-        <activity android:name=".SMAWListActivity"></activity>
+        <activity android:name=".SMAWListActivity" />
         <activity android:name=".ClassWelderActivity" />
         <activity android:name=".HomeListProyekActivity" />
         <activity android:name=".ListWelderActivity" />
