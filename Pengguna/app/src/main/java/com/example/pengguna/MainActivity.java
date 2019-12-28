@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pindah2(View v){
-        Intent pindahjenis=new Intent(MainActivity.this, ListProyekActivity.class);
+        Intent pindahjenis=new Intent(MainActivity.this, LihatProyekActivity.class);
         startActivity(pindahjenis);
     }
 

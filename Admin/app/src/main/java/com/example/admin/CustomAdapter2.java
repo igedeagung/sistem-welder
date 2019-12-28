@@ -8,16 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.stream.IntStream;
 
 public class CustomAdapter2 extends BaseAdapter {
     Context con;
@@ -55,10 +59,12 @@ public class CustomAdapter2 extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
+
         convertView=inflater.inflate(R.layout.jenis_list, null);
         TextView datas=convertView.findViewById(R.id.textVieww5);
         TextView datas2=convertView.findViewById(R.id.textVieww4);
-        Button button=convertView.findViewById(R.id.button23);
+        final Button button=convertView.findViewById(R.id.button23);
+        final ListView lisst=convertView.findViewById(R.id.lilis);
 
         final String datax=data5+"f";
         datas.setText(data[position]);
@@ -76,10 +82,11 @@ public class CustomAdapter2 extends BaseAdapter {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         key= dataSnapshot.getValue().toString();
                         int k=Integer.parseInt(key);
-                        k=k-1;
+//                        k=k-1;
                         key=Integer.toString(k);
                         DatabaseReference rese= FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3).child(datax);
                         rese.setValue(key);
+
                         if (k==0){
                             Intent detil= new Intent(parent.getContext(),DetilProyekActivity.class);
                             parent.getContext().startActivity(detil);

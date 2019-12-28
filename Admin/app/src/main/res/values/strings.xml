@@ -1,4 +1,38 @@
 <resources>
     <string name="app_name">Admin</string>
     <string name="action_settings">Settings</string>
+    <string name="log_out">Log Out</string>
+    <array name="tingkatan">
+        <item>Manajer Administrasi</item>
+        <item>Manajer Lapangan</item>
+    </array>
+
+    <array name="nmprk">
+        <item>Steel Structure</item>
+        <item>Kapal Ferro</item>
+        <item>Kapal Non Ferro</item>
+        <item>Onshore/Offshore</item>
+        <item>Stainless Steel</item>
+        <item>Carbon Steel</item>
+        <item>Non Ferro</item>
+        <item>Storage Tank</item>
+        <item>Pressure Tank</item>
+        <item>Las Umum</item>
+    </array>
+
+    <array name="pros">
+        <item>SMAW</item>
+        <item>FCAW</item>
+        <item>GTAW</item>
+        <item>SMAW/GTAW</item>
+        <item>SMAW/FCAW</item>
+        <item>OAW</item>
+    </array>
+
+    <array name="ting">
+        <item>Posisi 1G, 2G</item>
+        <item>Posisi 1G, 2G, 3G, 4G</item>
+        <item>Posisi 1G, 2G, 3G, 4G dan 1G, 2G, 5G, 6G</item>
+        <item>Posisi 1G, 2G, 3G, 4G; 1G, 2G, 5G, 6G dan 6GR</item>
+    </array>
 </resources>

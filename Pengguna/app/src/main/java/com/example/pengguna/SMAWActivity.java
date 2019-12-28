@@ -5,7 +5,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -40,8 +43,10 @@ public class SMAWActivity extends AppCompatActivity {
     private boolean kliked;
     private TextView hargaField;
     private Button submitt;
+    private Button balik;
     private DatabaseReference database;
     private String uid;
+    private long beda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +91,13 @@ public class SMAWActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         hargaField=findViewById(R.id.textView34);
+        balik=findViewById(R.id.button29);
+        balik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         submitt=findViewById(R.id.button19);
         submitt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +114,12 @@ public class SMAWActivity extends AppCompatActivity {
                 String jumlah5f=jumlah5;
                 String hargaa=hargaField.getText().toString();
                 String wid="0";
+                EditText alama=findViewById(R.id.editText29);
+                String alamat=alama.getText().toString();
+                if(TextUtils.isEmpty(alamat)){
+                    alama.setError("Alamat harus diisi");
+                    return;
+                }
                 String tmul=mulai.getText().toString();
                 String tsel=selesai.getText().toString();
                 String tipe="SMAW";
@@ -118,7 +136,9 @@ public class SMAWActivity extends AppCompatActivity {
                     namaproyek=fin1;
                 }
                 String jenisproyek=fin1;
-                submitProyek(new Proyek(jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+                String status="Belum diverifikasi Admin";
+                String bdh=Long.toString(beda);
+                submitProyek(new Proyek(bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
                         jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }
@@ -246,7 +266,7 @@ public class SMAWActivity extends AppCompatActivity {
 
         if(fin1.equals("Steel Structure")){
             ctrr.clone(constraintt2);
-            ctrr.connect(R.id.sfl2, ConstraintSet.BOTTOM, R.id.editText10, ConstraintSet.TOP, 50);
+            ctrr.connect(R.id.sfl2, ConstraintSet.BOTTOM, R.id.editText10, ConstraintSet.TOP, 70);
             ctrr.applyTo(constraintt2);
 
             frem3.setVisibility(View.GONE);
@@ -272,7 +292,7 @@ public class SMAWActivity extends AppCompatActivity {
         if(fin2.equals("Stainless Steel")){
             ctrr.clone(constraintt2);
             ctrr.connect(R.id.textView24, ConstraintSet.BOTTOM, R.id.sfl2, ConstraintSet.TOP, 0);
-            ctrr.connect(R.id.sfl2, ConstraintSet.BOTTOM, R.id.editText10, ConstraintSet.TOP, 50);
+            ctrr.connect(R.id.sfl2, ConstraintSet.BOTTOM, R.id.editText10, ConstraintSet.TOP, 70);
             ctrr.applyTo(constraintt2);
 
             frem.setVisibility(View.GONE);
@@ -372,7 +392,7 @@ public class SMAWActivity extends AppCompatActivity {
             try {
                 date = new SimpleDateFormat("yyyy-MM-dd").parse(mulaii);
                 date2 = new SimpleDateFormat("yyyy-MM-dd").parse(selesaii);
-                long beda= (date2.getTime()-date.getTime())/86400000;
+                beda= (date2.getTime()-date.getTime())/86400000;
                 if(beda<0){
                     selesai.setText("Tanggal Selesai");
                     mulai.setText("Tanggal Mulai");
@@ -431,7 +451,10 @@ public class SMAWActivity extends AppCompatActivity {
         database.child("Proyek").push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Snackbar.make(findViewById(R.id.button19), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
+                Intent pinda=new Intent(SMAWActivity.this, MainActivity.class);
+                pinda.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(pinda);
+                Toast.makeText(getApplicationContext(),"Data berhasil ditambahkan", Toast.LENGTH_SHORT ).show();
             }
         });
     }

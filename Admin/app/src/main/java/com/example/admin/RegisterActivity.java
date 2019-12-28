@@ -1,21 +1,21 @@
-package com.example.pengguna;
+package com.example.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,39 +26,53 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
-    private FirebaseAuth auth;
-    private Button regis;
-    private EditText ndepan, nbelakang, username, email, notelp, password, kpassword;
+    private EditText ndepan, nbelakang, username, email, notelp, password, kpassword, jenis;
+    private Button backbtn, regis;
     private DatabaseReference database;
-    private Button backbtn;
+    private FirebaseAuth auth;
+    private EditText pos;
+    private String[] listItems2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference().child("Users");
-
-        regis = findViewById(R.id.button17);
+        database = FirebaseDatabase.getInstance().getReference().child("Admin");
         ndepan= findViewById(R.id.editText);
         nbelakang= findViewById(R.id.editText2);
         username= findViewById(R.id.editText3);
         email= findViewById(R.id.editText4);
         notelp= findViewById(R.id.editText5);
-        password= findViewById(R.id.editText6);
-        kpassword= findViewById(R.id.editText7);
+        password= findViewById(R.id.editText8);
+        kpassword= findViewById(R.id.editText9);
+        listItems2 = getResources().getStringArray(R.array.tingkatan);
 
-        backbtn=findViewById(R.id.button25);
+        backbtn=findViewById(R.id.button26);
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent kembali= new Intent(RegisterActivity.this, IntroActivity.class);
-                startActivity(kembali);
                 finish();
             }
         });
-
+        pos = (EditText) findViewById(R.id.editText7);
+        pos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RegisterActivity.this);
+                mBuilder.setTitle("Tipe Admin");
+                mBuilder.setSingleChoiceItems(listItems2, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        pos.setText(listItems2[i]);
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+        regis = findViewById(R.id.button25);
         regis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                 final String nnotelp =notelp.getText().toString().trim();
                 final String ppassword =password.getText().toString().trim();
                 String kkpassword =kpassword.getText().toString().trim();
+                final String jenis=pos.getText().toString().trim();
 
                 if(TextUtils.isEmpty(namdepan)) {
                     ndepan.setError("Harap isi Nama Depan Anda");
@@ -98,20 +113,24 @@ public class RegisterActivity extends AppCompatActivity {
                     kpassword.setError("Harap isi Konfirmasi Password Anda");
                     return;
                 }
+                if(TextUtils.isEmpty(jenis)) {
+                    pos.setError("Harap pilih Posisi Anda");
+                    return;
+                }
                 if(!isPhoneValid(nnotelp)){
                     notelp.setError("Nomor Telepon anda tidak valid");
                     return;
                 }
                 if(!isEmailValid(eemail)){
-                    notelp.setError("Email anda tidak valid");
+                    email.setError("Email anda tidak valid");
                     return;
                 }
                 if(ppassword.length()<6){
-                    notelp.setError("Password anda terlalu singkat");
+                    password.setError("Password anda terlalu singkat");
                     return;
                 }
                 if(ppassword.compareTo(kkpassword)!=0){
-                    password.setError("Password dan Konfirmasi Password anda tidak sama");
+                    kpassword.setError("Password dan Konfirmasi Password anda tidak sama");
                     return;
                 }
                 database.orderByChild("username")
@@ -139,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         id_db.child("username").setValue(userrname);
                                                         id_db.child("email").setValue(eemail);
                                                         id_db.child("notelp").setValue(nnotelp);
-                                                        id_db.child("rating").setValue(0);
+                                                        id_db.child("jenis").setValue(jenis);
 
                                                         Intent intent2 = new Intent(RegisterActivity.this, MainActivity.class);
                                                         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -158,12 +177,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 username.setError("Nomor Telepon Tidak terdaftar");
                             }
                         });
-
-
             }
         });
-    }
 
+    }
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);

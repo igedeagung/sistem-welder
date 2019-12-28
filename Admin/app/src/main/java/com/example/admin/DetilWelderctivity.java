@@ -197,7 +197,7 @@ public class DetilWelderctivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(DetilWelderctivity.this, "hahashakdx", Toast.LENGTH_LONG).show();
+                            Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
                         }
                     });
 

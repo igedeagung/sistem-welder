@@ -81,12 +81,35 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else{
                                 pgb.setVisibility(View.INVISIBLE);
-                                Button lihat=findViewById(R.id.button4);
-                                lihat.setOnClickListener(new View.OnClickListener() {
+
+                                String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                DatabaseReference dabes= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
+
+                                dabes.child("pid").addValueEventListener(new ValueEventListener() {
+                                    String key;
                                     @Override
-                                    public void onClick(View v) {
-                                        Intent pindah=new Intent(MainActivity.this, LihatActivity.class);
-                                        startActivity(pindah);
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        key=dataSnapshot.getValue().toString();
+                                        if (key.equals("0")){
+                                            TextView piew=findViewById(R.id.textView30);
+                                            piew.setVisibility(View.VISIBLE);
+                                        }
+                                        else{
+                                            Button lihat=findViewById(R.id.button4);
+                                            lihat.setVisibility(View.VISIBLE);
+                                            lihat.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent pindah=new Intent(MainActivity.this, LihatActivity.class);
+                                                    startActivity(pindah);
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                     }
                                 });
                             }

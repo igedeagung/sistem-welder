@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,24 @@ public class DetilProyekActivity extends AppCompatActivity {
         constraint=findViewById(R.id.constraintt);
         ctr=new ConstraintSet();
 
+        Button edit=findViewById(R.id.button28);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gg=new Intent(DetilProyekActivity.this, EditProyekActivity.class);
+                gg.putExtra("email", pessan);
+                startActivity(gg);;
+            }
+        });
+
+        Button delete=findViewById(R.id.button29);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Proyek");
+                res.child(pessan).removeValue();
+            }
+        });
 //        vieww.setText(pessan);
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan);
         ref.child("uid").addValueEventListener(new ValueEventListener() {

@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OAWActivity"></activity>
+        <activity android:name=".VerifActivity"></activity>
+        <activity android:name=".LihatProyekActivity" />
+        <activity android:name=".OAWActivity" />
         <activity android:name=".LasUmumActivity" />
         <activity android:name=".ListProyekActivity" />
         <activity android:name=".SMFCAWActivity" />

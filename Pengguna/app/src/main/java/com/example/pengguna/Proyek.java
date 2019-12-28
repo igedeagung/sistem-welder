@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
 
 public class Proyek implements Serializable{
+    private String alamat;
     private String jenisproyek;
     private String namaproyek;
     private String tipe;
@@ -28,9 +29,23 @@ public class Proyek implements Serializable{
     private String key;
     private String uid;
     private String wid;
+    private String status;
+    private String bedahari;
 
     public Proyek()
     {
+    }
+    public String getBedahari() {
+        return bedahari;
+    }
+    public void setBedahari(String bedahari) {
+        this.bedahari = bedahari;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
     public String getJenisproyek() {
         return jenisproyek;
@@ -80,6 +95,13 @@ public class Proyek implements Serializable{
     }
     public void setProyek1(String proyek1) {
         this.proyek1 = proyek1;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
     }
 
     public String getProyek2() {
@@ -195,6 +217,9 @@ public class Proyek implements Serializable{
         return " "+jenisproyek+"" +
                 "" +namaproyek+"" +
                 "" +tipe+"" +
+                "" +alamat+"" +
+                "" +bedahari+"" +
+                "" +status+"" +
                 "" +proyek1+"" +
                 "" +proyek2+"" +
                 "" +proyek3+"" +
@@ -216,11 +241,14 @@ public class Proyek implements Serializable{
                 "" +uid+"" +
                 "" +wid;
     }
-    public Proyek(String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
+    public Proyek(String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
                   String j2f, String j3f, String j4f, String j5f,String j1,
                   String j2, String j3, String j4, String j5, String tm, String ts, String hg,
                   String ui, String wi)
     {
+        bedahari=bdh;
+        status=stts;
+        alamat=almt;
         jenisproyek=jnsprk;
         namaproyek=nmprk;
         tipe=tp;

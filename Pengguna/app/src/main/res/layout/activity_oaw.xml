@@ -23,7 +23,7 @@
         android:id="@+id/frameLayout18"
         android:layout_width="330dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/buttton2"
         app:layout_constraintBottom_toTopOf="@+id/editText21"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,10 +132,34 @@
             android:id="@+id/button28"
             android:layout_width="50sp"
             android:layout_height="35sp"
-            android:layout_marginStart="260sp"
-            android:layout_marginTop="10sp"
+            android:layout_marginStart="270sp"
+            android:layout_marginTop="8sp"
             android:background="@drawable/buttton2"
             android:enabled="false"
             android:text="@android:string/ok" />
+
+        <Button
+            android:id="@+id/button34"
+            android:layout_width="70sp"
+            android:layout_height="35sp"
+            android:layout_marginStart="190sp"
+            android:layout_marginTop="8sp"
+            android:background="@drawable/buttton2"
+            android:text="Kembali" />
     </FrameLayout>
+
+    <EditText
+        android:id="@+id/editText32"
+        android:layout_width="330sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:backgroundTint="@android:color/white"
+        android:ems="10"
+        android:hint="Alamat"
+        android:inputType="textPersonName"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout21"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,9 @@
-package com.example.welder;
+package com.example.admin;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,18 +17,13 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -37,21 +31,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class VerifActivity extends AppCompatActivity {
+public class EditWelderActivity extends AppCompatActivity {
     private EditText spes;
     private EditText pos;
     private EditText sertif;
-    private EditText nmpanggil;
     private EditText nmlengkap;
-    private EditText noktp;
     private EditText almtlkp;
     private EditText almtdms;
-    private Button profil;
     private Button btnsubmit;
     private Button btnback;
     private String[] listItems;
@@ -61,16 +48,14 @@ public class VerifActivity extends AppCompatActivity {
     private Uri filePath;
     private Uri filePath2;
     private ImageView imageView;
-    private CircleImageView imageView2;
     private final int PICK_IMAGE_REQUEST = 71;
     //Firebase
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseAuth auth;
     private DatabaseReference database;
-    private String nmpgl;
+
     private String nmlkp;
-    private String nomktp;
     private String alamlkp;
     private String alamdms;
     private String spesifik;
@@ -82,24 +67,19 @@ public class VerifActivity extends AppCompatActivity {
     private String spek4="0";
     private String spek5="0";
     private String spek6="0";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verif);
-
+        setContentView(R.layout.activity_edit_welder);
 
         spes = (EditText) findViewById(R.id.editText6);
         pos = (EditText) findViewById(R.id.editText7);
         sertif = (EditText) findViewById(R.id.editText8);
-        nmpanggil = (EditText) findViewById(R.id.editText);
         nmlengkap = (EditText) findViewById(R.id.editText2);
-        noktp = (EditText) findViewById(R.id.editText3);
         almtlkp = (EditText) findViewById(R.id.editText4);
         almtdms=(EditText) findViewById(R.id.editText5);
         imageView = (ImageView) findViewById(R.id.imgView);
-        imageView2 = findViewById(R.id.profile);
-        profil=findViewById(R.id.button5);
+
         btnsubmit=findViewById(R.id.button);
         btnback=findViewById(R.id.button2);
         storage = FirebaseStorage.getInstance();
@@ -108,14 +88,14 @@ public class VerifActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference().child("Welders");
 
 
-        listItems = getResources().getStringArray(R.array.proyek);
-        listItems2 = getResources().getStringArray(R.array.tingkatan);
+        listItems = getResources().getStringArray(R.array.pros);
+        listItems2 = getResources().getStringArray(R.array.ting);
         checkedItems = new boolean[listItems.length];
 
         spes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(VerifActivity.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditWelderActivity.this);
                 mBuilder.setTitle("Spesifikasi Proses Welding");
                 mBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -187,7 +167,7 @@ public class VerifActivity extends AppCompatActivity {
         pos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(VerifActivity.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditWelderActivity.this);
                 mBuilder.setTitle("Posisi Pengelasan");
                 mBuilder.setSingleChoiceItems(listItems2, -1, new DialogInterface.OnClickListener() {
                     @Override
@@ -208,34 +188,18 @@ public class VerifActivity extends AppCompatActivity {
             }
         });
 
-        profil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage2();
-            }
-        });
 
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nmpgl=nmpanggil.getText().toString();
                 nmlkp=nmlengkap.getText().toString();
-                nomktp=noktp.getText().toString();
                 alamlkp=almtlkp.getText().toString();
                 alamdms=almtdms.getText().toString();
                 spesifik=spes.getText().toString();
                 posisi=pos.getText().toString();
                 sertifikasi=sertif.getText().toString();
-                if (TextUtils.isEmpty(nmpgl)){
-                    nmpanggil.setError("Nama Panggilan harus diisi");
-                    return;
-                }
                 if (TextUtils.isEmpty(nmlkp)){
                     nmlengkap.setError("Nama Lengkap harus diisi");
-                    return;
-                }
-                if (TextUtils.isEmpty(nomktp)){
-                    noktp.setError("Nomor KTP harus diisi");
                     return;
                 }
                 if (TextUtils.isEmpty(alamlkp)){
@@ -268,11 +232,7 @@ public class VerifActivity extends AppCompatActivity {
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                auth.signOut();
-                Intent loginIntent= new Intent(VerifActivity.this, IntroActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(loginIntent);
+                finish();
             }
         });
     }
@@ -282,12 +242,6 @@ public class VerifActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-    private void chooseImage2() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 75);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -301,19 +255,6 @@ public class VerifActivity extends AppCompatActivity {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
                 sertif.setText(cb);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        if(requestCode == 75 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath2 = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath2);
-                imageView2.setImageBitmap(bitmap);
             }
             catch (IOException e)
             {
@@ -337,10 +278,6 @@ public class VerifActivity extends AppCompatActivity {
 
         if(filePath != null && filePath2 !=null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
             final String name=System.currentTimeMillis() + "." + GetFileExtension(filePath);
             final String name2=System.currentTimeMillis() + "." + GetFileExtension(filePath2);
             StorageReference ref = storageReference.child("sertifikasi_welder/" +name );
@@ -349,16 +286,14 @@ public class VerifActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // Hiding the progressDialog after done uploading.
-                            progressDialog.dismiss();
 
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            // Hiding the progressDialog.
-                            progressDialog.dismiss();
-                            Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            // Hiding the progressDialog.;
+                            Toast.makeText(EditWelderActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -367,39 +302,13 @@ public class VerifActivity extends AppCompatActivity {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
                             // Setting progressDialog Title.
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
 
-            StorageReference ref2 = storageReference.child("profil_welder/" +name2 );
-            ref2.putFile(filePath2)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Hiding the progressDialog after done uploading.
-                            progressDialog.dismiss();
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Hiding the progressDialog.
-                            progressDialog.dismiss();
-                            Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        }
-                    });
             String user_id=auth.getCurrentUser().getUid();
             DatabaseReference id_db = database.child(user_id);
             id_db.child("namalengkap").setValue(nmlkp);
-            id_db.child("namapanggilan").setValue(nmpgl);
-            id_db.child("noktp").setValue(nomktp);
             id_db.child("alamatlengkap").setValue(alamlkp);
             id_db.child("alamatdomisili").setValue(alamdms);
             id_db.child("spesifikasi1").setValue(spek1);
@@ -410,18 +319,13 @@ public class VerifActivity extends AppCompatActivity {
             id_db.child("spesifikasi6").setValue(spek6);
             id_db.child("posisi").setValue(posisi);
             id_db.child("sertifikasi").setValue(name);
-            id_db.child("profil").setValue(name2);
-            id_db.child("status").setValue(1);
-            id_db.child("acc").setValue(0);
-            id_db.child("pid").setValue("0");
-            id_db.child("tanggalmasuk").setValue("Belum di Accept Admin");
-            id_db.child("id").setValue("Belum di Accept Admin");
-            Intent pindahtunggu=new Intent(VerifActivity.this, MainActivity.class);
+            Intent pindahtunggu=new Intent(EditWelderActivity.this, MainActivity.class);
             pindahtunggu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(pindahtunggu);
         }
         else {
             nmlengkap.setError("huhu");
         }
+
     }
 }

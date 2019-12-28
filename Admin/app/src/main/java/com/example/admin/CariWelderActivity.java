@@ -22,8 +22,11 @@ public class CariWelderActivity extends AppCompatActivity {
 
     private String spekk;
     private String[] item, item2, item4;
-    String item3, item5;
-    int flag=0;
+    private String item3, item5;
+    private int flag=0;
+    private int flagg;
+    private ListView lisst;
+    private CustomAdapter2 customAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +34,7 @@ public class CariWelderActivity extends AppCompatActivity {
 
         Bundle bundle=getIntent().getExtras();
         String pessan=bundle.getString("spek");
-        String pessan2=bundle.getString("pos");
+        final String pessan2=bundle.getString("pos");
         final String pessan3=bundle.getString("key");
         final String julah=bundle.getString("jumlahnya");
 
@@ -81,7 +84,7 @@ public class CariWelderActivity extends AppCompatActivity {
                     acc=post.child("acc").getValue().toString();
                     sibuk=post.child("pid").getValue().toString();
                     pos=post.child("posisi").getValue().toString();
-                    int flagg;
+
                     if(pos.contains("6GR")){
                         flagg=3;
                     }
@@ -91,7 +94,7 @@ public class CariWelderActivity extends AppCompatActivity {
                     else{
                         flagg=1;
                     }
-                    if(acc.equals("1")&&sibuk.equals("0")&&flagg==flag){
+                    if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
                         hasil.add(post.child("namalengkap").getValue().toString());
                         hasil2.add(post.child("alamatlengkap").getValue().toString());
                         hasil3.add(post.getKey());
@@ -110,15 +113,27 @@ public class CariWelderActivity extends AppCompatActivity {
                         item2[i]=hasil2.get(i);
                         item4[i]=hasil3.get(i);
                     }
-                    ListView lisst=findViewById(R.id.lilis);
+                    lisst=findViewById(R.id.lilis);
 
-                    CustomAdapter2 customAdapter=new CustomAdapter2(getApplicationContext(), item, item2, item3, item4, item5);
+                    customAdapter=new CustomAdapter2(getApplicationContext(), item, item2, item3, item4, item5);
                     barbar.setVisibility(View.INVISIBLE);
-                    lisst.setAdapter(customAdapter);
+                    if(lisst.getAdapter()==null){
+                        lisst.setAdapter(customAdapter);
+                    }
+                    else{
+                        lisst.setAdapter(customAdapter);
+                        customAdapter.notifyDataSetChanged();
+                        lisst.invalidateViews();
+                        lisst.refreshDrawableState();
+                    }
+
+
                 }
                 else{
                     barbar.setVisibility(View.INVISIBLE);
                     TextView kosong =findViewById(R.id.textView43);
+                    String campur=sibuk+acc+Integer.toString(flagg)+"-"+pessan2;
+                    kosong.setText(campur);
                     kosong.setVisibility(View.VISIBLE);
                 }
             }
@@ -132,4 +147,5 @@ public class CariWelderActivity extends AppCompatActivity {
 //        TextView tex=findViewById(R.id.textView42);
 //        tex.setText(pessan);
     }
+
 }
