@@ -36,6 +36,9 @@ public class EditProyekActivity extends AppCompatActivity {
     private String jenis;
     private String mulaii;
     private String selesaii;
+    private DatabaseReference fer;
+    private EditText namap;
+    private EditText pross;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +50,65 @@ public class EditProyekActivity extends AppCompatActivity {
         mulai=findViewById(R.id.editText12);
         selesai=findViewById(R.id.editText13);
         myCalendar = Calendar.getInstance();
+        fer=FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan);
+
+        fer.child("namaproyek").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                namap.setText(key);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        fer.child("tipe").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                pross.setText(key);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        fer.child("tanggalmulai").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                mulai.setText(key);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        fer.child("tanggalselesai").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                selesai.setText(key);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         listItems2 = getResources().getStringArray(R.array.nmprk);
-        final EditText namap=findViewById(R.id.editText10);
+        namap=findViewById(R.id.editText10);
         namap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +127,7 @@ public class EditProyekActivity extends AppCompatActivity {
         });
 
         listitem3 = getResources().getStringArray(R.array.pros);
-        final EditText pross=findViewById(R.id.editText11);
+        pross=findViewById(R.id.editText11);
         pross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,8 +198,6 @@ public class EditProyekActivity extends AppCompatActivity {
         sel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText owner=findViewById(R.id.editText6);
-                String owwner=owner.getText().toString();
                 jeniss="";
                 namapr=namap.getText().toString();
                 jenis=pross.getText().toString();
@@ -163,10 +220,6 @@ public class EditProyekActivity extends AppCompatActivity {
                     jeniss="Las Umum";
                 }
 
-                if(TextUtils.isEmpty(owwner)) {
-                    owner.setError("Nama Depan tidak boleh kosong");
-                    return;
-                }
                 if(TextUtils.isEmpty(namapr)) {
                     namap.setError("Nama Proyek tidak boleh kosong");
                     return;
@@ -183,39 +236,14 @@ public class EditProyekActivity extends AppCompatActivity {
                     selesai.setError("Tanggal Selesai tidak boleh kosong");
                     return;
                 }
-                final DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Users");
-                ref.orderByChild("namadepan").equalTo(owwner).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String clubkey="";
-
-                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                            clubkey = childSnapshot.getKey();
-                        }
-                        if (clubkey.equals("")){
-                            owner.setError("Inputan User tidak terdaftsr");
-                        }
-                        else{
-                            DatabaseReference fer=FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan);
-                            fer.child("uid").setValue(clubkey);
-                            fer.child("namaproyek").setValue(namapr);
-                            fer.child("tipe").setValue(jenis);
-                            fer.child("jenisproyek").setValue(jeniss);
-                            fer.child("tanggalmulai").setValue(mulaii);
-                            fer.child("tanggalselesai").setValue(selesaii);
-
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
 
-
+                fer.child("namaproyek").setValue(namapr);
+                fer.child("tipe").setValue(jenis);
+                fer.child("jenisproyek").setValue(jeniss);
+                fer.child("tanggalmulai").setValue(mulaii);
+                fer.child("tanggalselesai").setValue(selesaii);
+                finish();
             }
         });
 

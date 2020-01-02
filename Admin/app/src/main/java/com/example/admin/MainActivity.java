@@ -7,7 +7,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -33,6 +38,29 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        String uid=user.getUid();
+
+
+
+        FirebaseDatabase.getInstance().getReference().child("Admin").child(uid).child("jenis").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("Manajer Lapangan")){
+                    Button btn=findViewById(R.id.button4);
+                    btn.setVisibility(View.GONE);
+                    Button btn2=findViewById(R.id.button14);
+                    btn2.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,7 +77,18 @@ public class MainActivity extends AppCompatActivity {
         buttonnya.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent welderku=new Intent(MainActivity.this, HomeListProyekActivity.class);
+                Intent welderku=new Intent(MainActivity.this, JenisProyekActivity.class);
+                startActivity(welderku);
+            }
+        });
+
+        Button buttondia=findViewById(R.id.button4);
+        buttondia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent welderku=new Intent(MainActivity.this, SMAWListActivity.class);
+                welderku.putExtra("tipe", "pengguna");
+
                 startActivity(welderku);
             }
         });

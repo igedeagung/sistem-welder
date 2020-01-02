@@ -3,6 +3,7 @@ package com.example.pengguna;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,6 +39,7 @@ public class OAWActivity extends AppCompatActivity {
     private String uid;
     private int countsf1=0;
     private long beda;
+    private ProgressDialog diialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +94,23 @@ public class OAWActivity extends AppCompatActivity {
                 String tipe="OAW";
                 EditText alama=findViewById(R.id.editText32);
                 String alamat=alama.getText().toString();
+                diialog= new ProgressDialog(OAWActivity.this);
+                diialog.setMessage("Tunggu Sebentar");
+                diialog.setCancelable(false);
+                diialog.show();
+
                 if(TextUtils.isEmpty(alamat)){
+                    diialog.dismiss();
                     alama.setError("Alamat harus diisi");
+                    alama.requestFocus();
                     return;
                 }
                 String namaproyek="Las Umum";
                 String jenisproyek="Las Umum";
-                String status="Belum diverifikasi Admin";
+                String status="0";
+                String nilai="0";
                 String bdh=Long.toString(beda);
-                submitProyek(new Proyek(bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+                submitProyek(new Proyek(nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
                         jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }
@@ -223,6 +233,7 @@ public class OAWActivity extends AppCompatActivity {
         database.child("Proyek").push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                diialog.dismiss();
                 Intent pinda=new Intent(OAWActivity.this, MainActivity.class);
                 pinda.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(pinda);

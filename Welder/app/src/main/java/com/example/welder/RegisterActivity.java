@@ -3,6 +3,7 @@ package com.example.welder;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -69,48 +70,75 @@ public class RegisterActivity extends AppCompatActivity {
                 final String ppassword =password.getText().toString().trim();
                 String kkpassword =kpassword.getText().toString().trim();
 
+                final ProgressDialog dialog=new ProgressDialog(RegisterActivity.this);
+                dialog.setMessage("Tunggu Sebentar");
+                dialog.show();
+
                 if(TextUtils.isEmpty(namdepan)) {
+                    dialog.dismiss();
                     ndepan.setError("Harap isi Nama Depan Anda");
+                    ndepan.requestFocus();
                     return;
                 }
                 if(TextUtils.isEmpty(nambelakang)) {
+                    dialog.dismiss();
                     nbelakang.setError("Harap isi Nama Belakang Anda");
+                    nbelakang.requestFocus();
                     return;
                 }
                 if(TextUtils.isEmpty(userrname)) {
+                    dialog.dismiss();
                     username.setError("Harap isi Username Anda");
+                    username.requestFocus();
                     return;
+
                 }
                 if(TextUtils.isEmpty(eemail)) {
+                    dialog.dismiss();
                     email.setError("Harap isi Email Anda");
+                    email.requestFocus();
                     return;
                 }
                 if(TextUtils.isEmpty(nnotelp)) {
+                    dialog.dismiss();
                     notelp.setError("Harap isi Nomor Telepon Anda");
+                    notelp.requestFocus();
                     return;
                 }
                 if(TextUtils.isEmpty(ppassword)) {
+                    dialog.dismiss();
                     password.setError("Harap isi Password Anda");
+                    password.requestFocus();
                     return;
                 }
                 if(TextUtils.isEmpty(kkpassword)) {
+                    dialog.dismiss();
                     kpassword.setError("Harap isi Konfirmasi Password Anda");
+                    kpassword.requestFocus();
                     return;
                 }
                 if(!isPhoneValid(nnotelp)){
+                    dialog.dismiss();
                     notelp.setError("Nomor Telepon anda tidak valid");
+                    notelp.requestFocus();
                     return;
                 }
                 if(!isEmailValid(eemail)){
+                    dialog.dismiss();
                     email.setError("Email anda tidak valid");
+                    email.requestFocus();
                     return;
                 }
                 if(ppassword.length()<6){
+                    dialog.dismiss();
                     password.setError("Password anda terlalu singkat");
+                    password.requestFocus();
                     return;
                 }
                 if(ppassword.compareTo(kkpassword)!=0){
+                    dialog.dismiss();
                     kpassword.setError("Password dan Konfirmasi Password anda tidak sama");
+                    kpassword.requestFocus();
                     return;
                 }
                 database.orderByChild("username")
@@ -129,7 +157,9 @@ public class RegisterActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                                     if (!task.isSuccessful()) {
+                                                        dialog.dismiss();
                                                         password.setError("Authentication failed." + task.getException());
+                                                        password.requestFocus();
                                                     } else {
                                                         String user_id=auth.getCurrentUser().getUid();
                                                         DatabaseReference id_db = database.child(user_id);
@@ -140,6 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         id_db.child("notelp").setValue(nnotelp);
                                                         id_db.child("status").setValue(0);
 
+                                                        dialog.dismiss();
                                                         Intent intent2 = new Intent(RegisterActivity.this, VerifActivity.class);
                                                         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         startActivity(intent2);
@@ -148,13 +179,18 @@ public class RegisterActivity extends AppCompatActivity {
                                             });
                                 }
                                 else{
+                                    dialog.dismiss();
                                     username.setError("Username Sudah terdaftar");
+                                    username.requestFocus();
                                 }
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-                                username.setError("Nomor Telepon Tidak terdaftar");
+                                dialog.dismiss();
+                                notelp.setError("Nomor Telepon Tidak terdaftar");
+                                notelp.requestFocus();
+
                             }
                         });
 

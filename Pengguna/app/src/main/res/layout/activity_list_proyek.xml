@@ -332,9 +332,9 @@
             android:id="@+id/frameLayout9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="30dp"
             android:background="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/button38"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -366,6 +366,19 @@
             android:layout_marginBottom="50dp"
             android:background="@drawable/buttton"
             android:text="Konfirmasi"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button38"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/buttton"
+            android:text="Beri Nilai "
             android:textColor="@android:color/white"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

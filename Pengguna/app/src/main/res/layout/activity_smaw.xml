@@ -24,7 +24,7 @@
     <FrameLayout
         android:id="@+id/sfl1"
         android:layout_width="330dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/buttton2"
         app:layout_constraintBottom_toTopOf="@+id/sfl2"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/posisi_1g_2g_pelat_profil" />
 
         <ImageButton
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="245sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/sub"
             app:srcCompat="@drawable/minus" />
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="281sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/_0" />
 
         <ImageButton
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/add"
             app:srcCompat="@drawable/add" />
@@ -71,7 +71,7 @@
     <FrameLayout
         android:id="@+id/sfl2"
         android:layout_width="330dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/buttton2"
         app:layout_constraintBottom_toTopOf="@+id/sfl3"
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/posisi_1g_2g_3g_4g_pelat_profil" />
 
         <ImageButton
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="245sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/sub"
             app:srcCompat="@drawable/minus" />
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="281sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/_0" />
 
         <ImageButton
@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/add"
             app:srcCompat="@drawable/add" />
@@ -119,7 +119,7 @@
     <FrameLayout
         android:id="@+id/sfl3"
         android:layout_width="330dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="70dp"
         android:background="@drawable/buttton2"
         app:layout_constraintBottom_toTopOf="@+id/editText11"
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12sp"
-            android:layout_marginTop="30sp"
+            android:layout_marginTop="20sp"
             android:text="Posisi 1G, 2G, 3G, 4G (pelat)\nPosisi 1G, 2G, 5G, 6G (pipa)" />
 
         <ImageButton
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="245sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/sub"
             app:srcCompat="@drawable/minus" />
@@ -150,7 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="281sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/_0" />
 
         <ImageButton
@@ -158,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/add"
             app:srcCompat="@drawable/add" />
@@ -261,7 +261,7 @@
     <FrameLayout
         android:id="@+id/frameLayout14"
         android:layout_width="330dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="70dp"
         android:background="@drawable/buttton2"
         app:layout_constraintBottom_toTopOf="@+id/editText11"
@@ -274,7 +274,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/posisi_1g_2g_3g_4g_pelat_profil" />
 
         <ImageButton
@@ -282,7 +282,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="245sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/sub"
             app:srcCompat="@drawable/minus" />
@@ -292,7 +292,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/add"
             app:srcCompat="@drawable/add" />
@@ -302,7 +302,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="281sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/_0" />
 
         <TextView
@@ -317,7 +317,7 @@
     <FrameLayout
         android:id="@+id/frameLayout15"
         android:layout_width="330dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/buttton2"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout14"
@@ -329,7 +329,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/posisi_1g_2g_3g_4g_pelat_profil" />
 
         <ImageButton
@@ -337,7 +337,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/add"
             app:srcCompat="@drawable/add" />
@@ -347,7 +347,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="245sp"
-            android:layout_marginTop="37sp"
+            android:layout_marginTop="27sp"
             android:background="@android:color/white"
             android:contentDescription="@string/sub"
             app:srcCompat="@drawable/minus" />
@@ -357,7 +357,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="281sp"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="30sp"
             android:text="@string/_0" />
 
         <TextView

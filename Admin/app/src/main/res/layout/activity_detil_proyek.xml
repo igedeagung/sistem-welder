@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:text="Detil Proyek"
+            android:text="Detail Proyek"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/frameLayout6"
             app:layout_constraintEnd_toEndOf="parent"

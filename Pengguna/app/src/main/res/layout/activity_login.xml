@@ -75,7 +75,7 @@
         android:id="@+id/button24"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/buttton2"
         android:text="@string/kembali"
         app:layout_constraintBottom_toBottomOf="parent"

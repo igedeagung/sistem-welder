@@ -82,6 +82,7 @@ public class VerifActivity extends AppCompatActivity {
     private String spek4="0";
     private String spek5="0";
     private String spek6="0";
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +227,7 @@ public class VerifActivity extends AppCompatActivity {
                 spesifik=spes.getText().toString();
                 posisi=pos.getText().toString();
                 sertifikasi=sertif.getText().toString();
+
                 if (TextUtils.isEmpty(nmpgl)){
                     nmpanggil.setError("Nama Panggilan harus diisi");
                     return;
@@ -416,6 +418,8 @@ public class VerifActivity extends AppCompatActivity {
             id_db.child("pid").setValue("0");
             id_db.child("tanggalmasuk").setValue("Belum di Accept Admin");
             id_db.child("id").setValue("Belum di Accept Admin");
+            id_db.child("terima").setValue("0");
+            id_db.child("rating").setValue("0");
             Intent pindahtunggu=new Intent(VerifActivity.this, MainActivity.class);
             pindahtunggu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(pindahtunggu);

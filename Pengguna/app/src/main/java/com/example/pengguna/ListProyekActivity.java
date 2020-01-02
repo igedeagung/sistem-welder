@@ -1,16 +1,20 @@
 package com.example.pengguna;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ListProyekActivity extends AppCompatActivity {
@@ -44,6 +51,8 @@ public class ListProyekActivity extends AppCompatActivity {
     private List<String> jumlah;
     private List<String> proyek;
     private DatabaseReference ref;
+    private String pessan;
+    private Button buttonku;
 
 
     @Override
@@ -53,7 +62,7 @@ public class ListProyekActivity extends AppCompatActivity {
 
 //        TextView vieww=findViewById(R.id.textView28);
         Bundle bundle=getIntent().getExtras();
-        final String pessan=bundle.getString("id");
+        pessan=bundle.getString("id");
 
         nama=findViewById(R.id.textView31);
         jenis=findViewById(R.id.textView33);
@@ -66,7 +75,7 @@ public class ListProyekActivity extends AppCompatActivity {
 //        vieww.setText(pessan);
         ref= FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan);
 
-        ref.child("namaproyek").addValueEventListener(new ValueEventListener() {
+        ref.child("namaproyek").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -80,7 +89,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("jenisproyek").addValueEventListener(new ValueEventListener() {
+        ref.child("jenisproyek").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -94,7 +103,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("tipe").addValueEventListener(new ValueEventListener() {
+        ref.child("tipe").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,21 +118,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("tanggalmulai").addValueEventListener(new ValueEventListener() {
-            String key;
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                mulai.setText(key);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        ref.child("tanggalselesai").addValueEventListener(new ValueEventListener() {
+        ref.child("tanggalselesai").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -137,7 +132,73 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("alamat").addValueEventListener(new ValueEventListener() {
+        ref.child("tanggalmulai").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                mulai.setText(key);
+                Date date=new Date(), date2=new Date();
+                try{
+                    String dates = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                    date = new SimpleDateFormat("yyyy-MM-dd").parse(key);
+                    date2=new SimpleDateFormat("yyyy-MM-dd").parse(dates);
+                    final long beda= (date2.getTime()-date.getTime())/86400000;
+
+                    ref.child("status").addListenerForSingleValueEvent(new ValueEventListener() {
+                        String key;
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            key=dataSnapshot.getValue().toString();
+//                            final int  hau=Integer.parseInt(key);
+                            ref.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
+                                String kekey;
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    kekey=dataSnapshot.getValue().toString();
+                                    if(kekey.equals("0")&&key.equals("1")){
+                                        buttonku=findViewById(R.id.button38);
+                                        buttonku.setVisibility(View.VISIBLE);
+                                        buttonku.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                ShowDialog();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+                }catch (ParseException e) {              // Insert this block.
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("alamat").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -153,7 +214,7 @@ public class ListProyekActivity extends AppCompatActivity {
         });
 
 
-        ref.child("jumlah1").addValueEventListener(new ValueEventListener() {
+        ref.child("jumlah1").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -162,7 +223,7 @@ public class ListProyekActivity extends AppCompatActivity {
                 TextView piew2=findViewById(R.id.textView101);
                 if(!key.equals("0")){
                     piew2.setText(key);
-                    ref.child("proyek1").addValueEventListener(new ValueEventListener() {
+                    ref.child("proyek1").addListenerForSingleValueEvent(new ValueEventListener() {
                         String ow;
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -190,7 +251,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("jumlah2").addValueEventListener(new ValueEventListener() {
+        ref.child("jumlah2").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -199,7 +260,7 @@ public class ListProyekActivity extends AppCompatActivity {
                 TextView piew2=findViewById(R.id.textView103);
                 if(!key.equals("0")){
                     piew2.setText(key);
-                    ref.child("proyek2").addValueEventListener(new ValueEventListener() {
+                    ref.child("proyek2").addListenerForSingleValueEvent(new ValueEventListener() {
                         String ow;
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -227,7 +288,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("jumlah3").addValueEventListener(new ValueEventListener() {
+        ref.child("jumlah3").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -236,7 +297,7 @@ public class ListProyekActivity extends AppCompatActivity {
                 TextView piew2=findViewById(R.id.textView105);
                 if(!key.equals("0")){
                     piew2.setText(key);
-                    ref.child("proyek3").addValueEventListener(new ValueEventListener() {
+                    ref.child("proyek3").addListenerForSingleValueEvent(new ValueEventListener() {
                         String ow;
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -265,7 +326,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("jumlah4").addValueEventListener(new ValueEventListener() {
+        ref.child("jumlah4").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             final TextView piew=findViewById(R.id.textView106);
             TextView piew2=findViewById(R.id.textView107);
@@ -274,7 +335,7 @@ public class ListProyekActivity extends AppCompatActivity {
                 key= dataSnapshot.getValue().toString();
                 if(!key.equals("0")){
                     piew2.setText(key);
-                    ref.child("proyek4").addValueEventListener(new ValueEventListener() {
+                    ref.child("proyek4").addListenerForSingleValueEvent(new ValueEventListener() {
                         String ow;
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -302,7 +363,7 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("jumlah5").addValueEventListener(new ValueEventListener() {
+        ref.child("jumlah5").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             final TextView piew=findViewById(R.id.textView108);
             TextView piew2=findViewById(R.id.textView109);
@@ -311,7 +372,7 @@ public class ListProyekActivity extends AppCompatActivity {
                 key= dataSnapshot.getValue().toString();
                 if(!key.equals("0")){
                     piew2.setText(key);
-                    ref.child("proyek5").addValueEventListener(new ValueEventListener() {
+                    ref.child("proyek5").addListenerForSingleValueEvent(new ValueEventListener() {
                         String ow;
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -341,7 +402,7 @@ public class ListProyekActivity extends AppCompatActivity {
 //        TextView gg=findViewById(R.id.textView61);
 //        gg.setText(pessan);
         DatabaseReference rese=FirebaseDatabase.getInstance().getReference().child("Welders");
-        rese.orderByChild("pid").equalTo(pessan).addValueEventListener(new ValueEventListener() {
+        rese.orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
             List<String> item=new ArrayList<>();
             List<String> item2=new ArrayList<>();
             List<String> item3=new ArrayList<>();
@@ -402,5 +463,65 @@ public class ListProyekActivity extends AppCompatActivity {
     }
     public void getpos(String setring){
         pos=setring;
+    }
+    public void ShowDialog(){
+        final AlertDialog.Builder popdialog=new AlertDialog.Builder(this);
+
+        LinearLayout linearLayout= new LinearLayout(this);
+        final RatingBar rating= new RatingBar(this);
+
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        rating.setLayoutParams(lp);
+        rating.setNumStars(5);
+        rating.setStepSize(1);
+
+        linearLayout.addView(rating);
+
+        popdialog.setTitle("Beri Nilai !");
+        popdialog.setView(linearLayout);
+
+
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+            }
+        });
+        popdialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final String hasil= String.valueOf(rating.getProgress());
+                DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Welders");
+                res.orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot post: dataSnapshot.getChildren()){
+                            String key=post.getKey();
+                            FirebaseDatabase.getInstance().getReference().child("Welders").child(key).child("rating").setValue(hasil);
+                            FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan).child("sudahnilai").setValue("1");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                dialog.dismiss();
+                buttonku.setVisibility(View.GONE);
+            }
+        })
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        popdialog.create();
+        popdialog.show();
     }
 }

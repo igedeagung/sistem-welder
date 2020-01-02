@@ -62,18 +62,28 @@ public class LoginActivity extends AppCompatActivity {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog diialog= new ProgressDialog(LoginActivity.this);
+                diialog.setMessage("Tunggu Sebentar");
+                diialog.setCancelable(false);
+                diialog.show();
 
                 String usernames=username.getText().toString();
                 final String passwordd = password.getText().toString();
                 emails="";
 
                 if (TextUtils.isEmpty(usernames)) {
+                    diialog.dismiss();
                     username.setError("Username anda kosong");
+                    username.requestFocus();
+
                     return;
                 }
 
                 if (TextUtils.isEmpty(passwordd)) {
+                    diialog.dismiss();
                     password.setError("Password anda kosong");
+                    password.requestFocus();
+
                     return;
                 }
                 // Query for all entries with a certain child with value equal to something
@@ -94,7 +104,10 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         if(emails.isEmpty())
                         {
+                            diialog.dismiss();
                             username.setError("Username tidak terdaftar");
+                            username.requestFocus();
+
                         }
                         else{
                             //authenticate user
@@ -108,11 +121,17 @@ public class LoginActivity extends AppCompatActivity {
                                             if (!task.isSuccessful()) {
                                                 // there was an error
                                                 if (password.length() < 6) {
+                                                    diialog.dismiss();
                                                     password.setError("Password anda kurang");
+                                                    password.requestFocus();
+
                                                 } else {
+                                                    diialog.dismiss();
                                                     Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException(), Toast.LENGTH_LONG).show();
+
                                                 }
                                             } else {
+                                                diialog.dismiss();
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
@@ -125,10 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
-
-
-
-
             }
         });
 

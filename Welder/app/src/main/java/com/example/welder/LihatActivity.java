@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,16 +29,16 @@ public class LihatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lihat);
 
-        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference dabes= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
 
-        dabes.child("pid").addValueEventListener(new ValueEventListener() {
+        dabes.child("pid").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 key=dataSnapshot.getValue().toString();
                 final DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Proyek").child(key);
-                res.child("jenisproyek").addValueEventListener(new ValueEventListener() {
+                res.child("jenisproyek").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -52,7 +53,7 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("tipe").addValueEventListener(new ValueEventListener() {
+                res.child("tipe").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,13 +68,43 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("jumlah1").addValueEventListener(new ValueEventListener() {
+                res.child("alamat").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String key;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        key=dataSnapshot.getValue().toString();
+                        TextView view=findViewById(R.id.textView27);
+                        view.setText(key);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                res.child("bedahari").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String key;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        key=dataSnapshot.getValue().toString();
+                        TextView view=findViewById(R.id.textView29);
+                        view.setText(key+" Hari");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                res.child("jumlah1").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         keys=dataSnapshot.getValue().toString();
-                        if(keys.equals("1")){
-                            res.child("proyek1").addValueEventListener(new ValueEventListener() {
+                        if(!keys.equals("0")){
+                            res.child("proyek1").addListenerForSingleValueEvent(new ValueEventListener() {
                                 String keys;
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -139,13 +170,13 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("jumlah2").addValueEventListener(new ValueEventListener() {
+                res.child("jumlah2").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         keys=dataSnapshot.getValue().toString();
-                        if(keys.equals("1")){
-                            res.child("proyek2").addValueEventListener(new ValueEventListener() {
+                        if(!keys.equals("0")){
+                            res.child("proyek2").addListenerForSingleValueEvent(new ValueEventListener() {
                                 String keys;
                                 TextView piew;
                                 @Override
@@ -217,13 +248,13 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("jumlah3").addValueEventListener(new ValueEventListener() {
+                res.child("jumlah3").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         keys=dataSnapshot.getValue().toString();
-                        if(keys.equals("1")){
-                            res.child("proyek3").addValueEventListener(new ValueEventListener() {
+                        if(!keys.equals("0")){
+                            res.child("proyek3").addListenerForSingleValueEvent(new ValueEventListener() {
                                 String keys;
                                 TextView piew;
                                 @Override
@@ -299,13 +330,13 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("jumlah4").addValueEventListener(new ValueEventListener() {
+                res.child("jumlah4").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         keys=dataSnapshot.getValue().toString();
-                        if(keys.equals("1")){
-                            res.child("proyek4").addValueEventListener(new ValueEventListener() {
+                        if(!keys.equals("0")){
+                            res.child("proyek4").addListenerForSingleValueEvent(new ValueEventListener() {
                                 String keys;
                                 TextView piew;
                                 @Override
@@ -384,13 +415,13 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("jumlah5").addValueEventListener(new ValueEventListener() {
+                res.child("jumlah5").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         keys=dataSnapshot.getValue().toString();
-                        if(keys.equals("1")){
-                            res.child("proyek5").addValueEventListener(new ValueEventListener() {
+                        if(!keys.equals("0")){
+                            res.child("proyek5").addListenerForSingleValueEvent(new ValueEventListener() {
                                 String keys;
                                 TextView piew;
                                 @Override
@@ -471,12 +502,12 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
-                res.child("uid").addValueEventListener(new ValueEventListener() {
+                res.child("uid").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String keyd=dataSnapshot.getValue().toString();
                         DatabaseReference user=FirebaseDatabase.getInstance().getReference().child("Users").child(keyd);
-                        user.child("namadepan").addValueEventListener(new ValueEventListener() {
+                        user.child("namadepan").addListenerForSingleValueEvent(new ValueEventListener() {
                             String key;
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -491,7 +522,7 @@ public class LihatActivity extends AppCompatActivity {
                             }
                         });
 
-                        user.child("notelp").addValueEventListener(new ValueEventListener() {
+                        user.child("notelp").addListenerForSingleValueEvent(new ValueEventListener() {
                             String key;
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -512,6 +543,8 @@ public class LihatActivity extends AppCompatActivity {
 
                     }
                 });
+
+
             }
 
             @Override
@@ -519,6 +552,86 @@ public class LihatActivity extends AppCompatActivity {
 
             }
         });
+        FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("terima").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("0")){
+                    Button buton=findViewById(R.id.button8);
+                    buton.setVisibility(View.GONE);
+                }
+                if(key.equals("1")){
+                    Button btnterima=findViewById(R.id.button6);
+                    Button btntolak=findViewById(R.id.button7);
+                    Button buton=findViewById(R.id.button8);
+                    btnterima.setVisibility(View.GONE);
+                    btntolak.setVisibility(View.GONE);
+                    buton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Button btntrima=findViewById(R.id.button6);
+        btntrima.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("terima").setValue("1");
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String key;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        key=dataSnapshot.getValue().toString();
+
+                        FirebaseDatabase.getInstance().getReference().child("Transaksi").push().setValue(new Transaksi(uid, key));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+        Button btntlk=findViewById(R.id.button7);
+        btntlk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid").setValue("0");
+                finish();
+            }
+        });
+
+        Button selesai=findViewById(R.id.button8);
+        selesai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference fr=FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid");
+                fr.addListenerForSingleValueEvent(new ValueEventListener() {
+                    String key;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        key=dataSnapshot.getValue().toString();
+                        FirebaseDatabase.getInstance().getReference().child("Proyek").child(key).child("status").setValue("1");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                fr.setValue("0");
+                finish();
+
+            }
+        });
+
     }
     public void pluscout(){
         cout++;

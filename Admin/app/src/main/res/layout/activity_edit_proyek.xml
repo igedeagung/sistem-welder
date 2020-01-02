@@ -12,30 +12,10 @@
         android:layout_height="wrap_content"
         android:text="Edit Proyek"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView55"
+        app:layout_constraintBottom_toTopOf="@+id/textView56"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView55"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:text="Owner"
-        app:layout_constraintBottom_toTopOf="@+id/editText6"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editText6"
-        android:layout_width="250sp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textView56"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView56"

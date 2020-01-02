@@ -29,6 +29,7 @@
         android:onClick="pindah"
         android:text="@string/proyek_konstruksi"
         android:textColor="@android:color/white"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/button26"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -39,10 +40,21 @@
         android:layout_height="50sp"
         android:layout_marginBottom="200dp"
         android:background="@drawable/buttton"
+        android:onClick="pindah2"
         android:text="Lihat Proyek"
         android:textColor="@android:color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="200sp"
+        android:layout_height="200sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:onClick="pindah2"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

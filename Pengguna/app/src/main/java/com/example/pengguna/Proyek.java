@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
 
 public class Proyek implements Serializable{
+    private String sudahnilai;
     private String alamat;
     private String jenisproyek;
     private String namaproyek;
@@ -34,6 +35,12 @@ public class Proyek implements Serializable{
 
     public Proyek()
     {
+    }
+    public String getSudahnilai() {
+        return sudahnilai;
+    }
+    public void setSudahnilai(String sudahnilai) {
+        this.sudahnilai = sudahnilai;
     }
     public String getBedahari() {
         return bedahari;
@@ -217,6 +224,7 @@ public class Proyek implements Serializable{
         return " "+jenisproyek+"" +
                 "" +namaproyek+"" +
                 "" +tipe+"" +
+                "" +sudahnilai+"" +
                 "" +alamat+"" +
                 "" +bedahari+"" +
                 "" +status+"" +
@@ -241,11 +249,12 @@ public class Proyek implements Serializable{
                 "" +uid+"" +
                 "" +wid;
     }
-    public Proyek(String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
+    public Proyek(String nl,String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
                   String j2f, String j3f, String j4f, String j5f,String j1,
                   String j2, String j3, String j4, String j5, String tm, String ts, String hg,
                   String ui, String wi)
     {
+        sudahnilai=nl;
         bedahari=bdh;
         status=stts;
         alamat=almt;

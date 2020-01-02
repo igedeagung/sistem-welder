@@ -3,6 +3,7 @@ package com.example.admin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,17 +48,39 @@ public class DetilWelderctivity extends AppCompatActivity {
     private TextView alamat;
     private ImageView imagee;
     private Button buttonacc;
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detil_welderctivity);
 
-        Bundle bundle=getIntent().getExtras();
-        String pessan=bundle.getString("email");
-        TextView view=findViewById(R.id.textView8);
-        view.setText(pessan);
+        mauth= FirebaseAuth.getInstance();
+        FirebaseUser user=mauth.getCurrentUser();
 
+        String uid=user.getUid();
+
+        FirebaseDatabase.getInstance().getReference().child("Admin").child(uid).child("jenis").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("Manajer Lapangan")||key.equals("Manajer Administrasi")){
+                    Button btn=findViewById(R.id.button33);
+                    btn.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Bundle bundle=getIntent().getExtras();
+        final String pessan=bundle.getString("email");
+
+        buttonacc=findViewById(R.id.button7);
         nmlkp=findViewById(R.id.textView8);
         id=findViewById(R.id.textView10);
         spek=findViewById(R.id.textView14);
@@ -65,154 +90,264 @@ public class DetilWelderctivity extends AppCompatActivity {
         alamat=findViewById(R.id.textView20);
         imagee=findViewById(R.id.imageView);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("Welders");
-        Query allPostFromAuthor = ref.orderByChild("email").equalTo(pessan);
-        // Add listener for Firebase response on said query
-        allPostFromAuthor.addValueEventListener( new ValueEventListener() {
-            String hasil;
-            String hasil2;
-            String hasil3;
-            String hasil4;
-            String hasil5;
-            String hasil6;
-            String hasil7;
-            String hasil8;
-            String hasil9;
-            String hasil10;
-            String hasil11;
-            String hasil12;
-            String hasil13;
+        DatabaseReference ref2=FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan);
+        ref2.child("acc").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
-            String sertiff;
-
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot post : dataSnapshot.getChildren()) {
-                    // Iterate through all posts with the same author
-                    hasil=post.child("namalengkap").getValue().toString();
-                    hasil2=post.child("spesifikasi1").getValue().toString();
-                    hasil3=post.child("spesifikasi2").getValue().toString();
-                    hasil4=post.child("spesifikasi3").getValue().toString();
-                    hasil5=post.child("spesifikasi4").getValue().toString();
-                    hasil6=post.child("spesifikasi5").getValue().toString();
-                    hasil7=post.child("spesifikasi6").getValue().toString();
-                    hasil8=post.child("posisi").getValue().toString();
-                    hasil9=post.child("alamatlengkap").getValue().toString();
-                    hasil10=post.child("sertifikasi").getValue().toString();
-                    hasil11=post.child("id").getValue().toString();
-                    hasil12=post.child("tanggalmasuk").getValue().toString();
-                    hasil13=post.child("acc").getValue().toString();
-                    key=post.getKey();
-                    sertiff=post.child("sertifikasi").getValue().toString();
-
-                }
-                String ext="";
-                ext=sertiff.substring(sertiff.lastIndexOf(".")+1);
-
-                String lengkap="";
-                if (!hasil2.equals("0")){
-                    if(lengkap.equals("")){
-                        lengkap=lengkap+hasil2;
-                    }
-                    else{
-                        lengkap=lengkap+", "+hasil2;
-                    }
-                }
-                if (!hasil3.equals("0")){
-                    if(lengkap.equals("")){
-                        lengkap=lengkap+hasil3;
-                    }
-                    else{
-                        lengkap=lengkap+", "+hasil3;
-                    }
-                }
-                if (!hasil4.equals("0")){
-                    if(lengkap.equals("")){
-                        lengkap=lengkap+hasil4;
-                    }
-                    else{
-                        lengkap=lengkap+", "+hasil4;
-                    }
-                }
-                if (!hasil5.equals("0")){
-                    if(lengkap.equals("")){
-                        lengkap=lengkap+hasil5;
-                    }
-                    else{
-                        lengkap=lengkap+", "+hasil5;
-                    }
-                }
-                if (!hasil6.equals("0")){
-                    if(lengkap.equals("")){
-                        lengkap=lengkap+hasil6;
-                    }
-                    else{
-                        lengkap=lengkap+", "+hasil6;
-                    }
-                }
-                if (!hasil7.equals("0")){
-                    if(lengkap.equals("")){
-                        lengkap=lengkap+hasil7;
-                    }
-                    else{
-                        lengkap=lengkap+", "+hasil7;
-                    }
-                }
-                if(hasil8.contains("6G")){
-                    if(hasil8.contains("4G")){
-                        spek.setText("Pelat + Pipa");
-                    }
-                    else{
-                        spek.setText("Pipa");
-                    }
-                }
-                else{
-                    spek.setText("Pelat/Profil");
-                }
-
-                buttonacc=findViewById(R.id.button7);
-                if(hasil13.equals("1")){
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("1")){
                     buttonacc.setVisibility(View.GONE);
                 }
                 buttonacc.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String date=new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-                        ref.child(key).child("tanggalmasuk").setValue(date);
-                        ref.child(key).child("id").setValue("1");
-                        ref.child(key).child("acc").setValue(1);
+                        FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan).child("tanggalmasuk").setValue(date);
+                        FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan).child("id").setValue("1");
+                        FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan).child("acc").setValue(1);
+                        buttonacc.setVisibility(View.GONE);
                     }
                 });
+            }
 
-                FirebaseStorage stg=FirebaseStorage.getInstance();
-                StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder/").child(sertiff);
-                try {
-                    final File file=File.createTempFile("image", ext);
-                    stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref2.child("namalengkap").addValueEventListener(new ValueEventListener() {
+            String keys;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    keys=dataSnapshot.getValue().toString();
+                    nmlkp.setText(keys);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("id").addValueEventListener(new ValueEventListener() {
+            String keys;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    keys=dataSnapshot.getValue().toString();
+                    id.setText(keys);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("email").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    key=dataSnapshot.getValue().toString();
+
+                    FirebaseDatabase.getInstance().getReference().child("Welders").orderByChild("email").equalTo(key).addValueEventListener(new ValueEventListener() {
+                        String spekk1, spekk2, spekk3, spekk4, spekk5, spekk6;
                         @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
-                            imagee.setImageBitmap(bitmap);
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+
+                                for (DataSnapshot post : dataSnapshot.getChildren()) {
+                                    spekk1=post.child("spesifikasi1").getValue().toString();
+                                    spekk2=post.child("spesifikasi2").getValue().toString();
+                                    spekk3=post.child("spesifikasi3").getValue().toString();
+                                    spekk4=post.child("spesifikasi4").getValue().toString();
+                                    spekk5=post.child("spesifikasi5").getValue().toString();
+                                    spekk6=post.child("spesifikasi6").getValue().toString();
+                                }
+                                String lengkaps="";
+                                if (!spekk1.equals("0")){
+                                    if(lengkaps.equals("")){
+                                        lengkaps=lengkaps+spekk1;
+                                    }
+                                    else{
+                                        lengkaps=lengkaps+", "+spekk1;
+                                    }
+                                }
+                                if (!spekk2.equals("0")){
+                                    if(lengkaps.equals("")){
+                                        lengkaps=lengkaps+spekk2;
+                                    }
+                                    else{
+                                        lengkaps=lengkaps+", "+spekk2;
+                                    }
+                                }
+                                if (!spekk3.equals("0")){
+                                    if(lengkaps.equals("")){
+                                        lengkaps=lengkaps+spekk3;
+                                    }
+                                    else{
+                                        lengkaps=lengkaps+", "+spekk3;
+                                    }
+                                }
+                                if (!spekk4.equals("0")){
+                                    if(lengkaps.equals("")){
+                                        lengkaps=lengkaps+spekk4;
+                                    }
+                                    else{
+                                        lengkaps=lengkaps+", "+spekk4;
+                                    }
+                                }
+                                if (!spekk5.equals("0")){
+                                    if(lengkaps.equals("")){
+                                        lengkaps=lengkaps+spekk5;
+                                    }
+                                    else{
+                                        lengkaps=lengkaps+", "+spekk5;
+                                    }
+                                }
+                                if (!spekk6.equals("0")){
+                                    if(lengkaps.equals("")){
+                                        lengkaps=lengkaps+spekk6;
+                                    }
+                                    else{
+                                        lengkaps=lengkaps+", "+spekk6;
+                                    }
+                                }
+                                proses.setText(lengkaps);
+                            }
+
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
+
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
                     });
-
-                }catch (IOException e){
-                    e.printStackTrace();
                 }
-
-                tgl.setText(hasil12);
-                nmlkp.setText(hasil);
-                proses.setText(lengkap);
-                pos.setText(hasil8);
-                alamat.setText(hasil9);
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("posisi").addValueEventListener(new ValueEventListener() {
+            String keyss;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    keyss=dataSnapshot.getValue().toString();
+                    if(keyss.contains("6G")){
+                        if(keyss.contains("4G")){
+                            spek.setText("Pelat + Pipa");
+                        }
+                        else{
+                            spek.setText("Pipa");
+                        }
+                    }
+                    else{
+                        spek.setText("Pelat/Profil");
+                    }
+                    pos.setText(keyss);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("tanggalmasuk").addValueEventListener(new ValueEventListener() {
+            String heyy;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    heyy=dataSnapshot.getValue().toString();
+                    tgl.setText(heyy);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref2.child("alamatlengkap").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    alamat.setText(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("sertifikasi").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    FirebaseStorage stg=FirebaseStorage.getInstance();
+                    StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder/").child(key);
+                    try {
+                        final File file=File.createTempFile("image", key.substring(key.lastIndexOf(".")+1));
+                        stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                imagee.setImageBitmap(bitmap);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Button del=findViewById(R.id.button33);
+        del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Welders");
+                res.child(pessan).removeValue();
+                finish();
+            }
+        });
+
+        Button edit=findViewById(R.id.button32);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pindah=new Intent(DetilWelderctivity.this, EditWelderActivity.class);
+                pindah.putExtra("email", pessan);
+                startActivity(pindah);
+            }
         });
 
     }

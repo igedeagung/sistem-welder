@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class CariWelderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cari_welder);
 
         Bundle bundle=getIntent().getExtras();
-        String pessan=bundle.getString("spek");
+        final String pessan=bundle.getString("spek");
         final String pessan2=bundle.getString("pos");
         final String pessan3=bundle.getString("key");
         final String julah=bundle.getString("jumlahnya");
@@ -72,13 +73,16 @@ public class CariWelderActivity extends AppCompatActivity {
             String acc;
             String sibuk;
             String pos;
-            List<String> hasil=new ArrayList<>();
-            List<String> hasil2=new ArrayList<>();
-            List<String> hasil3=new ArrayList<>();
+            ArrayList<String> hasil=new ArrayList<>();
+            ArrayList<String> hasil2=new ArrayList<>();
+            ArrayList<String> hasil3=new ArrayList<>();
             ProgressBar barbar=findViewById(R.id.progressBar3);
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                hasil.clear();
+                hasil2.clear();
+                hasil3.clear();
                 for(DataSnapshot post : dataSnapshot.getChildren() ){
                     // Iterate through all posts with the same author
                     acc=post.child("acc").getValue().toString();
@@ -94,10 +98,19 @@ public class CariWelderActivity extends AppCompatActivity {
                     else{
                         flagg=1;
                     }
-                    if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                        hasil.add(post.child("namalengkap").getValue().toString());
-                        hasil2.add(post.child("alamatlengkap").getValue().toString());
-                        hasil3.add(post.getKey());
+                    if(pessan.equals("OAW")){
+                        if(acc.equals("1")&&sibuk.equals("0")){
+                            hasil.add(post.child("namalengkap").getValue().toString());
+                            hasil2.add(post.child("alamatlengkap").getValue().toString());
+                            hasil3.add(post.getKey());
+                        }
+                    }
+                    else{
+                        if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                            hasil.add(post.child("namalengkap").getValue().toString());
+                            hasil2.add(post.child("alamatlengkap").getValue().toString());
+                            hasil3.add(post.getKey());
+                        }
                     }
                 }
                 if(hasil.size()>0){
@@ -115,25 +128,24 @@ public class CariWelderActivity extends AppCompatActivity {
                     }
                     lisst=findViewById(R.id.lilis);
 
-                    customAdapter=new CustomAdapter2(getApplicationContext(), item, item2, item3, item4, item5);
+                    customAdapter=new CustomAdapter2(getApplicationContext(), hasil2, hasil, item3, hasil3, item5);
+                    customAdapter.notifyDataSetChanged();
                     barbar.setVisibility(View.INVISIBLE);
                     if(lisst.getAdapter()==null){
                         lisst.setAdapter(customAdapter);
                     }
                     else{
-                        lisst.setAdapter(customAdapter);
                         customAdapter.notifyDataSetChanged();
-                        lisst.invalidateViews();
-                        lisst.refreshDrawableState();
+                        lisst.setAdapter(customAdapter);
                     }
 
 
                 }
                 else{
+                    LinearLayout leyut=findViewById(R.id.linearLayout2);
+                    leyut.setVisibility(View.INVISIBLE);
                     barbar.setVisibility(View.INVISIBLE);
                     TextView kosong =findViewById(R.id.textView43);
-                    String campur=sibuk+acc+Integer.toString(flagg)+"-"+pessan2;
-                    kosong.setText(campur);
                     kosong.setVisibility(View.VISIBLE);
                 }
             }

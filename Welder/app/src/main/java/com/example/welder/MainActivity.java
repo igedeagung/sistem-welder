@@ -75,11 +75,16 @@ public class MainActivity extends AppCompatActivity {
                             int keys;
                             keys=dataSnapshot.getValue(int.class);
                             if(keys==0){
+                                Button buton=findViewById(R.id.button9);
+                                buton.setVisibility(View.VISIBLE);
                                 TextView veww= findViewById(R.id.textView11);
                                 veww.setVisibility(View.VISIBLE);
                                 pgb.setVisibility(View.INVISIBLE);
                             }
                             else{
+
+                                TextView veww= findViewById(R.id.textView11);
+                                veww.setVisibility(View.GONE);
                                 pgb.setVisibility(View.INVISIBLE);
 
                                 String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -91,10 +96,22 @@ public class MainActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         key=dataSnapshot.getValue().toString();
                                         if (key.equals("0")){
+                                            Button buton=findViewById(R.id.button9);
+                                            buton.setVisibility(View.VISIBLE);
+                                            TextView veww= findViewById(R.id.textView11);
+                                            veww.setVisibility(View.GONE);
                                             TextView piew=findViewById(R.id.textView30);
                                             piew.setVisibility(View.VISIBLE);
+                                            Button lihat=findViewById(R.id.button4);
+                                            lihat.setVisibility(View.GONE);
                                         }
                                         else{
+                                            Button buton=findViewById(R.id.button9);
+                                            buton.setVisibility(View.VISIBLE);
+                                            TextView veww= findViewById(R.id.textView11);
+                                            veww.setVisibility(View.GONE);
+                                            TextView piew=findViewById(R.id.textView30);
+                                            piew.setVisibility(View.GONE);
                                             Button lihat=findViewById(R.id.button4);
                                             lihat.setVisibility(View.VISIBLE);
                                             lihat.setOnClickListener(new View.OnClickListener() {

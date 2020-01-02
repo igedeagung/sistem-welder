@@ -21,18 +21,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class CustomAdapter2 extends BaseAdapter {
     Context con;
-    String[] data;
-    String[] data2;
-    String[] data4;
+    ArrayList<String> data= new ArrayList<>();
+    ArrayList<String> data2= new ArrayList<>();
+    ArrayList<String> data4= new ArrayList<>();
     String data3;
     String data5;
     LayoutInflater inflater;
+    DatabaseReference juju;
 
-    public CustomAdapter2(Context context, String[] data, String[] data2, String data3, String[] data4, String data5){
+    public CustomAdapter2(Context context, ArrayList<String> data,ArrayList<String> data2, String data3, ArrayList<String> data4, String data5){
         this.con=context;
         this.data=data;
         this.data2=data2;
@@ -44,12 +46,12 @@ public class CustomAdapter2 extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return data.length;
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data[position];
+        return data.get(position);
     }
 
     @Override
@@ -59,48 +61,64 @@ public class CustomAdapter2 extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
+        View row=null;
+        if(convertView==null){
+            row=inflater.inflate(R.layout.jenis_list, null);
 
-        convertView=inflater.inflate(R.layout.jenis_list, null);
-        TextView datas=convertView.findViewById(R.id.textVieww5);
-        TextView datas2=convertView.findViewById(R.id.textVieww4);
-        final Button button=convertView.findViewById(R.id.button23);
-        final ListView lisst=convertView.findViewById(R.id.lilis);
-
+        }
+        else{
+            row=convertView;
+        }
+        TextView datas=row.findViewById(R.id.textVieww5);
+        TextView datas2=row.findViewById(R.id.textVieww4);
+        final Button button=row.findViewById(R.id.button23);
+        final ListView lisst=row.findViewById(R.id.lilis);
         final String datax=data5+"f";
-        datas.setText(data[position]);
-        datas2.setText(data2[position]);
+        datas.setText(data.get(position));
+        datas2.setText(data2.get(position));
 
+        juju=FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3).child(datax);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders").child(data4[position]).child("pid");
-                res.setValue(data3);
-                DatabaseReference res2= FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3);
-                res2.child(datax).addValueEventListener(new ValueEventListener() {
-                    String key;
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        key= dataSnapshot.getValue().toString();
-                        int k=Integer.parseInt(key);
-//                        k=k-1;
-                        key=Integer.toString(k);
-                        DatabaseReference rese= FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3).child(datax);
-                        rese.setValue(key);
-
-                        if (k==0){
-                            Intent detil= new Intent(parent.getContext(),DetilProyekActivity.class);
-                            parent.getContext().startActivity(detil);
-                            ((Activity)con).finish();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                ganti(position, datax, parent);
             }
         });
-        return convertView;
+        return row;
+    }
+
+    public void ganti(int position, String datax, final ViewGroup parent){
+        DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders").child(data4.get(position)).child("pid");
+        res.setValue(data3);
+        DatabaseReference res2= FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3);
+        res2.child(datax).addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key= dataSnapshot.getValue().toString();
+                int k=Integer.parseInt(key);
+                int jul=k-1;
+                String ih=Integer.toString(jul);
+                getstr(k);
+
+//                        notifyDataSetChanged();
+                juju.setValue(ih);
+
+//                        notifyDataSetChanged();
+
+                if (jul==0){
+                    ((Activity)parent.getContext()).finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private String kaka;
+    public void getstr(int k){
+        kaka=Integer.toString(k);
     }
 }

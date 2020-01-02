@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,9 +40,11 @@ public class DetilProyekActivity extends AppCompatActivity {
     private int count=0;
     private String spek;
     private String pos;
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detil_proyek);
 
@@ -48,6 +52,27 @@ public class DetilProyekActivity extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
         final String pessan=bundle.getString("email");
 
+        mauth= FirebaseAuth.getInstance();
+        FirebaseUser user=mauth.getCurrentUser();
+
+        String uid=user.getUid();
+
+        FirebaseDatabase.getInstance().getReference().child("Admin").child(uid).child("jenis").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("Manajer Lapangan")||key.equals("Manajer Administrasi")){
+                    Button btn=findViewById(R.id.button29);
+                    btn.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         owener=findViewById(R.id.textView29);
         nama=findViewById(R.id.textView31);
         jenis=findViewById(R.id.textView33);
@@ -71,19 +96,40 @@ public class DetilProyekActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseReference hehe=FirebaseDatabase.getInstance().getReference().child("Welders");
+                hehe.orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
+                    ArrayList<String> hui=new ArrayList<>();
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot podt:dataSnapshot.getChildren()){
+                            hui.add(podt.getKey());
+                        }
+                        if(hui.size()>0) {
+                            for (int i = 0; i < hui.size(); i ++) {
+                                FirebaseDatabase.getInstance().getReference().child("Welders").child(hui.get(i)).child("pid").setValue("0");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Proyek");
                 res.child(pessan).removeValue();
+                finish();
             }
         });
 //        vieww.setText(pessan);
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan);
-        ref.child("uid").addValueEventListener(new ValueEventListener() {
+        ref.child("uid").addListenerForSingleValueEvent(new ValueEventListener() {
             String uid;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 uid=dataSnapshot.getValue().toString();
                 DatabaseReference hey= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-                hey.child("namadepan").addValueEventListener(new ValueEventListener() {
+                hey.child("namadepan").addListenerForSingleValueEvent(new ValueEventListener() {
                     String ow;
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,8 +154,11 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                nama.setText(key);
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    nama.setText(key);
+                }
+
             }
 
             @Override
@@ -122,8 +171,10 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                jenis.setText(key);
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    jenis.setText(key);
+                }
             }
 
             @Override
@@ -136,9 +187,11 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                lingkup.setText(key);
-                getspek(key);
+                if (dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    lingkup.setText(key);
+                    getspek(key);
+                }
             }
 
             @Override
@@ -151,8 +204,10 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                mulai.setText(key);
+                if (dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    mulai.setText(key);
+                }
             }
 
             @Override
@@ -165,8 +220,27 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                selesai.setText(key);
+                if (dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    selesai.setText(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("alamat").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    TextView piuw = findViewById(R.id.textView41);
+                    piuw.setText(key);
+                }
             }
 
             @Override
@@ -179,18 +253,20 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view=findViewById(R.id.textView67);
-                TextView view2=findViewById(R.id.textView61);
-                TextView view3=findViewById(R.id.textView72);
+                if(dataSnapshot.exists()){
+                    key= dataSnapshot.getValue().toString();
+                    TextView view=findViewById(R.id.textView67);
+                    TextView view2=findViewById(R.id.textView61);
+                    TextView view3=findViewById(R.id.textView72);
 
-                if(key.equals("0")){
-                    view.setVisibility(View.GONE);
-                    view2.setVisibility(View.GONE);
-                    view3.setVisibility(View.GONE);
-                }
-                else{
-                    view.setText(key);
+                    if(key.equals("0")){
+                        view.setVisibility(View.GONE);
+                        view2.setVisibility(View.GONE);
+                        view3.setVisibility(View.GONE);
+                    }
+                    else{
+                        view.setText(key);
+                    }
                 }
             }
 
@@ -204,18 +280,20 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view=findViewById(R.id.textView68);
-                TextView view2=findViewById(R.id.textView62);
-                TextView view3=findViewById(R.id.textView73);
+                if(dataSnapshot.exists()){
+                    key= dataSnapshot.getValue().toString();
+                    TextView view=findViewById(R.id.textView68);
+                    TextView view2=findViewById(R.id.textView62);
+                    TextView view3=findViewById(R.id.textView73);
 
-                if(key.equals("0")){
-                    view.setVisibility(View.GONE);
-                    view2.setVisibility(View.GONE);
-                    view3.setVisibility(View.GONE);
-                }
-                else{
-                    view.setText(key);
+                    if(key.equals("0")){
+                        view.setVisibility(View.GONE);
+                        view2.setVisibility(View.GONE);
+                        view3.setVisibility(View.GONE);
+                    }
+                    else{
+                        view.setText(key);
+                    }
                 }
             }
 
@@ -229,18 +307,20 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view=findViewById(R.id.textView69);
-                TextView view2=findViewById(R.id.textView63);
-                TextView view3=findViewById(R.id.textView74);
+                if(dataSnapshot.exists()){
+                    key= dataSnapshot.getValue().toString();
+                    TextView view=findViewById(R.id.textView69);
+                    TextView view2=findViewById(R.id.textView63);
+                    TextView view3=findViewById(R.id.textView74);
 
-                if(key.equals("0")){
-                    view.setVisibility(View.GONE);
-                    view2.setVisibility(View.GONE);
-                    view3.setVisibility(View.GONE);
-                }
-                else{
-                    view.setText(key);
+                    if(key.equals("0")){
+                        view.setVisibility(View.GONE);
+                        view2.setVisibility(View.GONE);
+                        view3.setVisibility(View.GONE);
+                    }
+                    else{
+                        view.setText(key);
+                    }
                 }
             }
 
@@ -255,18 +335,21 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view=findViewById(R.id.textView70);
-                TextView view2=findViewById(R.id.textView64);
-                TextView view3=findViewById(R.id.textView75);
+                if(dataSnapshot.exists()){
 
-                if(key.equals("0")){
-                    view.setVisibility(View.GONE);
-                    view2.setVisibility(View.GONE);
-                    view3.setVisibility(View.GONE);
-                }
-                else{
-                    view.setText(key);
+                    key= dataSnapshot.getValue().toString();
+                    TextView view=findViewById(R.id.textView70);
+                    TextView view2=findViewById(R.id.textView64);
+                    TextView view3=findViewById(R.id.textView75);
+
+                    if(key.equals("0")){
+                        view.setVisibility(View.GONE);
+                        view2.setVisibility(View.GONE);
+                        view3.setVisibility(View.GONE);
+                    }
+                    else{
+                        view.setText(key);
+                    }
                 }
             }
 
@@ -280,18 +363,21 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view=findViewById(R.id.textView71);
-                TextView view2=findViewById(R.id.textView65);
-                TextView view3=findViewById(R.id.textView76);
+                if(dataSnapshot.exists()){
 
-                if(key.equals("0")){
-                    view.setVisibility(View.GONE);
-                    view2.setVisibility(View.GONE);
-                    view3.setVisibility(View.GONE);
-                }
-                else{
-                    view.setText(key);
+                    key= dataSnapshot.getValue().toString();
+                    TextView view=findViewById(R.id.textView71);
+                    TextView view2=findViewById(R.id.textView65);
+                    TextView view3=findViewById(R.id.textView76);
+
+                    if(key.equals("0")){
+                        view.setVisibility(View.GONE);
+                        view2.setVisibility(View.GONE);
+                        view3.setVisibility(View.GONE);
+                    }
+                    else{
+                        view.setText(key);
+                    }
                 }
             }
 
@@ -305,11 +391,13 @@ public class DetilProyekActivity extends AppCompatActivity {
             String ow;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ow=dataSnapshot.getValue().toString();
-                getpos(ow);
-                ow=ow.replace("+", "\n");
-                TextView vieww=findViewById(R.id.textView61);
-                vieww.setText(ow);
+                if(dataSnapshot.exists()){
+                    ow=dataSnapshot.getValue().toString();
+                    getpos(ow);
+                    ow=ow.replace("+", "\n");
+                    TextView vieww=findViewById(R.id.textView61);
+                    vieww.setText(ow);
+                }
             }
 
             @Override
@@ -322,11 +410,14 @@ public class DetilProyekActivity extends AppCompatActivity {
             String ow;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ow=dataSnapshot.getValue().toString();
-                getpos(ow);
-                ow=ow.replace("+", "\n");
-                TextView vieww=findViewById(R.id.textView62);
-                vieww.setText(ow);
+                if(dataSnapshot.exists()){
+
+                    ow=dataSnapshot.getValue().toString();
+                    getpos(ow);
+                    ow=ow.replace("+", "\n");
+                    TextView vieww=findViewById(R.id.textView62);
+                    vieww.setText(ow);
+                }
             }
 
             @Override
@@ -339,11 +430,13 @@ public class DetilProyekActivity extends AppCompatActivity {
             String ow;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ow=dataSnapshot.getValue().toString();
-                getpos(ow);
-                ow=ow.replace("+", "\n");
-                TextView vieww=findViewById(R.id.textView63);
-                vieww.setText(ow);
+                if(dataSnapshot.exists()){
+                    ow=dataSnapshot.getValue().toString();
+                    getpos(ow);
+                    ow=ow.replace("+", "\n");
+                    TextView vieww=findViewById(R.id.textView63);
+                    vieww.setText(ow);
+                }
             }
 
             @Override
@@ -356,11 +449,13 @@ public class DetilProyekActivity extends AppCompatActivity {
             String ow;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ow=dataSnapshot.getValue().toString();
-                getpos(ow);
-                ow=ow.replace("+", "\n");
-                TextView vieww=findViewById(R.id.textView64);
-                vieww.setText(ow);
+                if(dataSnapshot.exists()){
+                    ow=dataSnapshot.getValue().toString();
+                    getpos(ow);
+                    ow=ow.replace("+", "\n");
+                    TextView vieww=findViewById(R.id.textView64);
+                    vieww.setText(ow);
+                }
             }
 
             @Override
@@ -373,11 +468,13 @@ public class DetilProyekActivity extends AppCompatActivity {
             String ow;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ow=dataSnapshot.getValue().toString();
-                getpos(ow);
-                ow=ow.replace("+", "\n");
-                TextView vieww=findViewById(R.id.textView65);
-                vieww.setText(ow);
+                if(dataSnapshot.exists()){
+                    ow=dataSnapshot.getValue().toString();
+                    getpos(ow);
+                    ow=ow.replace("+", "\n");
+                    TextView vieww=findViewById(R.id.textView65);
+                    vieww.setText(ow);
+                }
             }
 
             @Override
@@ -418,11 +515,14 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view3=findViewById(R.id.textView72);
+                if(dataSnapshot.exists()){
 
-                if(key.equals("0")){
-                    view3.setVisibility(View.GONE);
+                    key= dataSnapshot.getValue().toString();
+                    TextView view3=findViewById(R.id.textView72);
+
+                    if(key.equals("0")){
+                        view3.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -436,11 +536,14 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view3=findViewById(R.id.textView73);
+                if (dataSnapshot.exists()){
 
-                if(key.equals("0")){
-                    view3.setVisibility(View.GONE);
+                    key= dataSnapshot.getValue().toString();
+                    TextView view3=findViewById(R.id.textView73);
+
+                    if(key.equals("0")){
+                        view3.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -454,11 +557,14 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view3=findViewById(R.id.textView74);
+                if(dataSnapshot.exists()){
 
-                if(key.equals("0")){
-                    view3.setVisibility(View.GONE);
+                    key= dataSnapshot.getValue().toString();
+                    TextView view3=findViewById(R.id.textView74);
+
+                    if(key.equals("0")){
+                        view3.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -473,11 +579,13 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view3=findViewById(R.id.textView75);
+                if(dataSnapshot.exists()){
+                    key= dataSnapshot.getValue().toString();
+                    TextView view3=findViewById(R.id.textView75);
 
-                if(key.equals("0")){
-                    view3.setVisibility(View.GONE);
+                    if(key.equals("0")){
+                        view3.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -491,11 +599,14 @@ public class DetilProyekActivity extends AppCompatActivity {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key= dataSnapshot.getValue().toString();
-                TextView view3=findViewById(R.id.textView76);
+                if(dataSnapshot.exists()){
 
-                if(key.equals("0")){
-                    view3.setVisibility(View.GONE);
+                    key= dataSnapshot.getValue().toString();
+                    TextView view3=findViewById(R.id.textView76);
+
+                    if(key.equals("0")){
+                        view3.setVisibility(View.GONE);
+                    }
                 }
             }
 

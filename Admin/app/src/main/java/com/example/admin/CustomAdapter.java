@@ -10,31 +10,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 public class CustomAdapter extends BaseAdapter {
     Context con;
-    String[] data;
-    String[] data2;
-    String[] data3;
+    ArrayList<String>data= new ArrayList<>();
+    ArrayList<String>data2= new ArrayList<>();
+    ArrayList<String>data3= new ArrayList<>();
     String tipes;
-    LayoutInflater inflater;
 
-    public CustomAdapter(Context context, String[] data, String[] data2, String[] data3, String tipes){
+    public CustomAdapter(Context context, ArrayList<String>data, ArrayList<String>data2, ArrayList<String>data3, String tipes){
         this.con=context;
         this.data=data;
         this.data2=data2;
         this.data3=data3;
         this.tipes=tipes;
-        inflater=(LayoutInflater.from(context));
     }
 
     @Override
     public int getCount() {
-        return data.length;
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data[position];
+        return data.get(position);
     }
 
     @Override
@@ -44,31 +46,38 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        convertView=inflater.inflate(R.layout.welder_list, null);
+        if(convertView==null){
+            LayoutInflater inflater= LayoutInflater.from(con);
+            convertView=inflater.inflate(R.layout.welder_list, parent, false);
+        }
         TextView datas=convertView.findViewById(R.id.textView4);
         TextView datas2=convertView.findViewById(R.id.textView5);
         Button button=convertView.findViewById(R.id.buttton);
 
-        datas.setText(data[position]);
-        datas2.setText(data2[position]);
-
+        datas.setText(data.get(position));
+        datas2.setText(data2.get(position));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (tipes.equals("welder")){
                     Intent detil= new Intent(parent.getContext(),DetilWelderctivity.class);
-                    detil.putExtra("email", data3[position]);
+                    detil.putExtra("email", data3.get(position));
                     parent.getContext().startActivity(detil);
+
                 }
                 if (tipes.equals("proyek")){
                     Intent detil= new Intent(parent.getContext(),DetilProyekActivity.class);
-                    detil.putExtra("email", data3[position]);
+                    detil.putExtra("email", data3.get(position));
                     parent.getContext().startActivity(detil);
                 }
-
-
+                if(tipes.equals("pengguna")){
+                    Intent detil= new Intent(parent.getContext(),ListPenggunaActivity.class);
+                    detil.putExtra("email", data3.get(position));
+                    parent.getContext().startActivity(detil);
+                }
             }
         });
+
         return convertView;
     }
 }
