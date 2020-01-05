@@ -14,6 +14,9 @@ public class ListWelderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_welder);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Button klas=findViewById(R.id.button);
         klas.setOnClickListener(new View.OnClickListener() {
             @Override

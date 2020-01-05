@@ -13,6 +13,8 @@ public class HomeListProyekActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_list_proyek);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Button jenisproyek=findViewById(R.id.button2);
         jenisproyek.setOnClickListener(new View.OnClickListener() {

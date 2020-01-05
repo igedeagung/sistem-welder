@@ -5,10 +5,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.firebase.database.core.Context;
 
 public class ListSFCActivity extends AppCompatActivity {
     private Button btnsmaw;
@@ -102,9 +105,12 @@ public class ListSFCActivity extends AppCompatActivity {
         ConstraintSet ctr = new ConstraintSet();
         if(pesan.equals("Steel Structure")){
             ctr.clone(constraintt);
-            ctr.connect(R.id.button2, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 200);
+            ctr.connect(R.id.button2, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 350);
             ctr.applyTo(constraintt);
+            viewww.setTextColor(Color.parseColor("#ffffff"));
 
+
+            constraintt.setBackground(getDrawable(R.drawable.jembatan2));
             btngtaw.setVisibility(View.GONE);
             btnsmfcaw.setVisibility(View.GONE);
             btnsmgtaw.setVisibility(View.GONE);
@@ -119,6 +125,8 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.connect(R.id.button2, ConstraintSet.BOTTOM, R.id.button4, ConstraintSet.TOP, 80);
             ctr.applyTo(constraintt);
 
+
+
             btngtaw.setVisibility(View.GONE);
             btnsmfcaw.setVisibility(View.GONE);
 
@@ -128,8 +136,7 @@ public class ListSFCActivity extends AppCompatActivity {
         }
         if(pesan.equals("Kapal Non Ferro")){
             ctr.clone(constraintt);
-            ctr.connect(R.id.textView4, ConstraintSet.BOTTOM, R.id.button3, ConstraintSet.TOP, 0);
-            ctr.connect(R.id.button3, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 200);
+            ctr.connect(R.id.button3, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 450);
             ctr.applyTo(constraintt);
 
             btnsmaw.setVisibility(View.GONE);
@@ -145,6 +152,9 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.clone(constraintt);
             ctr.connect(R.id.button4, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 200);
             ctr.applyTo(constraintt);
+            viewww.setTextColor(Color.parseColor("#000000"));
+
+            constraintt.setBackground(getDrawable(R.drawable.offshore));
 
             btnsmfcaw.setVisibility(View.GONE);
 
@@ -159,6 +169,11 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.connect(R.id.button, ConstraintSet.BOTTOM, R.id.button3, ConstraintSet.TOP, 80);
             ctr.applyTo(constraintt);
 
+            viewww.setTextColor(Color.parseColor("#000000"));
+
+
+            constraintt.setBackground(getDrawable(R.drawable.pipapotong));
+
             btnsmfcaw.setVisibility(View.GONE);
             btnfcaw.setVisibility(View.GONE);
 
@@ -172,7 +187,8 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.connect(R.id.button, ConstraintSet.BOTTOM, R.id.button3, ConstraintSet.TOP, 80);
 
             ctr.applyTo(constraintt);
-
+            viewww.setTextColor(Color.parseColor("#000000"));
+            constraintt.setBackground(getDrawable(R.drawable.pipapotong));
             btnsmfcaw.setVisibility(View.GONE);
             btnfcaw.setVisibility(View.GONE);
 
@@ -185,7 +201,8 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.connect(R.id.button4, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 200);
             ctr.connect(R.id.textView4, ConstraintSet.BOTTOM, R.id.button3, ConstraintSet.TOP, 80);
             ctr.applyTo(constraintt);
-
+            viewww.setTextColor(Color.parseColor("#000000"));
+            constraintt.setBackground(getDrawable(R.drawable.pipapotong));
             btnsmfcaw.setVisibility(View.GONE);
             btnfcaw.setVisibility(View.GONE);
             btnsmaw.setVisibility(View.GONE);
@@ -198,11 +215,11 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.clone(constraintt);
             ctr.connect(R.id.button, ConstraintSet.BOTTOM, R.id.button4, ConstraintSet.TOP, 80);
             ctr.applyTo(constraintt);
-
+            constraintt.setBackground(getDrawable(R.drawable.stpr));
             btnfcaw.setVisibility(View.GONE);
             btngtaw.setVisibility(View.GONE);
 
-            pesan1="Industri Manufacture";
+            pesan1="Industry Manufacture";
             pesan2="Storage Tank";
             pesan3="yha";
         }
@@ -212,11 +229,11 @@ public class ListSFCActivity extends AppCompatActivity {
             ctr.connect(R.id.button2, ConstraintSet.BOTTOM, R.id.button4, ConstraintSet.TOP, 80);
 
             ctr.applyTo(constraintt);
-
+            constraintt.setBackground(getDrawable(R.drawable.stpr));
             btngtaw.setVisibility(View.GONE);
             btnsmfcaw.setVisibility(View.GONE);
 
-            pesan1="Industri Manufacture";
+            pesan1="Industry Manufacture";
             pesan2="Pressure Tank";
             pesan3="yha";
         }

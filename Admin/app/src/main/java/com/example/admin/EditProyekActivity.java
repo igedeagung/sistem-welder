@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,6 +44,9 @@ public class EditProyekActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_proyek);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Bundle bundle=getIntent().getExtras();
         final String pessan=bundle.getString("email");
@@ -194,6 +198,13 @@ public class EditProyekActivity extends AppCompatActivity {
             }
         });
 
+        Button btnsls=findViewById(R.id.button31);
+        btnsls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         Button sel=findViewById(R.id.button30);
         sel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,7 +225,7 @@ public class EditProyekActivity extends AppCompatActivity {
                     jeniss="Perpipaan";
                 }
                 if(namapr.equals("Storage Tank") || namapr.equals("Pressure Tank")){
-                    jeniss="Industri Manufacture";
+                    jeniss="Industry Manufacture";
                 }
                 if(namapr.equals("Las Umum")){
                     jeniss="Las Umum";
@@ -243,7 +254,9 @@ public class EditProyekActivity extends AppCompatActivity {
                 fer.child("jenisproyek").setValue(jeniss);
                 fer.child("tanggalmulai").setValue(mulaii);
                 fer.child("tanggalselesai").setValue(selesaii);
-                finish();
+
+                Toast.makeText(EditProyekActivity.this, "Data berhasil diubah", Toast.LENGTH_SHORT).show();
+
             }
         });
 

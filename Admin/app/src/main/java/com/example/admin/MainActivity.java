@@ -49,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
                 key=dataSnapshot.getValue().toString();
                 if(key.equals("Manajer Lapangan")){
                     Button btn=findViewById(R.id.button4);
-                    btn.setVisibility(View.GONE);
+                    btn.setVisibility(View.INVISIBLE);
                     Button btn2=findViewById(R.id.button14);
-                    btn2.setVisibility(View.GONE);
+                    btn2.setVisibility(View.INVISIBLE);
+
+
                 }
             }
 
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         buttonku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent welderku=new Intent(MainActivity.this, ListWelderActivity.class);
+                Intent welderku=new Intent(MainActivity.this, ClassWelderActivity.class);
                 startActivity(welderku);
             }
         });

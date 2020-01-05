@@ -33,6 +33,9 @@ public class SMAWListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smawlist);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         final ProgressBar barbar=findViewById(R.id.progressBar);
         barbar.setVisibility(View.VISIBLE);
         pesan=findViewById(R.id.textView3);
@@ -82,7 +85,12 @@ public class SMAWListActivity extends AppCompatActivity {
                     for(DataSnapshot post : dataSnapshot.getChildren() ){
                         // Iterate through all posts with the same author
                         hasil.add(post.child("namalengkap").getValue().toString());
-                        hasil2.add(post.child("posisi").getValue().toString());
+                        if(spek.equals("spesifikasi6")){
+                            hasil2.add("OAW");
+                        }
+                        else{
+                            hasil2.add(post.child("posisi").getValue().toString());
+                        }
                         hasil3.add(post.getKey());
                     }
                     if(hasil.size()>0){

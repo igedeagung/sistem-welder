@@ -56,7 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
+        Button buton=findViewById(R.id.button9);
+        buton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pindah=new Intent(MainActivity.this, RiwayatActivity.class);
 
+                startActivity(pindah);
+            }
+        });
         ref.child("status").addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -75,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
                             int keys;
                             keys=dataSnapshot.getValue(int.class);
                             if(keys==0){
-                                Button buton=findViewById(R.id.button9);
-                                buton.setVisibility(View.VISIBLE);
                                 TextView veww= findViewById(R.id.textView11);
                                 veww.setVisibility(View.VISIBLE);
                                 pgb.setVisibility(View.INVISIBLE);

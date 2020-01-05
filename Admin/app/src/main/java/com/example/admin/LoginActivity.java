@@ -3,6 +3,7 @@ package com.example.admin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -56,18 +57,25 @@ public class LoginActivity extends AppCompatActivity {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog dialog=new ProgressDialog(LoginActivity.this);
+                dialog.setMessage("Tunggu Sebentar");
+                dialog.show();
 
-                String usernames=username.getText().toString();
+                final String usernames=username.getText().toString();
                 final String passwordd = password.getText().toString();
                 emails="";
 
                 if (TextUtils.isEmpty(usernames)) {
+                    dialog.dismiss();
                     username.setError("Username anda kosong");
+                    username.requestFocus();
                     return;
                 }
 
                 if (TextUtils.isEmpty(passwordd)) {
+                    dialog.dismiss();
                     password.setError("Password anda kosong");
+                    password.requestFocus();
                     return;
                 }
                 // Query for all entries with a certain child with value equal to something
@@ -88,7 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         if(emails.isEmpty())
                         {
+                            dialog.dismiss();
                             username.setError("Username tidak terdaftar");
+                            username.requestFocus();
                         }
                         else{
                             //authenticate user
@@ -102,11 +112,15 @@ public class LoginActivity extends AppCompatActivity {
                                             if (!task.isSuccessful()) {
                                                 // there was an error
                                                 if (password.length() < 6) {
+                                                    dialog.dismiss();
                                                     password.setError("Password anda kurang");
+                                                    password.requestFocus();
                                                 } else {
+                                                    dialog.dismiss();
                                                     Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException(), Toast.LENGTH_LONG).show();
                                                 }
                                             } else {
+                                                dialog.dismiss();
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);

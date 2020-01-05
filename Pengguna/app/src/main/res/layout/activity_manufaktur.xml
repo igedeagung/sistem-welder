@@ -4,22 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/idhihome"
     tools:context=".ManufakturActivity">
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button13"
-        android:layout_width="200sp"
+        android:layout_width="150sp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:background="@drawable/buttton"
@@ -32,14 +33,16 @@
 
     <Button
         android:id="@+id/button14"
-        android:layout_width="200sp"
+        android:layout_width="150sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="300dp"
         android:background="@drawable/buttton"
         android:onClick="pressurewelder"
         android:text="@string/pressure_tank"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

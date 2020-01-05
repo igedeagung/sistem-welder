@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,14 +47,20 @@ public class DetilWelderctivity extends AppCompatActivity {
     private TextView pos;
     private TextView tgl;
     private TextView alamat;
+    private TextView reting;
     private ImageView imagee;
     private Button buttonacc;
     private FirebaseAuth mauth;
+    private String ratting;
+    private double loh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detil_welderctivity);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mauth= FirebaseAuth.getInstance();
         FirebaseUser user=mauth.getCurrentUser();
@@ -88,9 +95,76 @@ public class DetilWelderctivity extends AppCompatActivity {
         pos=findViewById(R.id.textView16);
         tgl=findViewById(R.id.textView18);
         alamat=findViewById(R.id.textView20);
+        reting=findViewById(R.id.textView26);
         imagee=findViewById(R.id.imageView);
 
+
         DatabaseReference ref2=FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan);
+        FirebaseDatabase.getInstance().getReference().child("Transaksi").orderByChild("wid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> key=new ArrayList<>();
+            ArrayList<String> key1=new ArrayList<>();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key.clear();
+                key1.clear();
+                for(DataSnapshot post:dataSnapshot.getChildren()){
+                    key.add(post.child("pid").getValue().toString());
+                }
+                if(key.size()>0){
+                    for(int i=0; i<key.size(); i++){
+                        final DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Proyek").child(key.get(i));
+                        res.child("status").addListenerForSingleValueEvent(new ValueEventListener() {
+                            String kes;
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                kes=dataSnapshot.getValue().toString();
+                                if(kes.equals("1")){
+                                    res.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            key1.add(dataSnapshot.getValue().toString());
+                                            loh=0;
+                                            for(int i=0; i<key1.size(); i++){
+                                                loh+=Integer.parseInt(key1.get(i));
+                                            }
+                                            if(key1.size()>0){
+                                                loh=loh/(key1.size());
+                                                reting.setText(String.format("%.1f", loh));
+                                            }
+                                            else{
+                                                reting.setText("0.0");
+                                            }
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+//                        reting.setText(key1.get(0));
+                    }
+                }
+                else{
+                    reting.setText("0.0");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         ref2.child("acc").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
@@ -334,9 +408,55 @@ public class DetilWelderctivity extends AppCompatActivity {
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Welders");
-                res.child(pessan).removeValue();
-                finish();
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan).child("sertifikasi").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String aku;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        aku=dataSnapshot.getValue().toString();
+                        FirebaseStorage.getInstance().getReference().child("sertifikasi_welder/"+aku).delete();
+                        FirebaseDatabase.getInstance().getReference().child("Welders").child(pessan).child("profil").addListenerForSingleValueEvent(new ValueEventListener() {
+                            String uka;
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                uka=dataSnapshot.getValue().toString();
+                                FirebaseStorage.getInstance().getReference().child("profil_welder/"+uka).delete();
+                                FirebaseDatabase.getInstance().getReference().child("Transaksi").orderByChild("wid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    List<String> hh=new ArrayList<>();
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot post : dataSnapshot.getChildren() ){
+                                            hh.add(post.getKey());
+                                        }
+                                        for(int i=0; i<hh.size(); i++){
+                                            FirebaseDatabase.getInstance().getReference().child("Transaksi").child(hh.get(i)).removeValue();
+                                        }
+                                        DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Welders");
+                                        res.child(pessan).removeValue();
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 

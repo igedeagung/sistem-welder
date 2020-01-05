@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView22"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +39,7 @@
         android:id="@+id/editText8"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
@@ -51,7 +51,7 @@
         android:id="@+id/editText9"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPassword"
@@ -75,11 +75,21 @@
         android:id="@+id/button24"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/buttton2"
         android:text="@string/kembali"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView22"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/welder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

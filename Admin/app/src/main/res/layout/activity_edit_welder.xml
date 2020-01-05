@@ -77,7 +77,7 @@
             android:id="@+id/editText4"
             android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:ems="10"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/textView7"
@@ -97,7 +97,7 @@
             android:id="@+id/editText6"
             android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="30dp"
             android:clickable="true"
             android:ems="10"
             android:focusable="false"
@@ -120,42 +120,10 @@
             android:layout_width="300sp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:clickable="true"
-            android:focusable="false"
-            app:layout_constraintBottom_toTopOf="@+id/textView9"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:text="Sertifikat Las"
-            app:layout_constraintBottom_toTopOf="@+id/editText8"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/editText8"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
             android:clickable="true"
             android:ems="10"
             android:focusable="false"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/imgView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.504"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

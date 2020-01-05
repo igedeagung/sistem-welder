@@ -29,6 +29,9 @@ public class LihatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lihat);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         final String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference dabes= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
 
@@ -603,7 +606,50 @@ public class LihatActivity extends AppCompatActivity {
         btntlk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid").setValue("0");
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String key;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        key=dataSnapshot.getValue().toString();
+                        FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("tpos").addListenerForSingleValueEvent(new ValueEventListener() {
+                            String key2;
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                key2=dataSnapshot.getValue().toString();
+                                FirebaseDatabase.getInstance().getReference().child("Proyek").child(key).child(key2).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    String kkey;
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        kkey=dataSnapshot.getValue().toString();
+                                        int h=Integer.parseInt(kkey);
+                                        h++;
+                                        FirebaseDatabase.getInstance().getReference().child("Proyek").child(key).child(key2).setValue(Integer.toString(h));
+                                        FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid").setValue("0");
+                                        FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("tpos").setValue("0");
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
                 finish();
             }
         });
@@ -612,6 +658,8 @@ public class LihatActivity extends AppCompatActivity {
         selesai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("terima").setValue("0");
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("tpos").setValue("0");
                 DatabaseReference fr=FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid");
                 fr.addListenerForSingleValueEvent(new ValueEventListener() {
                     String key;

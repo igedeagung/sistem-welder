@@ -77,20 +77,20 @@ public class EditWelderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_welder);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Bundle bundle=getIntent().getExtras();
         pessan=bundle.getString("email");
         spes = (EditText) findViewById(R.id.editText6);
         pos = (EditText) findViewById(R.id.editText7);
-        sertif = (EditText) findViewById(R.id.editText8);
         nmlengkap = (EditText) findViewById(R.id.editText2);
         idwelder = (EditText) findViewById(R.id.editText3);
         almtlkp = (EditText) findViewById(R.id.editText4);
-        imageView = (ImageView) findViewById(R.id.imgView);
 
         btnsubmit=findViewById(R.id.button);
         btnback=findViewById(R.id.button2);
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference().child("Welders");
 
@@ -326,14 +326,6 @@ public class EditWelderActivity extends AppCompatActivity {
             }
         });
 
-        sertif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
-
-
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,7 +334,6 @@ public class EditWelderActivity extends AppCompatActivity {
                 aidi=idwelder.getText().toString();
                 spesifik=spes.getText().toString();
                 posisi=pos.getText().toString();
-                sertifikasi=sertif.getText().toString();
                 if (TextUtils.isEmpty(nmlkp)){
                     nmlengkap.setError("Nama Lengkap harus diisi");
                     return;
@@ -357,10 +348,6 @@ public class EditWelderActivity extends AppCompatActivity {
                 }
                 if (TextUtils.isEmpty(posisi)){
                     pos.setError("Posisi harus diisi");
-                    return;
-                }
-                if (TextUtils.isEmpty(sertifikasi)){
-                    sertif.setError("Sertifikasi harus diisi");
                     return;
                 }
                 if (TextUtils.isEmpty(aidi)){
@@ -389,7 +376,18 @@ public class EditWelderActivity extends AppCompatActivity {
                         spek6="OAW";
                     }
                 }
-                uploadImage();
+                final DatabaseReference id_db = database.child(pessan);
+                id_db.child("namalengkap").setValue(nmlkp);
+                id_db.child("alamatlengkap").setValue(alamlkp);
+                id_db.child("spesifikasi1").setValue(spek1);
+                id_db.child("spesifikasi2").setValue(spek2);
+                id_db.child("spesifikasi3").setValue(spek3);
+                id_db.child("spesifikasi4").setValue(spek4);
+                id_db.child("spesifikasi5").setValue(spek5);
+                id_db.child("spesifikasi6").setValue(spek6);
+                id_db.child("posisi").setValue(posisi);
+                id_db.child("id").setValue(aidi);
+                Toast.makeText(EditWelderActivity.this, "Data berhasil diubah", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -400,91 +398,5 @@ public class EditWelderActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            String cb= filePath.toString();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-                sertif.setText(cb);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public String GetFileExtension(Uri uri) {
-
-        ContentResolver contentResolver = getContentResolver();
-
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-
-        // Returning the file Extension.
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
-
-    }
-    private void uploadImage() {
-
-        if(filePath != null)
-        {
-            final String name=System.currentTimeMillis() + "." + GetFileExtension(filePath);
-            StorageReference ref = storageReference.child("sertifikasi_welder/" +name );
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Hiding the progressDialog after done uploading.
-                            DatabaseReference id_db = database.child(pessan);
-                            id_db.child("namalengkap").setValue(nmlkp);
-                            id_db.child("alamatlengkap").setValue(alamlkp);
-                            id_db.child("spesifikasi1").setValue(spek1);
-                            id_db.child("spesifikasi2").setValue(spek2);
-                            id_db.child("spesifikasi3").setValue(spek3);
-                            id_db.child("spesifikasi4").setValue(spek4);
-                            id_db.child("spesifikasi5").setValue(spek5);
-                            id_db.child("spesifikasi6").setValue(spek6);
-                            id_db.child("posisi").setValue(posisi);
-                            id_db.child("id").setValue(aidi);
-                            id_db.child("sertifikasi").setValue(name);
-                            finish();
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Hiding the progressDialog.;
-                            Toast.makeText(EditWelderActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            // Setting progressDialog Title.
-                        }
-                    });
-        }
-        else {
-            nmlengkap.setError("foto tidak valid");
-        }
-
     }
 }

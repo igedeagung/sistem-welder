@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:background="@drawable/button"
-        android:text="Industri Manufacture"
+        android:text="Industry Manufacture"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/button22"
         app:layout_constraintEnd_toEndOf="parent"

@@ -53,6 +53,9 @@ public class ListProyekActivity extends AppCompatActivity {
     private DatabaseReference ref;
     private String pessan;
     private Button buttonku;
+    private List<String> item=new ArrayList<>();
+    private List<String> item2=new ArrayList<>();
+    private List<String> item3=new ArrayList<>();
 
 
     @Override
@@ -138,58 +141,6 @@ public class ListProyekActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 key=dataSnapshot.getValue().toString();
                 mulai.setText(key);
-                Date date=new Date(), date2=new Date();
-                try{
-                    String dates = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-                    date = new SimpleDateFormat("yyyy-MM-dd").parse(key);
-                    date2=new SimpleDateFormat("yyyy-MM-dd").parse(dates);
-                    final long beda= (date2.getTime()-date.getTime())/86400000;
-
-                    ref.child("status").addListenerForSingleValueEvent(new ValueEventListener() {
-                        String key;
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            key=dataSnapshot.getValue().toString();
-//                            final int  hau=Integer.parseInt(key);
-                            ref.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
-                                String kekey;
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    kekey=dataSnapshot.getValue().toString();
-                                    if(kekey.equals("0")&&key.equals("1")){
-                                        buttonku=findViewById(R.id.button38);
-                                        buttonku.setVisibility(View.VISIBLE);
-                                        buttonku.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                ShowDialog();
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-
-
-                }catch (ParseException e) {              // Insert this block.
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
             }
 
             @Override
@@ -213,7 +164,63 @@ public class ListProyekActivity extends AppCompatActivity {
             }
         });
 
+        ref.child("harga").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                TextView liew=findViewById(R.id.textView90);
+                liew.setText(key);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref.child("status").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                TextView biew=findViewById(R.id.textView92);
+                if(key.equals("0")){
+                    biew.setText("Belum Selesai");
+                }
+                else{
+                    biew.setText("Selesai");
+                }
+
+                ref.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String kekey;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        kekey=dataSnapshot.getValue().toString();
+                        if(kekey.equals("0")&&key.equals("1")){
+                            buttonku=findViewById(R.id.button38);
+                            buttonku.setVisibility(View.VISIBLE);
+                            buttonku.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ShowDialog();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         ref.child("jumlah1").addListenerForSingleValueEvent(new ValueEventListener() {
             String key;
             @Override
@@ -401,62 +408,178 @@ public class ListProyekActivity extends AppCompatActivity {
         });
 //        TextView gg=findViewById(R.id.textView61);
 //        gg.setText(pessan);
-        DatabaseReference rese=FirebaseDatabase.getInstance().getReference().child("Welders");
-        rese.orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
-            List<String> item=new ArrayList<>();
-            List<String> item2=new ArrayList<>();
-            List<String> item3=new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan).child("status").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot post: dataSnapshot.getChildren()){
-                    item.add(post.child("namalengkap").getValue().toString());
-                    item2.add(post.child("notelp").getValue().toString());
-                    item3.add(post.child("posisi").getValue().toString());
-                }
-                int te=140;
-                int ue=200;
-                int ve=260;
-                FrameLayout frame=findViewById(R.id.frameLayout9);
-                TextView t[]=new TextView[item.size()];
-                TextView u[]=new TextView[item2.size()];
-                TextView v[]=new TextView[item3.size()];
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("0")){
+                    DatabaseReference rese=FirebaseDatabase.getInstance().getReference().child("Welders");
+                    rese.orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
 
-                for(int i=0; i<item.size(); i++){
-                    FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(40,te,0,0);
-                    t[i]=new TextView(ListProyekActivity.this);
-                    t[i].setText("Nama: "+item.get(i));
-                    t[i].setLayoutParams(params);;
-                    frame.addView(t[i]);
-                    te+=190;
-                }
-                for(int j=0; j<item2.size(); j++){
-                    FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(40,ue,0,0);
-                    u[j]=new TextView(ListProyekActivity.this);
-                    u[j].setText("Nomor Telepon: "+ item2.get(j));
-                    u[j].setLayoutParams(params);;
-                    frame.addView(u[j]);
-                    ue+=190;
-                }
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot post: dataSnapshot.getChildren()){
+                                item.add(post.child("namalengkap").getValue().toString());
+                                item2.add(post.child("notelp").getValue().toString());
+                                item3.add(post.child("posisi").getValue().toString());
+                            }
+                            int te=140;
+                            int ue=200;
+                            int ve=260;
+                            FrameLayout frame=findViewById(R.id.frameLayout9);
+                            TextView t[]=new TextView[item.size()];
+                            TextView u[]=new TextView[item2.size()];
+                            TextView v[]=new TextView[item3.size()];
 
-                for(int j=0; j<item2.size(); j++){
-                    FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(40,ve,0,0);
-                    v[j]=new TextView(ListProyekActivity.this);
-                    v[j].setText(item3.get(j));
-                    v[j].setLayoutParams(params);
-                    frame.addView(v[j]);
-                    ve+=190;
+                            for(int i=0; i<item.size(); i++){
+                                FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                                params.setMargins(40,te,0,0);
+                                t[i]=new TextView(ListProyekActivity.this);
+                                t[i].setText("Nama: "+item.get(i));
+                                t[i].setLayoutParams(params);;
+                                frame.addView(t[i]);
+                                te+=190;
+                            }
+                            for(int j=0; j<item2.size(); j++){
+                                FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                                params.setMargins(40,ue,0,0);
+                                u[j]=new TextView(ListProyekActivity.this);
+                                u[j].setText("Nomor Telepon: "+ item2.get(j));
+                                u[j].setLayoutParams(params);;
+                                frame.addView(u[j]);
+                                ue+=190;
+                            }
+
+                            for(int j=0; j<item2.size(); j++){
+                                FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                                params.setMargins(40,ve,0,0);
+                                v[j]=new TextView(ListProyekActivity.this);
+                                v[j].setText(item3.get(j));
+                                v[j].setLayoutParams(params);
+                                frame.addView(v[j]);
+                                ve+=190;
+                            }
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else{
+                    FirebaseDatabase.getInstance().getReference().child("Transaksi").orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
+                        List<String>hh=new ArrayList<>();
+
+
+
+                        FrameLayout frame=findViewById(R.id.frameLayout9);
+
+
+
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot post: dataSnapshot.getChildren()){
+                                hh.add(post.child("wid").getValue().toString());
+                            }
+                            final TextView piew=findViewById(R.id.textView61);
+
+                            if(hh.size()>0){
+                                for(int i=0; i<hh.size(); i++){
+                                    FirebaseDatabase.getInstance().getReference().child("Welders").child(hh.get(i)).child("namalengkap").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            item.add(dataSnapshot.getValue().toString());
+                                            int te=140;
+                                            TextView t[]=new TextView[item.size()];
+                                            for(int i=0; i<item.size(); i++){
+                                                FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                                                params.setMargins(40,te,0,0);
+                                                t[i]=new TextView(ListProyekActivity.this);
+                                                t[i].setText("Nama: "+item.get(i));
+                                                t[i].setLayoutParams(params);;
+                                                frame.addView(t[i]);
+                                                te+=190;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                    FirebaseDatabase.getInstance().getReference().child("Welders").child(hh.get(i)).child("notelp").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            item2.add(dataSnapshot.getValue().toString());
+                                            int ue=200;
+                                            TextView u[]=new TextView[item2.size()];
+                                            for(int j=0; j<item2.size(); j++){
+                                                FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                                                params.setMargins(40,ue,0,0);
+                                                u[j]=new TextView(ListProyekActivity.this);
+                                                u[j].setText("Nomor Telepon: "+ item2.get(j));
+                                                u[j].setLayoutParams(params);;
+                                                frame.addView(u[j]);
+                                                ue+=190;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                    FirebaseDatabase.getInstance().getReference().child("Welders").child(hh.get(i)).child("posisi").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            item3.add(dataSnapshot.getValue().toString());
+                                            int ve=260;
+                                            TextView v[]=new TextView[item3.size()];
+                                            for(int j=0; j<item2.size(); j++){
+                                                FrameLayout.LayoutParams params= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                                                params.setMargins(40,ve,0,0);
+                                                v[j]=new TextView(ListProyekActivity.this);
+                                                v[j].setText(item3.get(j));
+                                                v[j].setLayoutParams(params);
+                                                frame.addView(v[j]);
+                                                ve+=190;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+
+//
+
+
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+
     }
     public void getspek(String setring){
         spek=setring;
@@ -494,22 +617,7 @@ public class ListProyekActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String hasil= String.valueOf(rating.getProgress());
-                DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Welders");
-                res.orderByChild("pid").equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot post: dataSnapshot.getChildren()){
-                            String key=post.getKey();
-                            FirebaseDatabase.getInstance().getReference().child("Welders").child(key).child("rating").setValue(hasil);
-                            FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan).child("sudahnilai").setValue("1");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan).child("sudahnilai").setValue(hasil);
                 dialog.dismiss();
                 buttonku.setVisibility(View.GONE);
             }

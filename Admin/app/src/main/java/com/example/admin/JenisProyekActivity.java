@@ -14,6 +14,9 @@ public class JenisProyekActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jenis_proyek);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Button stel=findViewById(R.id.button18);
         stel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +55,7 @@ public class JenisProyekActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent pindahsmaw=new Intent(JenisProyekActivity.this, SMAWListActivity.class);
-                pindahsmaw.putExtra("pesan", "Industri Manufacture");
+                pindahsmaw.putExtra("pesan", "Industry Manufacture");
                 pindahsmaw.putExtra("tipe", "proyek");
                 startActivity(pindahsmaw);
             }

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:text="Detil Proyek"
+            android:text="Detail Proyek"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/frameLayout23"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,7 +188,7 @@
             android:layout_height="100dp"
             android:layout_marginBottom="30dp"
             android:background="@android:color/white"
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout8"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout30"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -212,7 +212,65 @@
                 android:textStyle="bold" />
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/frameLayout30"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout31"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
+            <TextView
+                android:id="@+id/textView90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125sp"
+                android:layout_marginTop="50sp"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView91"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125sp"
+                android:layout_marginTop="5sp"
+                android:gravity="center"
+                android:text="Harga"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout31"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/textView92"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125sp"
+                android:layout_marginTop="50sp"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView93"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125sp"
+                android:layout_marginTop="5sp"
+                android:gravity="center"
+                android:text="Status"
+                android:textStyle="bold" />
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/frameLayout8"

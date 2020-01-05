@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -254,7 +255,8 @@ public class SMFCAWActivity extends AppCompatActivity {
                 }
                 else {
                     long harga=(160000*countsf1+160000*countsf2)*beda;
-                    String aa=Long.toString(harga);
+                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                    String aa=nf3.format(harga);
                     hargaField.setText(aa);
                 }
                 String cek=hargaField.getText().toString();

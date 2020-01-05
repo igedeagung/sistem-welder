@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -409,7 +410,8 @@ public class SMGTAWActivity extends AppCompatActivity {
                         hp3=400000;
                     }
                     long harga=(hp1*countsf1+hp2*countsf2+hp3*countsf3+hp4*countsf4+hp5*countsf5)*beda;
-                    String aa=Long.toString(harga);
+                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                    String aa=nf3.format(harga);
                     hargaField.setText(aa);
                 }
                 String cek=hargaField.getText().toString();

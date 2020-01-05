@@ -33,6 +33,9 @@ public class CariWelderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cari_welder);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Bundle bundle=getIntent().getExtras();
         final String pessan=bundle.getString("spek");
         final String pessan2=bundle.getString("pos");

@@ -38,6 +38,10 @@ public class LihatProyekActivity extends AppCompatActivity {
             TextView kosong=findViewById(R.id.textView98);
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                item.clear();
+                item2.clear();
+                item3.clear();
+
                 for (DataSnapshot post: dataSnapshot.getChildren()){
                     item.add(post.child("namaproyek").getValue().toString());
                     item2.add(post.child("tipe").getValue().toString());

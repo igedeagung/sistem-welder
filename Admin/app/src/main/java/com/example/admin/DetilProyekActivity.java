@@ -48,6 +48,9 @@ public class DetilProyekActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detil_proyek);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 //        TextView vieww=findViewById(R.id.textView28);
         Bundle bundle=getIntent().getExtras();
         final String pessan=bundle.getString("email");

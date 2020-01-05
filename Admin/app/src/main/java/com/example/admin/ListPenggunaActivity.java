@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,11 +20,37 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ListPenggunaActivity extends AppCompatActivity {
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_pengguna);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mauth= FirebaseAuth.getInstance();
+        FirebaseUser user=mauth.getCurrentUser();
+
+        String uid=user.getUid();
+
+        FirebaseDatabase.getInstance().getReference().child("Admin").child(uid).child("jenis").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key=dataSnapshot.getValue().toString();
+                if(key.equals("Manajer Lapangan")||key.equals("Manajer Administrasi")){
+                    Button btn=findViewById(R.id.button6);
+                    btn.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         Bundle bundle=getIntent().getExtras();
         final String pessan=bundle.getString("email");

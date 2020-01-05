@@ -39,7 +39,7 @@ public class JenisProyek extends AppCompatActivity {
     }
     public void manufaktur(View view){
         Intent pindahsteel=new Intent(JenisProyek.this, ManufakturActivity.class);
-        pindahsteel.putExtra("test", "Industri Manufacture");
+        pindahsteel.putExtra("test", "Industry Manufacture");
         startActivity(pindahsteel);
     }
     public void umum(View view){

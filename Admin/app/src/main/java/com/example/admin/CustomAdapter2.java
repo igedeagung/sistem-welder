@@ -88,6 +88,7 @@ public class CustomAdapter2 extends BaseAdapter {
     }
 
     public void ganti(int position, String datax, final ViewGroup parent){
+        FirebaseDatabase.getInstance().getReference().child("Welders").child(data4.get(position)).child("tpos").setValue(datax);
         DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders").child(data4.get(position)).child("pid");
         res.setValue(data3);
         DatabaseReference res2= FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3);
