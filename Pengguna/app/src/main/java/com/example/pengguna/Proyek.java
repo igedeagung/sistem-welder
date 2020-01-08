@@ -32,9 +32,16 @@ public class Proyek implements Serializable{
     private String wid;
     private String status;
     private String bedahari;
+    private String pakaimesin;
 
     public Proyek()
     {
+    }
+    public String getPakaimesin() {
+        return pakaimesin;
+    }
+    public void setPakaimesin(String pakaimesin) {
+        this.pakaimesin = pakaimesin;
     }
     public String getSudahnilai() {
         return sudahnilai;
@@ -225,6 +232,7 @@ public class Proyek implements Serializable{
                 "" +namaproyek+"" +
                 "" +tipe+"" +
                 "" +sudahnilai+"" +
+                "" +pakaimesin+"" +
                 "" +alamat+"" +
                 "" +bedahari+"" +
                 "" +status+"" +
@@ -249,11 +257,12 @@ public class Proyek implements Serializable{
                 "" +uid+"" +
                 "" +wid;
     }
-    public Proyek(String nl,String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
+    public Proyek(String pkm, String nl,String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
                   String j2f, String j3f, String j4f, String j5f,String j1,
                   String j2, String j3, String j4, String j5, String tm, String ts, String hg,
                   String ui, String wi)
     {
+        pakaimesin=pkm;
         sudahnilai=nl;
         bedahari=bdh;
         status=stts;

@@ -130,7 +130,7 @@ public class SMFCAWActivity extends AppCompatActivity {
                 String status="0";
                 String nilai="0";
                 String bdh=Long.toString(beda);
-                submitProyek(new Proyek(nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+                submitProyek(new Proyek("0",nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
                         jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }

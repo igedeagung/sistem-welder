@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +42,8 @@ public class OAWActivity extends AppCompatActivity {
     private int countsf1=0;
     private long beda;
     private ProgressDialog diialog;
+    private int flay=0;
+    private int jumlh=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +114,7 @@ public class OAWActivity extends AppCompatActivity {
                 String status="0";
                 String nilai="0";
                 String bdh=Long.toString(beda);
-                submitProyek(new Proyek(nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+                submitProyek(new Proyek(Integer.toString(flay), nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
                         jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
                         jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
             }
@@ -192,6 +196,22 @@ public class OAWActivity extends AppCompatActivity {
 
             }
         });
+
+        CheckBox cekbok=findViewById(R.id.checkBox2);
+        cekbok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox)v).isChecked()){
+                    flay=1;
+                    update();
+                }
+                else {
+                    flay=0;
+                    update();
+                }
+            }
+        });
+
     }
 
     public void update(){
@@ -211,8 +231,16 @@ public class OAWActivity extends AppCompatActivity {
                 }
                 else {
                     int hp1=150000;
-                    long harga=(hp1*countsf1)*beda;
-                    String aa=Long.toString(harga);
+
+                    if(flay==0){
+                        jumlh=0;
+                    }
+                    else{
+                        jumlh=100000;
+                    }
+                    long harga=(hp1*countsf1+jumlh)*beda;
+                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                    String aa=nf3.format(harga);
                     hargaField.setText(aa);
                 }
                 String cek=hargaField.getText().toString();
