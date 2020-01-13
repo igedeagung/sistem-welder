@@ -218,7 +218,7 @@ public class EditProyekActivity extends AppCompatActivity {
                 if(namapr.equals("Steel Structure")){
                     jeniss="Steel Structure";
                 }
-                if(namapr.equals("Kapal Ferro") ||namapr.equals("Kapal Non Ferro")||namapr.equals("Onshore/Offshore")){
+                if(namapr.equals("Kapal Ferro") ||namapr.equals("Kapal Aluminium")||namapr.equals("Onshore/Offshore")){
                     jeniss="Konstruksi Maritim";
                 }
                 if(namapr.equals("Carbon Steel") || namapr.equals("Stainless Steel") || namapr.equals("Non Ferro")){

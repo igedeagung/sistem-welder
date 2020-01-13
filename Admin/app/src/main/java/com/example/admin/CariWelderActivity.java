@@ -41,6 +41,7 @@ public class CariWelderActivity extends AppCompatActivity {
         final String pessan2=bundle.getString("pos");
         final String pessan3=bundle.getString("key");
         final String julah=bundle.getString("jumlahnya");
+        final String marine=bundle.getString("marine");
 
         if(pessan2.contains("6GR")){
             flag=3;
@@ -76,6 +77,7 @@ public class CariWelderActivity extends AppCompatActivity {
             String acc;
             String sibuk;
             String pos;
+            String flagmar="0";
             ArrayList<String> hasil=new ArrayList<>();
             ArrayList<String> hasil2=new ArrayList<>();
             ArrayList<String> hasil3=new ArrayList<>();
@@ -91,6 +93,9 @@ public class CariWelderActivity extends AppCompatActivity {
                     acc=post.child("acc").getValue().toString();
                     sibuk=post.child("pid").getValue().toString();
                     pos=post.child("posisi").getValue().toString();
+                    if(post.child("sertifikasimarine").exists()){
+                        flagmar=post.child("sertifikasimarine").getValue().toString();
+                    }
 
                     if(pos.contains("6GR")){
                         flagg=3;
@@ -109,10 +114,21 @@ public class CariWelderActivity extends AppCompatActivity {
                         }
                     }
                     else{
-                        if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                            hasil.add(post.child("namalengkap").getValue().toString());
-                            hasil2.add(post.child("alamatlengkap").getValue().toString());
-                            hasil3.add(post.getKey());
+                        if(marine.equals("Konstruksi Maritim")){
+                            if(!flagmar.equals("0")){
+                                if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                    hasil.add(post.child("namalengkap").getValue().toString());
+                                    hasil2.add(post.child("alamatlengkap").getValue().toString());
+                                    hasil3.add(post.getKey());
+                                }
+                            }
+                        }
+                        else{
+                            if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                hasil.add(post.child("namalengkap").getValue().toString());
+                                hasil2.add(post.child("alamatlengkap").getValue().toString());
+                                hasil3.add(post.getKey());
+                            }
                         }
                     }
                 }

@@ -3,6 +3,8 @@ package com.example.welder;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -45,7 +47,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class VerifActivity extends AppCompatActivity {
     private EditText spes;
     private EditText pos;
-    private EditText sertif;
+    private Button sertif;
+    private Button sertifmar;
+    private Button sertifij;
+    private Button sertiftof;
     private EditText nmpanggil;
     private EditText nmlengkap;
     private EditText noktp;
@@ -59,7 +64,11 @@ public class VerifActivity extends AppCompatActivity {
     private boolean[] checkedItems;
     private ArrayList<Integer> mUserItems = new ArrayList<>();
     private Uri filePath;
+    private Uri filesertifj;
     private Uri filePath2;
+    private Uri filePath3;
+    private Uri filePath4;
+
     private ImageView imageView;
     private CircleImageView imageView2;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -83,6 +92,15 @@ public class VerifActivity extends AppCompatActivity {
     private String spek5="0";
     private String spek6="0";
     private ProgressDialog dialog;
+    private int juml=0;
+    private int juml2=100;
+    private int juml3=200;
+    private ArrayList<Uri> filesertif=new ArrayList<>();
+    private ArrayList<Uri> filesertifmar=new ArrayList<>();
+    private ArrayList<Uri> filesertiftof=new ArrayList<>();
+    private ArrayList<String> namasertif=new ArrayList<>();
+    private ArrayList<String> namasertifmar=new ArrayList<>();
+    private ArrayList<String> namasertiftof=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +110,10 @@ public class VerifActivity extends AppCompatActivity {
 
         spes = (EditText) findViewById(R.id.editText6);
         pos = (EditText) findViewById(R.id.editText7);
-        sertif = (EditText) findViewById(R.id.editText8);
+        sertif = (Button) findViewById(R.id.editText8);
+        sertifmar = (Button) findViewById(R.id.buttonn);
+        sertifij = (Button) findViewById(R.id.buttonn2);
+        sertiftof = (Button) findViewById(R.id.buttonn3);
         nmpanggil = (EditText) findViewById(R.id.editText);
         nmlengkap = (EditText) findViewById(R.id.editText2);
         noktp = (EditText) findViewById(R.id.editText3);
@@ -208,6 +229,24 @@ public class VerifActivity extends AppCompatActivity {
                 chooseImage();
             }
         });
+        sertifmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage3();
+            }
+        });
+        sertifij.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage4();
+            }
+        });
+        sertiftof.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage5();
+            }
+        });
 
         profil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,14 +295,7 @@ public class VerifActivity extends AppCompatActivity {
                     pos.setError("Posisi harus diisi");
                     return;
                 }
-                if (TextUtils.isEmpty(sertifikasi)){
-                    sertif.setError("Sertifikasi harus diisi");
-                    return;
-                }
-
-
                 uploadImage();
-
             }
         });
 
@@ -291,6 +323,25 @@ public class VerifActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 75);
     }
+    private void chooseImage3() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 76);
+    }
+    private void chooseImage4() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 77);
+    }
+    private void chooseImage5() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 78);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -298,17 +349,121 @@ public class VerifActivity extends AppCompatActivity {
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-            String cb= filePath.toString();
+            filesertif.add(filePath);
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-                sertif.setText(cb);
+                ImageView imagi=new ImageView(VerifActivity.this);
+                imagi.setImageBitmap(bitmap);
+                imagi.setId(juml);
+
+                ConstraintLayout mylayout= findViewById(R.id.parentt);
+                mylayout.addView(imagi);
+
+                ConstraintSet set=new ConstraintSet();
+                set.clone(mylayout);
+                set.connect(R.id.editText8, ConstraintSet.BOTTOM, R.id.buttonn, ConstraintSet.TOP, 30+(400*(juml+1)));
+
+                set.constrainHeight(imagi.getId(), 400);
+                set.constrainWidth(imagi.getId(), 300);
+
+                set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                set.connect(imagi.getId(), ConstraintSet.TOP, R.id.editText8, ConstraintSet.BOTTOM, 5+(400*juml));
+
+                set.applyTo(mylayout);
+
+                juml++;
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
         }
+        if(requestCode == 76 && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath3 = data.getData();
+            filesertifmar.add(filePath3);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath3);
+                ImageView imagi=new ImageView(VerifActivity.this);
+                imagi.setImageBitmap(bitmap);
+                imagi.setId(juml2);
+
+                ConstraintLayout mylayout= findViewById(R.id.parentt);
+                mylayout.addView(imagi);
+
+                ConstraintSet set=new ConstraintSet();
+                set.clone(mylayout);
+                set.connect(R.id.buttonn, ConstraintSet.BOTTOM, R.id.buttonn2, ConstraintSet.TOP, 30+(400*(juml2-99)));
+
+                set.constrainHeight(imagi.getId(), 400);
+                set.constrainWidth(imagi.getId(), 300);
+
+                set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                set.connect(imagi.getId(), ConstraintSet.TOP, R.id.buttonn, ConstraintSet.BOTTOM, 5+(400*(juml2-100)));
+
+                set.applyTo(mylayout);
+
+                juml2++;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        if(requestCode == 77 && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filesertifj = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filesertifj);
+                imageView.setImageBitmap(bitmap);
+                imageView.setVisibility(View.VISIBLE);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        if(requestCode == 78 && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath4 = data.getData();
+            filesertiftof.add(filePath4);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath4);
+                ImageView imagi=new ImageView(VerifActivity.this);
+                imagi.setImageBitmap(bitmap);
+                imagi.setId(juml3);
+
+                ConstraintLayout mylayout= findViewById(R.id.parentt);
+                mylayout.addView(imagi);
+
+                ConstraintSet set=new ConstraintSet();
+                set.clone(mylayout);
+                set.connect(R.id.buttonn3, ConstraintSet.BOTTOM, R.id.button, ConstraintSet.TOP, 30+(400*(juml3-199)));
+
+                set.constrainHeight(imagi.getId(), 400);
+                set.constrainWidth(imagi.getId(), 300);
+
+                set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                set.connect(imagi.getId(), ConstraintSet.TOP, R.id.buttonn3, ConstraintSet.BOTTOM, 5+(400*(juml3-200)));
+
+                set.applyTo(mylayout);
+
+                juml3++;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
         if(requestCode == 75 && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -337,42 +492,107 @@ public class VerifActivity extends AppCompatActivity {
     }
     private void uploadImage() {
 
-        if(filePath != null && filePath2 !=null)
+        if(filesertif.size()>0 && filePath2 !=null && filesertifj !=null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            final String name=System.currentTimeMillis() + "." + GetFileExtension(filePath);
+            for(int i=0; i<filesertif.size(); i++){
+                final String name=System.currentTimeMillis() +Integer.toString(i)+ "." + GetFileExtension(filesertif.get(i));
+                namasertif.add(name);
+                StorageReference ref = storageReference.child("sertifikasi_welder/" +name );
+                ref.putFile(filesertif.get(i))
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // Hiding the progressDialog after done uploading.
+                                progressDialog.dismiss();
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Hiding the progressDialog.
+                                progressDialog.dismiss();
+                                Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                // Setting progressDialog Title.
+                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            }
+                        });
+            }
+            for(int i=0; i<filesertifmar.size(); i++){
+                final String name=System.currentTimeMillis() +Integer.toString(i)+ "." + GetFileExtension(filesertifmar.get(i));
+                namasertifmar.add(name);
+                StorageReference ref = storageReference.child("sertifikasi_welder_marine/" +name );
+                ref.putFile(filesertifmar.get(i))
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // Hiding the progressDialog after done uploading.
+                                progressDialog.dismiss();
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Hiding the progressDialog.
+                                progressDialog.dismiss();
+                                Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                // Setting progressDialog Title.
+                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            }
+                        });
+            }
+            for(int i=0; i<filesertiftof.size(); i++){
+                final String name=System.currentTimeMillis() +Integer.toString(i)+ "." + GetFileExtension(filesertiftof.get(i));
+                namasertiftof.add(name);
+                StorageReference ref = storageReference.child("sertifikasi_welder_toefl/" +name );
+                ref.putFile(filesertiftof.get(i))
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // Hiding the progressDialog after done uploading.
+                                progressDialog.dismiss();
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Hiding the progressDialog.
+                                progressDialog.dismiss();
+                                Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                // Setting progressDialog Title.
+                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            }
+                        });
+            }
+
             final String name2=System.currentTimeMillis() + "." + GetFileExtension(filePath2);
-            StorageReference ref = storageReference.child("sertifikasi_welder/" +name );
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Hiding the progressDialog after done uploading.
-                            progressDialog.dismiss();
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Hiding the progressDialog.
-                            progressDialog.dismiss();
-                            Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            // Setting progressDialog Title.
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
-
             StorageReference ref2 = storageReference.child("profil_welder/" +name2 );
             ref2.putFile(filePath2)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -397,8 +617,63 @@ public class VerifActivity extends AppCompatActivity {
 
                         }
                     });
+
+            final String name3=System.currentTimeMillis() + "." + GetFileExtension(filesertifj);
+            StorageReference ref3 = storageReference.child("ijasah_welder/" +name3 );
+            ref3.putFile(filesertifj)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Hiding the progressDialog after done uploading.
+                            progressDialog.dismiss();
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Hiding the progressDialog.
+                            progressDialog.dismiss();
+                            Toast.makeText(VerifActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        }
+                    });
             String user_id=auth.getCurrentUser().getUid();
             DatabaseReference id_db = database.child(user_id);
+            String nama1="0";
+            String nama2="0";
+            String nama3="0";
+
+            for (int i=0; i<namasertif.size();i++ ){
+                if(i==0){
+                    nama1=namasertif.get(i);
+                }
+                else{
+                    nama1=nama1+", "+namasertif.get(i);
+                }
+            }
+            for (int i=0; i<namasertifmar.size();i++ ){
+                if(i==0){
+                    nama2=namasertifmar.get(i);
+                }
+                else{
+                    nama2=nama2+", "+namasertifmar.get(i);
+                }
+            }
+            for (int i=0; i<namasertiftof.size();i++ ){
+                if(i==0){
+                    nama3=namasertiftof.get(i);
+                }
+                else{
+                    nama3=nama3+", "+namasertiftof.get(i);
+                }
+            }
+
             id_db.child("namalengkap").setValue(nmlkp);
             id_db.child("namapanggilan").setValue(nmpgl);
             id_db.child("noktp").setValue(nomktp);
@@ -411,7 +686,10 @@ public class VerifActivity extends AppCompatActivity {
             id_db.child("spesifikasi5").setValue(spek5);
             id_db.child("spesifikasi6").setValue(spek6);
             id_db.child("posisi").setValue(posisi);
-            id_db.child("sertifikasi").setValue(name);
+            id_db.child("sertifikasi").setValue(nama1);
+            id_db.child("sertifikasimarine").setValue(nama2);
+            id_db.child("sertifikasitoefl").setValue(nama3);
+            id_db.child("sertifikasiijasah").setValue(name3);
             id_db.child("profil").setValue(name2);
             id_db.child("status").setValue(1);
             id_db.child("acc").setValue(0);
@@ -426,7 +704,15 @@ public class VerifActivity extends AppCompatActivity {
             startActivity(pindahtunggu);
         }
         else {
-            nmlengkap.setError("huhu");
+            if(filesertif.size()==0){
+                sertif.setError("Sertifikasi harus diisi");
+            }
+            if(filePath2==null){
+                profil.setError("Profil harus diisi");
+            }
+            if(filesertifj==null){
+                sertifij.setError("Ijazah harus diisi");
+            }
         }
     }
 }

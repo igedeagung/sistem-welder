@@ -497,6 +497,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("pos", pos);
                 pindahh.putExtra("key", pessan);
                 pindahh.putExtra("jumlahnya", "jumlah1");
+                pindahh.putExtra("marine", jenis.getText().toString());
                 startActivity(pindahh);
             }
         });
@@ -510,6 +511,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("pos", pos);
                 pindahh.putExtra("key", pessan);
                 pindahh.putExtra("jumlahnya", "jumlah2");
+                pindahh.putExtra("marine", jenis.getText().toString());
                 startActivity(pindahh);
             }
         });
@@ -627,6 +629,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("pos", pos);
                 pindahh.putExtra("key", pessan);
                 pindahh.putExtra("jumlahnya", "jumlah3");
+                pindahh.putExtra("marine", jenis.getText().toString());
                 startActivity(pindahh);
             }
         });
@@ -640,6 +643,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("pos", pos);
                 pindahh.putExtra("key", pessan);
                 pindahh.putExtra("jumlahnya", "jumlah4");
+                pindahh.putExtra("marine", jenis.getText().toString());
                 startActivity(pindahh);
             }
         });
@@ -653,6 +657,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("pos", pos);
                 pindahh.putExtra("key", pessan);
                 pindahh.putExtra("jumlahnya", "jumlah5");
+                pindahh.putExtra("marine", jenis.getText().toString());
                 startActivity(pindahh);
             }
         });
