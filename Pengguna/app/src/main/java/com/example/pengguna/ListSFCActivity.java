@@ -134,7 +134,7 @@ public class ListSFCActivity extends AppCompatActivity {
             pesan2="Kapal";
             pesan3="Kapal Ferro";
         }
-        if(pesan.equals("Kapal Non Ferro")){
+        if(pesan.equals("Kapal Aluminium")){
             ctr.clone(constraintt);
             ctr.connect(R.id.button3, ConstraintSet.BOTTOM, R.id.parentt, ConstraintSet.BOTTOM, 450);
             ctr.applyTo(constraintt);
@@ -146,7 +146,7 @@ public class ListSFCActivity extends AppCompatActivity {
 
             pesan1="Konstruksi Maritim";
             pesan2="Kapal";
-            pesan3="Kapal Non Ferro";
+            pesan3="Kapal Aluminium";
         }
         if(pesan.equals("Onshore/Offshore")){
             ctr.clone(constraintt);

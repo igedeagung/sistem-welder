@@ -47,7 +47,6 @@ public class FCAWActivity extends AppCompatActivity {
     private DatabaseReference database;
     private String uid;
     private long beda;
-    private ProgressDialog diialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,13 +116,8 @@ public class FCAWActivity extends AppCompatActivity {
                 EditText alama=findViewById(R.id.editText24);
                 String alamat=alama.getText().toString();
 
-                diialog= new ProgressDialog(FCAWActivity.this);
-                diialog.setMessage("Tunggu Sebentar");
-                diialog.setCancelable(false);
-                diialog.show();
 
                 if(TextUtils.isEmpty(alamat)){
-                    diialog.dismiss();
                     alama.setError("Alamat harus diisi");
                     alama.requestFocus();
                     return;
@@ -147,9 +141,14 @@ public class FCAWActivity extends AppCompatActivity {
                 String status="0";
                 String nilai="0";
                 String bdh=Long.toString(beda);
-                submitProyek(new Proyek("0",nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
+
+                Proyek proyeku=new Proyek(nilai, bdh, status, alamat, jenisproyek, namaproyek, tipe, proyek1,proyek2, proyek3, proyek4, proyek5,
                         jumlah1f, jumlah2f, jumlah3f, jumlah4f, jumlah5f, jumlah1,
-                        jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid));
+                        jumlah2, jumlah3, jumlah4, jumlah5,tmul, tsel, hargaa, uid, wid);
+                Intent pindah= new Intent(FCAWActivity.this, KonfPesanActivity.class);
+                pindah.putExtra("proyek",proyeku);
+                startActivity(pindah);;
+
             }
         });
 
@@ -385,18 +384,6 @@ public class FCAWActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-    private void submitProyek(Proyek proyek) {
-        database.push().setValue(proyek).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                diialog.dismiss();
-                Intent pinda=new Intent(FCAWActivity.this, MainActivity.class);
-                pinda.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(pinda);
-                Toast.makeText(getApplicationContext(),"Data berhasil ditambahkan", Toast.LENGTH_SHORT ).show();
-            }
-        });
     }
 }
 

@@ -29,7 +29,7 @@ public class KapalActivity extends AppCompatActivity {
     }
     public void pindahnonferro(View view){
         Intent towelder= new Intent(KapalActivity.this, ListSFCActivity.class);
-        towelder.putExtra("test2", "Kapal Non Ferro");
+        towelder.putExtra("test2", "Kapal Aluminium");
         startActivity(towelder);
     }
 }

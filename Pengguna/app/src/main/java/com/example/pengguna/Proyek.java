@@ -33,6 +33,11 @@ public class Proyek implements Serializable{
     private String status;
     private String bedahari;
     private String pakaimesin;
+    private String hargamesin;
+    private String hargatransport;
+    private String hargaako;
+    private String alamako;
+    private String hargatotal;
 
     public Proyek()
     {
@@ -42,6 +47,36 @@ public class Proyek implements Serializable{
     }
     public void setPakaimesin(String pakaimesin) {
         this.pakaimesin = pakaimesin;
+    }
+    public String getHargamesin() {
+        return hargamesin;
+    }
+    public void setHargamesin(String hargamesin) {
+        this.hargamesin = hargamesin;
+    }
+    public String getHargatransport() {
+        return hargatransport;
+    }
+    public void setHargatransport(String hargatransport) {
+        this.hargatransport = hargatransport;
+    }
+    public String getHargaako() {
+        return hargaako;
+    }
+    public void setHargaako(String hargaako) {
+        this.hargaako = hargaako;
+    }
+    public String getAlamako() {
+        return alamako;
+    }
+    public void setAlamako(String alamako) {
+        this.alamako = alamako;
+    }
+    public String getHargatotal() {
+        return hargatotal;
+    }
+    public void setHargatotal(String hargatotal) {
+        this.hargatotal = hargatotal;
     }
     public String getSudahnilai() {
         return sudahnilai;
@@ -233,6 +268,10 @@ public class Proyek implements Serializable{
                 "" +tipe+"" +
                 "" +sudahnilai+"" +
                 "" +pakaimesin+"" +
+                "" +hargamesin+"" +
+                "" +hargatransport+"" +
+                "" +hargaako+"" +
+                "" +alamako+"" +
                 "" +alamat+"" +
                 "" +bedahari+"" +
                 "" +status+"" +
@@ -257,12 +296,11 @@ public class Proyek implements Serializable{
                 "" +uid+"" +
                 "" +wid;
     }
-    public Proyek(String pkm, String nl,String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
+    public Proyek(String nl,String bdh, String stts, String almt,String jnsprk, String nmprk, String tp,String p1, String p2, String p3, String p4,String p5,String j1f,
                   String j2f, String j3f, String j4f, String j5f,String j1,
                   String j2, String j3, String j4, String j5, String tm, String ts, String hg,
                   String ui, String wi)
     {
-        pakaimesin=pkm;
         sudahnilai=nl;
         bedahari=bdh;
         status=stts;

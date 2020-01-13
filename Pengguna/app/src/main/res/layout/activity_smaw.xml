@@ -169,6 +169,7 @@
         android:id="@+id/editText11"
         android:layout_width="150sp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@android:color/white"
         android:clickable="true"
         android:ems="10"
@@ -177,7 +178,7 @@
         android:inputType="textPersonName"
         android:text="@string/tanggal_selesai"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent" />
@@ -186,6 +187,7 @@
         android:id="@+id/editText10"
         android:layout_width="150sp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@android:color/white"
         android:clickable="true"
         android:ems="10"
@@ -194,7 +196,7 @@
         android:inputType="textPersonName"
         android:text="@string/tanggal_mulai"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toStartOf="@+id/editText11"
         app:layout_constraintHorizontal_bias="0.597"
         app:layout_constraintStart_toStartOf="parent" />
@@ -380,18 +382,6 @@
         android:textColorHint="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="Pakai Mesin SMAW"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.167"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

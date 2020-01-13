@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="1dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="15dp"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/textView97"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="11dp" />
+        <TextView
+            android:id="@+id/textView98"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="20dp"
+            android:textColor="@android:color/black"
+            android:textSize="11dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/imageButton42"
+        android:layout_width="30sp"
+        android:layout_height="20sp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/buttton"
+        android:text="-"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/imageButton43"
+        android:layout_width="30sp"
+        android:layout_height="20sp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="150dp"
+        android:background="@drawable/buttton"
+        android:text="+"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/textView116"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="120dp"
+        android:text="0" />
+
+    <Button
+        android:id="@+id/button40"
+        android:layout_width="30sp"
+        android:layout_height="20sp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/buttton"
+        android:enabled="false"
+        android:text="@android:string/ok"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/textView117"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="false"
+        android:layout_marginStart="250sp"
+        android:layout_marginTop="100sp"
+        android:text="@string/rp" />
+
+    <TextView
+        android:id="@+id/textView118"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="false"
+        android:layout_marginStart="280sp"
+        android:layout_marginTop="100sp"
+        android:text="@string/_0" />
+</RelativeLayout>
