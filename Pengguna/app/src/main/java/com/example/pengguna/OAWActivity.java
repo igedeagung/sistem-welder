@@ -1,7 +1,9 @@
 package com.example.pengguna;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -43,6 +45,7 @@ public class OAWActivity extends AppCompatActivity {
     private long beda;
     private int flay=0;
     private int jumlh=0;
+    private EditText alama;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,16 @@ public class OAWActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         hargaField=findViewById(R.id.textView94);
+
+        alama=findViewById(R.id.editText32);
+        alama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(OAWActivity.this, MapsActivity.class);
+                startActivityForResult(i, 70);
+            }
+        });
+
         balik=findViewById(R.id.button34);
         balik.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +108,6 @@ public class OAWActivity extends AppCompatActivity {
                 String tmul=mulai.getText().toString();
                 String tsel=selesai.getText().toString();
                 String tipe="OAW";
-                EditText alama=findViewById(R.id.editText32);
                 String alamat=alama.getText().toString();
 
                 if(TextUtils.isEmpty(alamat)){
@@ -235,6 +247,19 @@ public class OAWActivity extends AppCompatActivity {
             } catch (ParseException e) {              // Insert this block.
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case (70):{
+                if(resultCode== Activity.RESULT_OK){
+                    String newal=data.getStringExtra("alamat");
+                    alama.setText(newal);
+                }
+                break;
             }
         }
     }

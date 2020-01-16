@@ -1,5 +1,6 @@
 package com.example.welder;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import android.view.View;
 import android.view.Menu;
@@ -25,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private int flag=1;
@@ -33,11 +36,36 @@ public class MainActivity extends AppCompatActivity {
     private int flag1, flag2;
     private ProgressBar pgb;
 
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+
+    // GPSTracker class
+    GPSTracker gps;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        // create class object
+//        gps = new GPSTracker(MainActivity.this);
+//
+//        // check if GPS enabled
+//        if(gps.canGetLocation()){
+//
+//            double latitude = gps.getLatitude();
+//            double longitude = gps.getLongitude();
+//
+//            // \n is for new line
+//            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
+//                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+//        }else{
+//            // can't get location
+//            // GPS or Network is not enabled
+//            // Ask user to enable GPS/network in settings
+//            gps.showSettingsAlert();
+//        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

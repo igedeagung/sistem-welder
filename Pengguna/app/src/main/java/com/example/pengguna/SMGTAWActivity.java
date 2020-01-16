@@ -1,9 +1,11 @@
 package com.example.pengguna;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -48,6 +50,7 @@ public class SMGTAWActivity extends AppCompatActivity {
     private DatabaseReference database;
     private String uid;
     private long beda;
+    private EditText alama;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,16 @@ public class SMGTAWActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference().child("Proyek");
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         hargaField=findViewById(R.id.textView55);
+
+        alama=findViewById(R.id.editText31);
+        alama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(SMGTAWActivity.this, MapsActivity.class);
+                startActivityForResult(i, 70);
+            }
+        });
+
         balik=findViewById(R.id.button31);
         balik.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +128,7 @@ public class SMGTAWActivity extends AppCompatActivity {
                 String jumlah5f=jumlah5;
                 String hargaa=hargaField.getText().toString();
                 String wid="0";
-                EditText alama=findViewById(R.id.editText31);
+
                 String alamat=alama.getText().toString();
                 if(TextUtils.isEmpty(alamat)){
                     alama.setError("Alamat harus diisi");
@@ -422,6 +435,19 @@ public class SMGTAWActivity extends AppCompatActivity {
             } catch (ParseException e) {              // Insert this block.
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case (70):{
+                if(resultCode== Activity.RESULT_OK){
+                    String newal=data.getStringExtra("alamat");
+                    alama.setText(newal);
+                }
+                break;
             }
         }
     }

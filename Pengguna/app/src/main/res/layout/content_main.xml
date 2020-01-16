@@ -38,13 +38,13 @@
         android:id="@+id/button26"
         android:layout_width="161sp"
         android:layout_height="50sp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="200dp"
         android:background="@drawable/buttton"
         android:onClick="pindah2"
         android:text="Lihat Proyek"
         android:textColor="@android:color/white"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/button39"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -58,17 +58,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button39"
-        android:layout_width="161sp"
-        android:layout_height="50sp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/buttton"
-        android:onClick="pindah3"
-        android:text="Helper"
-        android:textColor="@android:color/white"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

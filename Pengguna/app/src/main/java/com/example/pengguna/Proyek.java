@@ -34,6 +34,8 @@ public class Proyek implements Serializable{
     private String bedahari;
     private String pakaimesin;
     private String hargamesin;
+    private String hargahelper;
+    private String helper;
     private String hargatransport;
     private String hargaako;
     private String alamako;
@@ -41,6 +43,18 @@ public class Proyek implements Serializable{
 
     public Proyek()
     {
+    }
+    public String getHelper() {
+        return helper;
+    }
+    public void setHelper(String helper) {
+        this.helper = helper;
+    }
+    public void setHargahelper(String hargahelper) {
+        this.hargahelper = hargahelper;
+    }
+    public String getHargahelper() {
+        return hargahelper;
     }
     public String getPakaimesin() {
         return pakaimesin;

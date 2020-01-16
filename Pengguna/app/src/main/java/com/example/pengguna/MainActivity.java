@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
                         button.setVisibility(View.VISIBLE);
                         Button button2 =findViewById(R.id.jenisproyek);
                         button2.setVisibility(View.VISIBLE);
-                        Button button3 =findViewById(R.id.button39);
-                        button3.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -87,11 +85,6 @@ public class MainActivity extends AppCompatActivity {
     public void pindah2(View v){
         Intent pindahjenis=new Intent(MainActivity.this, LihatProyekActivity.class);
         startActivity(pindahjenis);
-    }
-
-    public void pindah3(View v){
-        Intent pindahjeni=new Intent(MainActivity.this, HelperActivity.class);
-        startActivity(pindahjeni);
     }
 
     @Override

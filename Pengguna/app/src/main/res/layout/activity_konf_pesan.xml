@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/buttton"
     tools:context=".KonfPesanActivity">
 
@@ -11,14 +14,78 @@
         android:id="@+id/textView119"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:text="Konfirmasi Pemesanan"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout22"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout23"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/frameLayout23"
+        android:layout_width="330sp"
+        android:layout_height="100sp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/buttton2"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout22"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130sp"
+            android:layout_marginTop="20sp"
+            android:text="Helper"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="50sp"
+            android:background="@drawable/buttton2"
+            app:srcCompat="@drawable/minus" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100sp"
+            android:layout_marginTop="50sp"
+            android:background="@drawable/buttton2"
+            app:srcCompat="@drawable/add" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70sp"
+            android:layout_marginTop="52sp"
+            android:text="@string/_0" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200sp"
+            android:layout_marginTop="52sp"
+            android:text="@string/rp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="230sp"
+            android:layout_marginTop="52sp"
+            android:text="@string/_0"
+            android:textColor="@color/colorSecondary" />
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/frameLayout22"
@@ -79,7 +146,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="230sp"
             android:layout_marginTop="52sp"
-            android:text="@string/_0" />
+            android:text="@string/_0"
+            android:textColor="@color/colorSecondary" />
     </FrameLayout>
 
     <FrameLayout
@@ -127,6 +195,7 @@
             android:layout_marginTop="45sp"
             android:ems="10"
             android:inputType="number"
+            android:textColor="@color/colorSecondary"
             android:textSize="14sp" />
     </FrameLayout>
 
@@ -153,6 +222,9 @@
             android:id="@+id/textView129"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="false"
+            android:importantForAutofill="no"
             android:layout_marginStart="20sp"
             android:layout_marginTop="50sp"
             android:text="Alamat" />
@@ -192,6 +264,7 @@
             android:layout_marginTop="70sp"
             android:ems="10"
             android:inputType="number"
+            android:textColor="@color/colorSecondary"
             android:textSize="14sp" />
     </FrameLayout>
 
@@ -227,7 +300,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="230sp"
             android:layout_marginTop="30sp"
-            android:text="@string/_0" />
+            android:text="@string/_0"
+            android:textColor="@color/colorSecondary" />
     </FrameLayout>
 
     <FrameLayout
@@ -262,7 +336,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="230sp"
             android:layout_marginTop="15sp"
-            android:text="@string/_0" />
+            android:text="@string/_0"
+            android:textColor="@color/colorSecondary" />
     </FrameLayout>
 
     <Button
@@ -290,3 +365,4 @@
         app:layout_constraintStart_toEndOf="@+id/button41" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,7 +1,9 @@
 package com.example.pengguna;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,14 +24,17 @@ import java.util.Locale;
 
 public class KonfPesanActivity extends AppCompatActivity {
     private int count=0;
+    private int counthp=0;
     private int counttrans=0;
     private int countako=0;
     private TextView hargatotal;
     private Proyek proyeku;
     private int hargamesin=0;
+    private int perhar=0;
     private int hargatottal;
     private String alamatko="0";
     private ProgressDialog diialog;
+    private EditText alamakom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,32 @@ public class KonfPesanActivity extends AppCompatActivity {
         hargatotal=findViewById(R.id.textView137);
         hargatotal.setText(proyeku.getHarga());
         hargatottal=Integer.parseInt(proyeku.getHarga().replace(".", ""));
+
+        final TextView jumlh=findViewById(R.id.textView4);
+
+        ImageButton minhp=findViewById(R.id.imageButton2);
+        minhp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (counthp>0){
+                    counthp--;
+                    jumlh.setText(Integer.toString(counthp));
+                    updatehargahp();
+                    update();
+                }
+            }
+        });
+
+        ImageButton plushp=findViewById(R.id.imageButton3);
+        plushp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                counthp++;
+                jumlh.setText(Integer.toString(counthp));
+                updatehargahp();
+                update();
+            }
+        });
 
         final TextView juml=findViewById(R.id.textView122);
 
@@ -122,26 +153,12 @@ public class KonfPesanActivity extends AppCompatActivity {
             }
         });
 
-        final EditText alamakom=findViewById(R.id.editText34);
-        alamakom.addTextChangedListener(new TextWatcher() {
+        alamakom=findViewById(R.id.editText34);
+        alamakom.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(alamakom.getText().toString().equals("")){
-                    alamatko="0";
-                }
-                else{
-                    alamatko=alamakom.getText().toString();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View v) {
+                Intent i=new Intent(KonfPesanActivity.this, MapsActivity.class);
+                startActivityForResult(i, 70);
             }
         });
 
@@ -161,8 +178,20 @@ public class KonfPesanActivity extends AppCompatActivity {
                     proyeku.setPakaimesin("0");
                     proyeku.setHargamesin("0");
                 }
+                if(counthp>0){
+                    proyeku.setHelper(Integer.toString(counthp));
+                    proyeku.setHargahelper(Integer.toString(perhar));
+                }
+                else{
+                    proyeku.setHelper("0");
+                    proyeku.setHargahelper("0");
+                }
                 proyeku.setHargatransport(Integer.toString(counttrans));
                 proyeku.setHargaako(Integer.toString(countako));
+                alamatko=alamakom.getText().toString();
+                if(alamatko.equals("")){
+                    alamatko="0";
+                }
                 proyeku.setAlamako(alamatko);
                 proyeku.setHargatotal(Integer.toString(hargatottal));
 
@@ -189,6 +218,29 @@ public class KonfPesanActivity extends AppCompatActivity {
 
     }
 
+    public void updatehargahp(){
+        TextView hargahp=findViewById(R.id.textView6);
+
+        if(proyeku.getNamaproyek().equals("Steel Structure")||proyeku.getNamaproyek().equals("Storage Tank")){
+            perhar=80000;
+        }
+        if(proyeku.getNamaproyek().contains("Kapal") ||proyeku.getNamaproyek().equals("Stainless Steel")||proyeku.getNamaproyek().equals("Carbon Steel")||proyeku.getNamaproyek().equals("Pressure Tank")){
+            perhar=96000;
+        }
+        if(proyeku.getNamaproyek().equals("Offshore/Onshore")){
+            perhar=144000;
+        }
+        if(proyeku.getNamaproyek().equals("Non Ferro")){
+            perhar=120000;
+        }
+        if(proyeku.getNamaproyek().equals("Las Umum")){
+            perhar=100000;
+        }
+        int hargas=(counthp*perhar)*Integer.parseInt(proyeku.getBedahari());
+        NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+        String aa=nf3.format(hargas);
+        hargahp.setText(aa);
+    }
     public void updateharga(){
         TextView hargamessin=findViewById(R.id.textView124);
         if(proyeku.getTipe().equals("SMAW")){
@@ -204,7 +256,9 @@ public class KonfPesanActivity extends AppCompatActivity {
             hargamesin=0;
         }
         int hargas=(count*hargamesin)*Integer.parseInt(proyeku.getBedahari());
-        hargamessin.setText(Integer.toString(hargas));
+        NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+        String aa=nf3.format(hargas);
+        hargamessin.setText(aa);
     }
     public void update(){
 
@@ -220,9 +274,38 @@ public class KonfPesanActivity extends AppCompatActivity {
         else{
             hargamesin=0;
         }
-        hargatottal=(hargamesin*count+countako+counttrans)*Integer.parseInt(proyeku.getBedahari())+Integer.parseInt(proyeku.getHarga().replace(".",""));
+        if(proyeku.getJenisproyek().equals("Steel Structure")||proyeku.getJenisproyek().equals("Storage Tank")){
+            perhar=80000;
+        }
+        if(proyeku.getJenisproyek().contains("Kapal") ||proyeku.getJenisproyek().equals("Stainless Steel")||proyeku.getJenisproyek().equals("Carbon Steel")||proyeku.getJenisproyek().equals("Pressure Tank")){
+            perhar=96000;
+        }
+        if(proyeku.getJenisproyek().equals("Offshore/Onshore")){
+            perhar=144000;
+        }
+        if(proyeku.getJenisproyek().equals("Non Ferro")){
+            perhar=120000;
+        }
+        if(proyeku.getJenisproyek().equals("Las Umum")){
+            perhar=100000;
+        }
+        hargatottal=((hargamesin*count)+(perhar*counthp))*Integer.parseInt(proyeku.getBedahari())+Integer.parseInt(proyeku.getHarga().replace(".",""))+countako+counttrans;
         NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
         String aa=nf3.format(hargatottal);
         hargatotal.setText(aa);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case (70):{
+                if(resultCode== Activity.RESULT_OK){
+                    String newal=data.getStringExtra("alamat");
+                    alamakom.setText(newal);
+                }
+                break;
+            }
+        }
     }
 }

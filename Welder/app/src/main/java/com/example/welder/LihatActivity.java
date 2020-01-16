@@ -583,6 +583,20 @@ public class LihatActivity extends AppCompatActivity {
         btntrima.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("jumlahproyek").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String key;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        key=dataSnapshot.getValue().toString();
+                        int upd=Integer.parseInt(key)+1;
+                        FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("jumlahproyek").setValue(Integer.toString(upd));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("terima").setValue("1");
                 FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("pid").addListenerForSingleValueEvent(new ValueEventListener() {
                     String key;

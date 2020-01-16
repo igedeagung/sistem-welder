@@ -3,6 +3,9 @@ package com.example.admin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,14 +13,22 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import static android.os.Build.VERSION_CODES.M;
+import java.lang.Math;
 
 public class CariWelderActivity extends AppCompatActivity {
 
@@ -71,102 +82,137 @@ public class CariWelderActivity extends AppCompatActivity {
         if(pessan.equals("OAW")){
             spekk="spesifikasi6";
         }
-        DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders");
 
-        res.orderByChild(spekk).equalTo(pessan).addValueEventListener(new ValueEventListener() {
-            String acc;
-            String sibuk;
-            String pos;
-            String flagmar="0";
-            ArrayList<String> hasil=new ArrayList<>();
-            ArrayList<String> hasil2=new ArrayList<>();
-            ArrayList<String> hasil3=new ArrayList<>();
-            ProgressBar barbar=findViewById(R.id.progressBar3);
 
+        FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan3).child("alamat").addValueEventListener(new ValueEventListener() {
+            String keya;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                hasil.clear();
-                hasil2.clear();
-                hasil3.clear();
-                for(DataSnapshot post : dataSnapshot.getChildren() ){
-                    // Iterate through all posts with the same author
-                    acc=post.child("acc").getValue().toString();
-                    sibuk=post.child("pid").getValue().toString();
-                    pos=post.child("posisi").getValue().toString();
-                    if(post.child("sertifikasimarine").exists()){
-                        flagmar=post.child("sertifikasimarine").getValue().toString();
-                    }
+                keya=dataSnapshot.getValue().toString();
+                final LatLng loc1=getLocationFromAddress(getApplicationContext(), keya);
 
-                    if(pos.contains("6GR")){
-                        flagg=3;
-                    }
-                    else if(pos.contains("6G")){
-                        flagg=2;
-                    }
-                    else{
-                        flagg=1;
-                    }
-                    if(pessan.equals("OAW")){
-                        if(acc.equals("1")&&sibuk.equals("0")){
-                            hasil.add(post.child("namalengkap").getValue().toString());
-                            hasil2.add(post.child("alamatlengkap").getValue().toString());
-                            hasil3.add(post.getKey());
-                        }
-                    }
-                    else{
-                        if(marine.equals("Konstruksi Maritim")){
-                            if(!flagmar.equals("0")){
-                                if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                                    hasil.add(post.child("namalengkap").getValue().toString());
-                                    hasil2.add(post.child("alamatlengkap").getValue().toString());
-                                    hasil3.add(post.getKey());
+                DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders");
+                res.orderByChild(spekk).equalTo(pessan).addValueEventListener(new ValueEventListener() {
+                    String acc;
+                    String sibuk;
+                    String pos;
+
+                    String alamats;
+                    String flagmar="0";
+                    ArrayList<String> hasil=new ArrayList<>();
+                    ArrayList<String> hasil2=new ArrayList<>();
+                    ArrayList<String> hasil3=new ArrayList<>();
+                    ArrayList<String> hasil4=new ArrayList<>();
+                    ArrayList<String> hasiljarak=new ArrayList<>();
+                    ProgressBar barbar=findViewById(R.id.progressBar3);
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        hasil.clear();
+                        hasil2.clear();
+                        hasil3.clear();
+                        for(DataSnapshot post : dataSnapshot.getChildren() ){
+                            // Iterate through all posts with the same author
+                            acc=post.child("acc").getValue().toString();
+                            sibuk=post.child("pid").getValue().toString();
+                            pos=post.child("posisi").getValue().toString();
+                            alamats=post.child("alamatdomisili").getValue().toString();
+                            LatLng loc2=getLocationFromAddress(getApplicationContext(), alamats);
+
+                            if(post.child("sertifikasimarine").exists()){
+                                flagmar=post.child("sertifikasimarine").getValue().toString();
+                            }
+
+                            if(pos.contains("6GR")){
+                                flagg=3;
+                            }
+                            else if(pos.contains("6G")){
+                                flagg=2;
+                            }
+                            else{
+                                flagg=1;
+                            }
+                            if(pessan.equals("OAW")){
+                                if(acc.equals("1")&&sibuk.equals("0")){
+                                    double bedajrk=1000000-distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
+                                    DecimalFormat df= new DecimalFormat("0000000.00");
+                                    String formatt=df.format(bedajrk);
+
+                                    hasiljarak.add(formatt);
+
+                                    hasil4.add(post.child("jumlahproyek").getValue().toString()+"-"+formatt+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                }
+                            }
+                            else{
+                                if(marine.equals("Konstruksi Maritim")){
+                                    if(!flagmar.equals("0")){
+                                        if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                            double bedajrk=1000000-distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
+                                            DecimalFormat df= new DecimalFormat("0000000.00");
+                                            String formatt=df.format(bedajrk);
+
+                                            hasiljarak.add(formatt);
+
+                                            hasil4.add(post.child("jumlahproyek").getValue().toString()+"-"+formatt+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                        double bedajrk=1000000-distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
+                                        DecimalFormat df= new DecimalFormat("0000000.00");
+                                        String formatt=df.format(bedajrk);
+
+                                        hasiljarak.add(formatt);
+
+                                        hasil4.add(post.child("jumlahproyek").getValue().toString()+"-"+formatt+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                    }
                                 }
                             }
                         }
-                        else{
-                            if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                                hasil.add(post.child("namalengkap").getValue().toString());
-                                hasil2.add(post.child("alamatlengkap").getValue().toString());
-                                hasil3.add(post.getKey());
+                        if(hasil4.size()>0){
+                            int i ;
+                            Collections.sort(hasil4, Collections.<String>reverseOrder());
+
+                            for(int k=0; k<hasil4.size(); k++){
+                                String[] hsl=hasil4.get(k).split("-");
+                                hasil.add(hsl[2]);
+                                hasil2.add(hsl[3]);
+                                hasil3.add(hsl[4]);
                             }
+
+                            item3=pessan3;
+                            item5=julah;
+
+                            lisst=findViewById(R.id.lilis);
+
+                            customAdapter=new CustomAdapter2(getApplicationContext(), hasil2, hasil, item3, hasil3, item5);
+                            customAdapter.notifyDataSetChanged();
+                            barbar.setVisibility(View.INVISIBLE);
+                            if(lisst.getAdapter()==null){
+                                lisst.setAdapter(customAdapter);
+                            }
+                            else{
+                                customAdapter.notifyDataSetChanged();
+                                lisst.setAdapter(customAdapter);
+                            }
+
+
+                        }
+                        else{
+                            LinearLayout leyut=findViewById(R.id.linearLayout2);
+                            leyut.setVisibility(View.INVISIBLE);
+                            barbar.setVisibility(View.INVISIBLE);
+                            TextView kosong =findViewById(R.id.textView43);
+                            kosong.setVisibility(View.VISIBLE);
                         }
                     }
-                }
-                if(hasil.size()>0){
-                    int i ;
-                    item=new String[hasil.size()];
-                    item2=new String[hasil2.size()];
-                    item3=pessan3;
-                    item4=new String[hasil3.size()];
-                    item5=julah;
 
-                    for(i=0; i<hasil.size(); i++){
-                        item[i]=hasil.get(i);
-                        item2[i]=hasil2.get(i);
-                        item4[i]=hasil3.get(i);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
-                    lisst=findViewById(R.id.lilis);
-
-                    customAdapter=new CustomAdapter2(getApplicationContext(), hasil2, hasil, item3, hasil3, item5);
-                    customAdapter.notifyDataSetChanged();
-                    barbar.setVisibility(View.INVISIBLE);
-                    if(lisst.getAdapter()==null){
-                        lisst.setAdapter(customAdapter);
-                    }
-                    else{
-                        customAdapter.notifyDataSetChanged();
-                        lisst.setAdapter(customAdapter);
-                    }
-
-
-                }
-                else{
-                    LinearLayout leyut=findViewById(R.id.linearLayout2);
-                    leyut.setVisibility(View.INVISIBLE);
-                    barbar.setVisibility(View.INVISIBLE);
-                    TextView kosong =findViewById(R.id.textView43);
-                    kosong.setVisibility(View.VISIBLE);
-                }
+                });
             }
 
             @Override
@@ -175,8 +221,47 @@ public class CariWelderActivity extends AppCompatActivity {
             }
         });
 
+
 //        TextView tex=findViewById(R.id.textView42);
 //        tex.setText(pessan);
     }
 
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+    public double distance (double lat_a, double lng_a, double lat_b, double lng_b )
+    {
+        double earthRadius = 3958.75;
+        double latDiff = Math.toRadians(lat_b-lat_a);
+        double lngDiff = Math.toRadians(lng_b-lng_a);
+        double a = Math.sin(latDiff /2) * Math.sin(latDiff /2) +
+                Math.cos(Math.toRadians(lat_a)) * Math.cos(Math.toRadians(lat_b)) *
+                        Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double distance = earthRadius * c;
+
+        int meterConversion = 1609;
+
+        return new Double(distance * meterConversion).doubleValue();
+    }
 }

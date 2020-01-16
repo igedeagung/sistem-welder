@@ -73,7 +73,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="35dp"
         android:layout_marginEnd="120dp"
-        android:text="0" />
+        android:text="0"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/button40"
@@ -97,7 +99,9 @@
         android:layout_alignParentEnd="false"
         android:layout_marginStart="250sp"
         android:layout_marginTop="100sp"
-        android:text="@string/rp" />
+        android:text="@string/rp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textView118"
@@ -107,5 +111,7 @@
         android:layout_alignParentEnd="false"
         android:layout_marginStart="280sp"
         android:layout_marginTop="100sp"
-        android:text="@string/_0" />
+        android:text="@string/_0"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 </RelativeLayout>

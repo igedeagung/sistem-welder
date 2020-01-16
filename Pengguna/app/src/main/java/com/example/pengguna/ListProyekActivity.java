@@ -27,11 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ListProyekActivity extends AppCompatActivity {
     private TextView owener;
@@ -170,7 +172,134 @@ public class ListProyekActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 key=dataSnapshot.getValue().toString();
                 TextView liew=findViewById(R.id.textView90);
-                liew.setText(key);
+                NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                String aa=nf3.format(Integer.parseInt(key.replace(".", "")));
+                liew.setText(aa);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("hargahelper").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                }
+                else{
+                    key="0";
+                }
+                TextView liew=findViewById(R.id.textView95);
+                NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                String aa=nf3.format(Integer.parseInt(key.replace(".", "")));
+                liew.setText(aa);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("hargamesin").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                }
+                else{
+                    key="0";
+                }
+                TextView liew=findViewById(R.id.textView97);
+                NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                String aa=nf3.format(Integer.parseInt(key));
+                liew.setText(aa);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref.child("hargatransport").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                }
+                else{
+                    key="0";
+                }
+                TextView liew=findViewById(R.id.textView200);
+                NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                String aa=nf3.format(Integer.parseInt(key));
+                liew.setText(aa);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("hargaako").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                }
+                else{
+                    key="0";
+                }
+                TextView liew=findViewById(R.id.textView202);
+                NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                String aa=nf3.format(Integer.parseInt(key));
+                liew.setText(aa);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("hargatotal").addListenerForSingleValueEvent(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    TextView liew=findViewById(R.id.textView204);
+                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                    String aa=nf3.format(Integer.parseInt(key));
+                    liew.setText(aa);
+                }
+                else{
+                    ref.child("harga").addListenerForSingleValueEvent(new ValueEventListener() {
+                        String keys;
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            keys=dataSnapshot.getValue().toString();
+                            TextView liew=findViewById(R.id.textView204);
+                            NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                            String aa=nf3.format(Integer.parseInt(keys.replace(".", "")));
+                            liew.setText(aa);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
             }
 
             @Override
