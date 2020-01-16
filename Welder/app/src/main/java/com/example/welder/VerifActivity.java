@@ -5,6 +5,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
@@ -50,6 +52,7 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VerifActivity extends AppCompatActivity {
+    private Bitmap bitmap;
     private EditText spes;
     private EditText pos;
     private Button sertif;
@@ -113,6 +116,9 @@ public class VerifActivity extends AppCompatActivity {
     private ArrayList<String> namasertifmar=new ArrayList<>();
     private ArrayList<String> namasertiftof=new ArrayList<>();
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private int pick=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,53 +244,40 @@ public class VerifActivity extends AppCompatActivity {
         sertif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder= new AlertDialog.Builder(VerifActivity.this);
-                builder.setTitle("Pilih metode");
-
-                final String[] met={"Kamera", "Galeri"};
-                builder.setItems(met, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(VerifActivity.this, met[which], Toast.LENGTH_SHORT).show();
-                        switch (which){
-                            case 0:
-                                chooseImagee();
-                                break;
-                            case 1:
-                                chooseImage();
-                                break;
-                        }
-                    }
-                });
-                AlertDialog dialog=builder.create();
-                dialog.show();
+                pick=1;
+                alertDialog();
+            }
+        });
+        profil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pick=2;
+                alertDialog();
             }
         });
         sertifmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage3();
+                pick=3;
+                alertDialog();
             }
         });
         sertifij.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage4();
+                pick=4;
+                alertDialog();
             }
         });
         sertiftof.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage5();
+                pick=5;
+                alertDialog();
             }
         });
 
-        profil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage2();
-            }
-        });
+
 
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -346,7 +339,25 @@ public class VerifActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        int imgreq=0;
+        switch (pick){
+            case 1:
+                imgreq=71;
+                break;
+            case 2:
+                imgreq=75;
+                break;
+            case 3:
+                imgreq=76;
+                break;
+            case 4:
+                imgreq=77;
+                break;
+            case 5:
+                imgreq=78;
+                break;
+        }
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), imgreq);
     }
     private void chooseImagee() {
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
@@ -355,53 +366,57 @@ public class VerifActivity extends AppCompatActivity {
         }
         else
         {
+            int imgreq=0;
+            switch (pick){
+                case 1:
+                    imgreq=1888;
+                    break;
+                case 2:
+                    imgreq=1889;
+                    break;
+                case 3:
+                    imgreq=1890;
+                    break;
+                case 4:
+                    imgreq=1891;
+                    break;
+                case 5:
+                    imgreq=1892;
+                    break;
+            }
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, 1888);
+            startActivityForResult(cameraIntent, imgreq);
         }
-    }
-    private void chooseImage2() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 75);
-    }
-    private void chooseImage3() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 76);
-    }
-    private void chooseImage4() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 77);
-    }
-    private void chooseImage5() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 78);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if((requestCode == PICK_IMAGE_REQUEST&& data != null && data.getData() != null ) || requestCode==1888 && resultCode == RESULT_OK)
+        if((requestCode == 71&& data != null && data.getData() != null ) || requestCode==1888 && resultCode == RESULT_OK)
         {
             try {
-                Bitmap bitmap;
+
                 if(requestCode==1888){
                     bitmap = (Bitmap) data.getExtras().get("data");
-                    filePath = getImageUri(VerifActivity.this, bitmap);
-                    filesertif.add(filePath);
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    } else {
+                        filePath = getImageUri(VerifActivity.this, bitmap);
+                        filesertif.add(filePath);
+                    }
                 }
                 else{
                     filePath = data.getData();
                     filesertif.add(filePath);
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 }
+
                 final ImageView imagi=new ImageView(VerifActivity.this);
                 final Button del=new Button(VerifActivity.this);
                 del.setId(juml+1000);
@@ -478,13 +493,31 @@ public class VerifActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if(requestCode == 76 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
+        if((requestCode == 76 && data != null && data.getData() != null )||requestCode==1890&& resultCode == RESULT_OK
+                 )
         {
-            filePath3 = data.getData();
-            filesertifmar.add(filePath3);
+
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath3);
+                if(requestCode==1890){
+                    bitmap = (Bitmap) data.getExtras().get("data");
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    } else {
+                        filePath3 = getImageUri(VerifActivity.this, bitmap);
+                        filesertifmar.add(filePath3);
+                    }
+                }
+                else{
+                    filePath3 = data.getData();
+                    filesertifmar.add(filePath3);
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath3);
+                }
+
                 final ImageView imagi=new ImageView(VerifActivity.this);
                 final Button del=new Button(VerifActivity.this);
                 del.setId(juml2+1000);
@@ -555,12 +588,27 @@ public class VerifActivity extends AppCompatActivity {
             }
         }
 
-        if(requestCode == 77 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
+        if((requestCode == 77&& data != null && data.getData() != null )||requestCode==1891 && resultCode == RESULT_OK)
         {
-            filesertifj = data.getData();
+
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filesertifj);
+                if(requestCode==1891){
+                    bitmap = (Bitmap) data.getExtras().get("data");
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    } else {
+                        filesertifj = getImageUri(VerifActivity.this, bitmap);
+                    }
+                }
+                else{
+                    filesertifj = data.getData();
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filesertifj);
+                }
                 imageView.setImageBitmap(bitmap);
                 imageView.setVisibility(View.VISIBLE);
             }
@@ -570,13 +618,30 @@ public class VerifActivity extends AppCompatActivity {
             }
         }
 
-        if(requestCode == 78 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
+        if((requestCode == 78 && data != null && data.getData() != null) || requestCode==1892 && resultCode == RESULT_OK )
         {
-            filePath4 = data.getData();
-            filesertiftof.add(filePath4);
+
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath4);
+                if(requestCode==1892){
+                    bitmap = (Bitmap) data.getExtras().get("data");
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    } else {
+                        filePath4 = getImageUri(VerifActivity.this, bitmap);
+                        filesertiftof.add(filePath4);
+                    }
+                }
+                else{
+                    filePath4 = data.getData();
+                    filesertiftof.add(filePath4);
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath4);
+                }
+
                 final ImageView imagi=new ImageView(VerifActivity.this);
                 final Button del=new Button(VerifActivity.this);
                 del.setId(juml3+1000);
@@ -647,12 +712,28 @@ public class VerifActivity extends AppCompatActivity {
             }
         }
 
-        if(requestCode == 75 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
+        if((requestCode == 75&& data != null && data.getData() != null)||requestCode==1889  && resultCode == RESULT_OK)
         {
-            filePath2 = data.getData();
+
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath2);
+                if(requestCode==1889){
+                    bitmap = (Bitmap) data.getExtras().get("data");
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    } else {
+                        filePath2 = getImageUri(VerifActivity.this, bitmap);
+                    }
+                }
+                else{
+                    filePath2 = data.getData();
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath2);
+                }
+
                 imageView2.setImageBitmap(bitmap);
             }
             catch (IOException e)
@@ -923,6 +1004,15 @@ public class VerifActivity extends AppCompatActivity {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                filePath=getImageUri(VerifActivity.this, bitmap);
+            } else {
+                // Permission Denied
+                Toast.makeText(VerifActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
     }
 
     public Uri getImageUri(Context incontext, Bitmap inimage){
@@ -931,4 +1021,28 @@ public class VerifActivity extends AppCompatActivity {
         String path=MediaStore.Images.Media.insertImage(incontext.getContentResolver(), inimage, "Title", null);
         return Uri.parse(path);
     }
+
+    public void alertDialog(){
+        AlertDialog.Builder builder= new AlertDialog.Builder(VerifActivity.this);
+        builder.setTitle("Pilih metode");
+
+        final String[] met={"Kamera", "Galeri"};
+        builder.setItems(met, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(VerifActivity.this, met[which], Toast.LENGTH_SHORT).show();
+                switch (which){
+                    case 0:
+                        chooseImagee();
+                        break;
+                    case 1:
+                        chooseImage();
+                        break;
+                }
+            }
+        });
+        AlertDialog dialog=builder.create();
+        dialog.show();
+    }
+
 }
