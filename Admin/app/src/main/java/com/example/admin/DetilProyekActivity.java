@@ -600,7 +600,7 @@ public class DetilProyekActivity extends AppCompatActivity {
             }
         });
 
-        ref.child("jumlah5").addValueEventListener(new ValueEventListener() {
+        ref.child("jumlah5f").addValueEventListener(new ValueEventListener() {
             String key;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

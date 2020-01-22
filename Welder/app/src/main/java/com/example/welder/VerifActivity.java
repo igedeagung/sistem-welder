@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -360,6 +361,7 @@ public class VerifActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), imgreq);
     }
     private void chooseImagee() {
+
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);

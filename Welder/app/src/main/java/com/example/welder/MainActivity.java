@@ -3,9 +3,13 @@ package com.example.welder;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +52,23 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FusedLocationProviderClient mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocation.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null){
+                    Button buton=findViewById(R.id.button4);
+                    buton.setText("Lat : " + location.getLatitude() + " Long : " + location.getLongitude());
+                    // Do it all with location
+                    Log.d("My Current location", "Lat : " + location.getLatitude() + " Long : " + location.getLongitude());
+                    // Display in Toast
+                    Toast.makeText(MainActivity.this,
+                            "Lat : " + location.getLatitude() + " Long : " + location.getLongitude(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
 //        // create class object
 //        gps = new GPSTracker(MainActivity.this);
@@ -81,102 +103,104 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intro);
             finish();
         }
+        else{
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            final DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
+            Button buton=findViewById(R.id.button9);
+            buton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent pindah=new Intent(MainActivity.this, RiwayatActivity.class);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
-        Button buton=findViewById(R.id.button9);
-        buton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pindah=new Intent(MainActivity.this, RiwayatActivity.class);
-
-                startActivity(pindah);
-            }
-        });
-        ref.child("status").addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int keys;
-                keys=dataSnapshot.getValue(int.class);
-                if(keys==0){
-                    pgb.setVisibility(View.INVISIBLE);
-                    Intent pindah= new Intent(MainActivity.this, VerifActivity.class);
                     startActivity(pindah);
-                    finish();
                 }
-                else{
-                    ref.child("acc").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            int keys;
-                            keys=dataSnapshot.getValue(int.class);
-                            if(keys==0){
-                                TextView veww= findViewById(R.id.textView11);
-                                veww.setVisibility(View.VISIBLE);
-                                pgb.setVisibility(View.INVISIBLE);
-                            }
-                            else{
+            });
+            ref.child("status").addValueEventListener(new ValueEventListener(){
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    int keys;
+                    keys=dataSnapshot.getValue(int.class);
+                    if(keys==0){
+                        pgb.setVisibility(View.INVISIBLE);
+                        Intent pindah= new Intent(MainActivity.this, VerifActivity.class);
+                        startActivity(pindah);
+                        finish();
+                    }
+                    else{
+                        ref.child("acc").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                int keys;
+                                keys=dataSnapshot.getValue(int.class);
+                                if(keys==0){
+                                    TextView veww= findViewById(R.id.textView11);
+                                    veww.setVisibility(View.VISIBLE);
+                                    pgb.setVisibility(View.INVISIBLE);
+                                }
+                                else{
 
-                                TextView veww= findViewById(R.id.textView11);
-                                veww.setVisibility(View.GONE);
-                                pgb.setVisibility(View.INVISIBLE);
+                                    TextView veww= findViewById(R.id.textView11);
+                                    veww.setVisibility(View.GONE);
+                                    pgb.setVisibility(View.INVISIBLE);
 
-                                String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                DatabaseReference dabes= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
+                                    String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    DatabaseReference dabes= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
 
-                                dabes.child("pid").addValueEventListener(new ValueEventListener() {
-                                    String key;
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        key=dataSnapshot.getValue().toString();
-                                        if (key.equals("0")){
-                                            Button buton=findViewById(R.id.button9);
-                                            buton.setVisibility(View.VISIBLE);
-                                            TextView veww= findViewById(R.id.textView11);
-                                            veww.setVisibility(View.GONE);
-                                            TextView piew=findViewById(R.id.textView30);
-                                            piew.setVisibility(View.VISIBLE);
-                                            Button lihat=findViewById(R.id.button4);
-                                            lihat.setVisibility(View.GONE);
+                                    dabes.child("pid").addValueEventListener(new ValueEventListener() {
+                                        String key;
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            key=dataSnapshot.getValue().toString();
+                                            if (key.equals("0")){
+                                                Button buton=findViewById(R.id.button9);
+                                                buton.setVisibility(View.VISIBLE);
+                                                TextView veww= findViewById(R.id.textView11);
+                                                veww.setVisibility(View.GONE);
+                                                TextView piew=findViewById(R.id.textView30);
+                                                piew.setVisibility(View.VISIBLE);
+                                                Button lihat=findViewById(R.id.button4);
+                                                lihat.setVisibility(View.GONE);
+                                            }
+                                            else{
+                                                Button buton=findViewById(R.id.button9);
+                                                buton.setVisibility(View.VISIBLE);
+                                                TextView veww= findViewById(R.id.textView11);
+                                                veww.setVisibility(View.GONE);
+                                                TextView piew=findViewById(R.id.textView30);
+                                                piew.setVisibility(View.GONE);
+                                                Button lihat=findViewById(R.id.button4);
+                                                lihat.setVisibility(View.VISIBLE);
+                                                lihat.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Intent pindah=new Intent(MainActivity.this, LihatActivity.class);
+                                                        startActivity(pindah);
+                                                    }
+                                                });
+                                            }
                                         }
-                                        else{
-                                            Button buton=findViewById(R.id.button9);
-                                            buton.setVisibility(View.VISIBLE);
-                                            TextView veww= findViewById(R.id.textView11);
-                                            veww.setVisibility(View.GONE);
-                                            TextView piew=findViewById(R.id.textView30);
-                                            piew.setVisibility(View.GONE);
-                                            Button lihat=findViewById(R.id.button4);
-                                            lihat.setVisibility(View.VISIBLE);
-                                            lihat.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    Intent pindah=new Intent(MainActivity.this, LihatActivity.class);
-                                                    startActivity(pindah);
-                                                }
-                                            });
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                         }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
+                                    });
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.pengguna;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,8 +25,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.security.Timestamp;
 import java.text.NumberFormat;
@@ -410,66 +414,181 @@ public class SMAWActivity extends AppCompatActivity {
         String selesaii= selesai.getText().toString();
 
         Date date=new Date(), date2=new Date();
+        //bila tanggal mulai dan tanggal selesai sudah disetting
         if(!mulaii.equals("Tanggal Mulai") && !selesaii.equals("Tanggal Selesai")){
             try {
                 date = new SimpleDateFormat("yyyy-MM-dd").parse(mulaii);
                 date2 = new SimpleDateFormat("yyyy-MM-dd").parse(selesaii);
-                beda= (date2.getTime()-date.getTime())/86400000;
+                beda= (date2.getTime()-date.getTime())/86400000; //menghitung berapa lama proyek
                 if(beda<0){
                     selesai.setText("Tanggal Selesai");
                     mulai.setText("Tanggal Mulai");
                     hargaField.setText("0");
                 }
                 else {
-                    int hp1=0, hp2=0, hp3=0, hp4=0, hp5=0;
-                    if(fin1.equals("Steel Structure")){
-                        hp1=120000;
-                        hp2=120000;
-                    }
-                    if(fin3.equals("Kapal Ferro")){
-                        hp1=160000;
-                        hp3=160000;
-                        hp2=160000;
-                    }
-                    if (fin2.equals("Onshore/Offshore")){
-                        hp1=480000;
-                        hp3=480000;
-                        hp2=480000;
-                    }
-                    if(fin2.equals("Carbon Steel")){
-                        hp4=240000;
-                        hp5=320000;
-                    }
-                    if(fin2.equals("Stainless Steel")){
-                        hp2=280000;
-                    }
-                    if(fin2.equals("Storage Tank")){
-                        hp3=160000;
-                        hp2=160000;
-                    }
-                    if(fin2.equals("Pressure Tank")){
-                        hp3=280000;
-                    }
 
-                    if(flay==0){
-                        jumlh=0;
-                    }
-                    else{
-                        jumlh=100000;
-                    }
-                    long harga=(hp1*countsf1+hp2*countsf2+hp3*countsf3+hp4*countsf4+hp5*countsf5+jumlh)*beda;
-                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
-                    String aa=nf3.format(harga);
-                    hargaField.setText(aa);
+                    //mendapatkan database welder
+                    FirebaseDatabase.getInstance().getReference().child("Welders").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //menghitung total welder
+                            final double size=(double)dataSnapshot.getChildrenCount();
+                            //mendapatkan database welder yang belum mendapatkan proyek
+                            FirebaseDatabase.getInstance().getReference().child("Welders").orderByChild("pid").equalTo("0").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    //menghitung total welder yang belum mendapatkan proyek
+                                    double size2=(double)dataSnapshot.getChildrenCount();
+                                    //menghitung rasionya
+                                    double rasio=size2/size;
+                                    double hp1=0, hp2=0, hp3=0, hp4=0, hp5=0;
+                                    //bila rasio < 0.2 akan ada kenaikan harga
+                                    if(rasio<0.2){
+                                        //menghitung rasio penambahan
+                                        //contoh: bila rasio 0.15, maka rasio kenaikan harga:
+                                        //1-(0.15/0.2)=1-0.75=0.25
+                                        double persen=1-rasio/0.2;
+                                        if(fin1.equals("Steel Structure")){ //bila proyek Steel Structure
+                                            hp1=(15000+15000*persen)*8; //harga posisi 1G, 2G
+                                            hp2=(15000+15000*persen)*8; //harga posisi 1G, 2G, 3G, 4G
+                                            if(hp1>160000){
+                                                hp1=160000;
+                                            }
+                                            if(hp2>160000){
+                                                hp2=160000;
+                                            }
+                                        }
+                                        if(fin3.equals("Kapal Ferro")){ //bila proyek Kapal Ferro
+                                            hp1=(20000+20000*persen)*8; //harga posisi 1G, 2G
+                                            hp3=(20000+20000*persen)*8;; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            hp2=(20000+20000*persen)*8;; //harga posisi 1G, 2G, 3G, 4G
+                                            //bila harga > 25.000*8=200.000
+                                            if(hp1>200000){
+                                                hp1=200000;//maksimal 200.000
+                                            }
+                                            //bila harga > 25.000*8=200.000
+                                            if(hp2>200000){
+                                                hp2=200000;//maksimal 200.000
+                                            }
+                                            //bila harga > 25.000*8=200.000
+                                            if(hp3>200000){
+                                                hp3=200000;//maksimal 200.000
+                                            }
+                                        }
+                                        if (fin2.equals("Onshore/Offshore")){ //bila proyek Onshore/Offshore
+                                            hp1=(40000+40000*persen)*12;; //harga posisi 1G, 2G
+                                            hp3=(40000+40000*persen)*12; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            hp2=(40000+40000*persen)*12; //harga posisi 1G, 2G, 3G, 4G
+
+                                            if(hp1>540000){
+                                                hp1=540000;
+                                            }
+                                            if(hp2>540000){
+                                                hp2=540000;
+                                            }
+                                            if(hp3>540000){
+                                                hp3=540000;
+                                            }
+                                        }
+                                        if(fin2.equals("Carbon Steel")){ //bila proyek Carbon Steel
+                                            hp4=(30000+30000*persen)*8; //harga Proyek Industri
+                                            hp5=(40000+40000*persen)*8; // harga proyek marine
+
+                                            if(hp4>280000){
+                                                hp4=280000;
+                                            }
+                                            if(hp5>360000){
+                                                hp5=360000;
+                                            }
+                                        }
+                                        if(fin2.equals("Stainless Steel")){ //bila proyek Stainless Steel
+
+                                            hp2=(35000+35000*persen)*8; //harga posisi 1G, 2G, 3G, 4G
+                                            if(hp2>320000){
+                                                hp2=320000;
+                                            }
+                                        }
+                                        if(fin2.equals("Storage Tank")){ //bila proyek Storage Tank
+                                            hp3=(20000+20000*persen)*8; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            hp2=(20000+20000*persen)*8; //harga posisi 1G, 2G, 3G, 4G
+                                            if(hp3>200000){
+                                                hp3=200000;
+                                            }
+                                            if(hp2>200000){
+                                                hp2=200000;
+                                            }
+                                        }
+                                        if(fin2.equals("Pressure Tank")){
+                                            hp3=(35000+35000*persen)*8; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            if(hp3>320000){
+                                                hp3=320000;
+                                            }
+                                        }
+
+                                    }
+                                    else{
+                                        if(fin1.equals("Steel Structure")){ //bila proyek Steel Structure
+                                            hp1=120000; //harga posisi 1G, 2G
+                                            hp2=120000; //harga posisi 1G, 2G, 3G, 4G
+                                        }
+                                        if(fin3.equals("Kapal Ferro")){ //bila proyek Kapal Ferro
+                                            hp1=160000; //harga posisi 1G, 2G
+                                            hp3=160000; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            hp2=160000; //harga posisi 1G, 2G, 3G, 4G
+                                        }
+                                        if (fin2.equals("Onshore/Offshore")){ //bila proyek Onshore/Offshore
+                                            hp1=480000; //harga posisi 1G, 2G
+                                            hp3=480000; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            hp2=480000; //harga posisi 1G, 2G, 3G, 4G
+                                        }
+                                        if(fin2.equals("Carbon Steel")){ //bila proyek Carbon Steel
+                                            hp4=240000; //harga Proyek Industri
+                                            hp5=320000; // harga proyek marine
+                                        }
+                                        if(fin2.equals("Stainless Steel")){ //bila proyek Stainless Steel
+                                            hp2=280000; //harga posisi 1G, 2G, 3G, 4G
+                                        }
+                                        if(fin2.equals("Storage Tank")){ //bila proyek Storage Tank
+                                            hp3=160000; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                            hp2=160000; //harga posisi 1G, 2G, 3G, 4G
+                                        }
+                                        if(fin2.equals("Pressure Tank")){
+                                            hp3=280000; //harga posisi 1G, 2G, 3G, 4G, 5G, 6G
+                                        }
+                                    }
+
+                                    // harga welder= (jumlah welder * harga welder) * berapa lama
+                                    double harga=(hp1*countsf1+hp2*countsf2+hp3*countsf3+hp4*countsf4+hp5*countsf5+jumlh)*beda;
+                                    int hf=(int)harga/1000*1000;
+                                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                                    String aa=nf3.format(hf);
+                                    //harga ditampilkan
+                                    hargaField.setText(aa);
+                                    String cek=hargaField.getText().toString();
+                                    if(cek.equals("0")){
+                                        submitt.setEnabled(false);
+                                    }
+                                    else
+                                    {
+                                        submitt.setEnabled(true);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
-                String cek=hargaField.getText().toString();
-                if(cek.equals("0")){
-                    submitt.setEnabled(false);
-                }
-                else
-                {
-                    submitt.setEnabled(true);
-                }
+
             } catch (ParseException e) {              // Insert this block.
                 // TODO Auto-generated catch block
                 e.printStackTrace();

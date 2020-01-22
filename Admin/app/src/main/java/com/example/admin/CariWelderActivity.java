@@ -96,6 +96,7 @@ public class CariWelderActivity extends AppCompatActivity {
                     String acc;
                     String sibuk;
                     String pos;
+                    String keyy;
 
                     String alamats;
                     String flagmar="0";
@@ -103,7 +104,9 @@ public class CariWelderActivity extends AppCompatActivity {
                     ArrayList<String> hasil2=new ArrayList<>();
                     ArrayList<String> hasil3=new ArrayList<>();
                     ArrayList<String> hasil4=new ArrayList<>();
-                    ArrayList<String> hasiljarak=new ArrayList<>();
+                    ArrayList<String> hasil5=new ArrayList<>();
+                    ArrayList<String> hasil6=new ArrayList<>();
+
                     ProgressBar barbar=findViewById(R.id.progressBar3);
 
                     @Override
@@ -111,13 +114,21 @@ public class CariWelderActivity extends AppCompatActivity {
                         hasil.clear();
                         hasil2.clear();
                         hasil3.clear();
+                        hasil4.clear();
+                        hasil5.clear();
+                        hasil6.clear();
                         for(DataSnapshot post : dataSnapshot.getChildren() ){
                             // Iterate through all posts with the same author
                             acc=post.child("acc").getValue().toString();
                             sibuk=post.child("pid").getValue().toString();
                             pos=post.child("posisi").getValue().toString();
                             alamats=post.child("alamatdomisili").getValue().toString();
+                            keyy=post.getKey();
                             LatLng loc2=getLocationFromAddress(getApplicationContext(), alamats);
+
+                            //get rating
+                            getRating(keyy);
+
 
                             if(post.child("sertifikasimarine").exists()){
                                 flagmar=post.child("sertifikasimarine").getValue().toString();
@@ -132,53 +143,217 @@ public class CariWelderActivity extends AppCompatActivity {
                             else{
                                 flagg=1;
                             }
+                            int hasiljarak;
+                            int hasilrating;
+                            int hasilpeng;
+
                             if(pessan.equals("OAW")){
                                 if(acc.equals("1")&&sibuk.equals("0")){
-                                    double bedajrk=1000000-distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
-                                    DecimalFormat df= new DecimalFormat("0000000.00");
-                                    String formatt=df.format(bedajrk);
+                                    //mendapatkan jarak
+                                    double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
 
-                                    hasiljarak.add(formatt);
+                                    //mendapatkan pembobotan jarak
+                                    if((bedajrk/1000)<=25){
+                                        hasiljarak=5;
+                                    }
+                                    else if((bedajrk/1000)<=275){
+                                        hasiljarak=4;
+                                    }
+                                    else if((bedajrk/1000)<=900){
+                                        hasiljarak=3;
+                                    }
+                                    else if((bedajrk/1000)<=3000){
+                                        hasiljarak=2;
+                                    }
+                                    else{
+                                        hasiljarak=1;
+                                    }
 
-                                    hasil4.add(post.child("jumlahproyek").getValue().toString()+"-"+formatt+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                    //mendapatkan pembobotan jumlah proyek
+                                    if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
+                                        hasilpeng=1;
+                                    }
+                                    else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
+                                        hasilpeng=2;
+                                    }
+                                    else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
+                                        hasilpeng=3;
+                                    }
+                                    else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
+                                        hasilpeng=5;
+                                    }
+                                    else{
+                                        hasilpeng=5;
+                                    }
+
+                                    //mendapatkan pembobotan rating
+                                    if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
+                                        hasilrating=1;
+                                    }
+                                    else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
+                                        hasilrating=2;
+                                    }
+                                    else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
+                                        hasilrating=3;
+                                    }
+                                    else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
+                                        hasilrating=5;
+                                    }
+                                    else{
+                                        hasilrating=5;
+                                    }
+
+                                    //menghitung prioritas
+                                    double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
+                                    String jarak2=String.format("%.2f", bedajrk/1000);
+                                    DecimalFormat df=new DecimalFormat("00000.00");
+                                    String jaraks=df.format(10000-bedajrk/1000);
+                                    String prio=String.format("%.2f", prioritas);
+                                    String text="Rating= "+post.child("rating").getValue().toString()+"\nJumlah Proyek= "+post.child("jumlahproyek").getValue().toString()+"\nJarak= "+jarak2+"km";
+
+                                    //prioritas disimpan
+                                    hasil4.add("Prioritas= "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                 }
                             }
                             else{
                                 if(marine.equals("Konstruksi Maritim")){
                                     if(!flagmar.equals("0")){
                                         if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                                            double bedajrk=1000000-distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
-                                            DecimalFormat df= new DecimalFormat("0000000.00");
-                                            String formatt=df.format(bedajrk);
+                                            double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
+                                            if((bedajrk/1000)<=25){
+                                                hasiljarak=5;
+                                            }
+                                            else if((bedajrk/1000)<=275){
+                                                hasiljarak=4;
+                                            }
+                                            else if((bedajrk/1000)<=900){
+                                                hasiljarak=3;
+                                            }
+                                            else if((bedajrk/1000)<=3000){
+                                                hasiljarak=2;
+                                            }
+                                            else{
+                                                hasiljarak=1;
+                                            }
 
-                                            hasiljarak.add(formatt);
+                                            if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
+                                                hasilpeng=1;
+                                            }
+                                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
+                                                hasilpeng=2;
+                                            }
+                                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
+                                                hasilpeng=3;
+                                            }
+                                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
+                                                hasilpeng=5;
+                                            }
+                                            else{
+                                                hasilpeng=5;
+                                            }
 
-                                            hasil4.add(post.child("jumlahproyek").getValue().toString()+"-"+formatt+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
+                                                hasilrating=1;
+                                            }
+                                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
+                                                hasilrating=2;
+                                            }
+                                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
+                                                hasilrating=3;
+                                            }
+                                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
+                                                hasilrating=5;
+                                            }
+                                            else{
+                                                hasilrating=5;
+                                            }
+
+                                            double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
+                                            String jarak2=String.format("%.2f", bedajrk/1000);
+                                            DecimalFormat df=new DecimalFormat("00000.00");
+                                            String jaraks=df.format(10000-bedajrk/1000);
+                                            String prio=String.format("%.2f", prioritas);
+                                            String text="Rating= "+post.child("rating").getValue().toString()+"\nJumlah Proyek= "+post.child("jumlahproyek").getValue().toString()+"\nJarak= "+jarak2+"km";
+
+                                            hasil4.add("Prioritas= "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                         }
                                     }
                                 }
                                 else{
                                     if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                                        double bedajrk=1000000-distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
-                                        DecimalFormat df= new DecimalFormat("0000000.00");
-                                        String formatt=df.format(bedajrk);
+                                        double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
+                                        if((bedajrk/1000)<=25){
+                                            hasiljarak=5;
+                                        }
+                                        else if((bedajrk/1000)<=275){
+                                            hasiljarak=4;
+                                        }
+                                        else if((bedajrk/1000)<=900){
+                                            hasiljarak=3;
+                                        }
+                                        else if((bedajrk/1000)<=3000){
+                                            hasiljarak=2;
+                                        }
+                                        else{
+                                            hasiljarak=1;
+                                        }
 
-                                        hasiljarak.add(formatt);
+                                        if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
+                                            hasilpeng=1;
+                                        }
+                                        else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
+                                            hasilpeng=2;
+                                        }
+                                        else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
+                                            hasilpeng=3;
+                                        }
+                                        else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
+                                            hasilpeng=5;
+                                        }
+                                        else{
+                                            hasilpeng=5;
+                                        }
 
-                                        hasil4.add(post.child("jumlahproyek").getValue().toString()+"-"+formatt+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                        if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
+                                            hasilrating=1;
+                                        }
+                                        else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
+                                            hasilrating=2;
+                                        }
+                                        else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
+                                            hasilrating=3;
+                                        }
+                                        else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
+                                            hasilrating=5;
+                                        }
+                                        else{
+                                            hasilrating=5;
+                                        }
+
+                                        double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
+                                        String jarak2=String.format("%.2f", bedajrk/1000);
+                                        DecimalFormat df=new DecimalFormat("00000.00");
+                                        String jaraks=df.format(10000-bedajrk/1000);
+                                        String prio=String.format("%.2f", prioritas);
+                                        String text="Rating= "+post.child("rating").getValue().toString()+"\nJumlah Proyek= "+post.child("jumlahproyek").getValue().toString()+"\nJarak= "+jarak2+"km";
+
+                                        hasil4.add("Prioritas= "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                     }
                                 }
                             }
                         }
                         if(hasil4.size()>0){
                             int i ;
+                            //list diurutkan dari prioritas terbesar ke terkecil
                             Collections.sort(hasil4, Collections.<String>reverseOrder());
 
                             for(int k=0; k<hasil4.size(); k++){
                                 String[] hsl=hasil4.get(k).split("-");
-                                hasil.add(hsl[2]);
-                                hasil2.add(hsl[3]);
-                                hasil3.add(hsl[4]);
+                                hasil.add(hsl[3]);
+                                hasil2.add(hsl[4]);
+                                hasil3.add(hsl[5]);
+                                hasil5.add(hsl[2]);
+                                hasil6.add(hsl[0]);
                             }
 
                             item3=pessan3;
@@ -186,7 +361,7 @@ public class CariWelderActivity extends AppCompatActivity {
 
                             lisst=findViewById(R.id.lilis);
 
-                            customAdapter=new CustomAdapter2(getApplicationContext(), hasil2, hasil, item3, hasil3, item5);
+                            customAdapter=new CustomAdapter2(getApplicationContext(), hasil2, hasil, item3, hasil3, item5, hasil5, hasil6);
                             customAdapter.notifyDataSetChanged();
                             barbar.setVisibility(View.INVISIBLE);
                             if(lisst.getAdapter()==null){
@@ -263,5 +438,70 @@ public class CariWelderActivity extends AppCompatActivity {
         int meterConversion = 1609;
 
         return new Double(distance * meterConversion).doubleValue();
+    }
+    public void getRating(final String keyy){
+        FirebaseDatabase.getInstance().getReference().child("Transaksi").orderByChild("wid").equalTo(keyy).addValueEventListener(new ValueEventListener() {
+            ArrayList<String> key=new ArrayList<>();
+            ArrayList<String> key1=new ArrayList<>();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                key.clear();
+                key1.clear();
+                for(DataSnapshot post:dataSnapshot.getChildren()){
+                    key.add(post.child("pid").getValue().toString());
+                }
+                if(key.size()>0){
+                    for(int i=0; i<key.size(); i++){
+                        final DatabaseReference res=FirebaseDatabase.getInstance().getReference().child("Proyek").child(key.get(i));
+                        res.child("status").addListenerForSingleValueEvent(new ValueEventListener() {
+                            String kes;
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                kes=dataSnapshot.getValue().toString();
+                                if(kes.equals("1")){
+                                    res.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            key1.add(dataSnapshot.getValue().toString());
+                                            double loh=0;
+                                            for(int i=0; i<key1.size(); i++){
+                                                loh+=Integer.parseInt(key1.get(i));
+                                            }
+                                            if(key1.size()>0){
+                                                loh=loh/(key1.size());
+                                                FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue(String.format("%.1f", loh));
+                                            }
+                                            else{
+                                                FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue("0.0");
+                                            }
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+                else{
+                    FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue("0.0");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

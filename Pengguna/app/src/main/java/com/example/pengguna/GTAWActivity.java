@@ -1,5 +1,6 @@
 package com.example.pengguna;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,8 +24,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -309,36 +313,105 @@ public class GTAWActivity extends AppCompatActivity {
                     hargaField.setText("0");
                 }
                 else {
-                    int hp1=0, hp2=0, hp3=0;
-                    if (fin3.equals("Kapal Aluminium")){
-                        hp1=240000;
-                    }
-                    if (fin2.equals("Onshore/Offshore")){
-                        hp1=600000;
-                    }
-                    if(fin2.equals("Carbon Steel")){
-                        hp2=280000;
-                        hp3=400000;
-                    }
-                    if (fin2.equals("Stainless Steel")){
-                        hp1=320000;
-                    }
-                    if(fin2.equals("Non Ferro")){
-                        hp1=750000;
-                    }
-                    long harga=(hp1*countsf1+hp2*countsf2+hp3*countsf3)*beda;
-                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
-                    String aa=nf3.format(harga);
-                    hargaField.setText(aa);
+                    FirebaseDatabase.getInstance().getReference().child("Welders").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            final double size=(double)dataSnapshot.getChildrenCount();
+                            FirebaseDatabase.getInstance().getReference().child("Welders").orderByChild("pid").equalTo("0").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    double size2=(double)dataSnapshot.getChildrenCount();
+                                    double rasio=size2/size;
+                                    double hp1=0, hp2=0, hp3=0, hp4=0, hp5=0;
+                                    if(rasio<0.2){
+                                        double persen=1-rasio/0.2;
+                                        if (fin3.equals("Kapal Aluminium")){
+                                            hp1=(30000+30000*persen)*8;
+                                            if(hp1>280000){
+                                                hp1=280000;
+                                            }
+                                        }
+                                        if (fin2.equals("Onshore/Offshore")){
+                                            hp1=(50000+50000*persen)*12;
+                                            if(hp1>660000){
+                                                hp1=660000;
+                                            }
+                                        }
+                                        if(fin2.equals("Carbon Steel")){
+                                            hp2=(35000+35000*persen)*8;
+                                            hp3=(50000+50000*persen)*8;
+
+                                            if(hp2>320000){
+                                                hp2=320000;
+                                            }
+                                            if(hp3>440000){
+                                                hp3=440000;
+                                            }
+                                        }
+                                        if (fin2.equals("Stainless Steel")){
+                                            hp1=(40000+40000*persen)*8; //harga posisi 1G, 2G, 3G, 4G
+                                            if(hp1>360000){
+                                                hp1=360000;
+                                            }
+                                        }
+                                        if(fin2.equals("Non Ferro")){
+                                            hp1=(75000+75000*persen)*10; //harga posisi 1G, 2G, 3G, 4G
+                                            if(hp1>800000){
+                                                hp1=800000;
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        if (fin3.equals("Kapal Aluminium")){
+                                            hp1=240000;
+                                        }
+                                        if (fin2.equals("Onshore/Offshore")){
+                                            hp1=600000;
+                                        }
+                                        if(fin2.equals("Carbon Steel")){
+                                            hp2=280000;
+                                            hp3=400000;
+                                        }
+                                        if (fin2.equals("Stainless Steel")){
+                                            hp1=320000;
+                                        }
+                                        if(fin2.equals("Non Ferro")){
+                                            hp1=750000;
+                                        }
+
+                                    }
+                                    double harga=(hp1*countsf1+hp2*countsf2+hp3*countsf3)*beda;
+                                    NumberFormat nf3=NumberFormat.getInstance(new Locale("da", "DK"));
+                                    int hf=(int)harga/1000*1000;
+                                    String aa=nf3.format(hf);
+                                    hargaField.setText(aa);
+                                    String cek=hargaField.getText().toString();
+                                    if(cek.equals("0")){
+                                        submitt.setEnabled(false);
+                                    }
+                                    else
+                                    {
+                                        submitt.setEnabled(true);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
                 }
-                String cek=hargaField.getText().toString();
-                if(cek.equals("0")){
-                    submitt.setEnabled(false);
-                }
-                else
-                {
-                    submitt.setEnabled(true);
-                }
+
             } catch (ParseException e) {              // Insert this block.
                 // TODO Auto-generated catch block
                 e.printStackTrace();

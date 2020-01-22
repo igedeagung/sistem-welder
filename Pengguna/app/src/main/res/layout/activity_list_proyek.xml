@@ -196,10 +196,10 @@
                 android:id="@+id/textView41"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25sp"
+                android:layout_marginStart="20sp"
                 android:layout_marginTop="50sp"
                 android:gravity="center"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textView40"

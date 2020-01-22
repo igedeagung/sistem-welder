@@ -1,6 +1,7 @@
 package com.example.admin;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -29,18 +30,22 @@ public class CustomAdapter2 extends BaseAdapter {
     ArrayList<String> data= new ArrayList<>();
     ArrayList<String> data2= new ArrayList<>();
     ArrayList<String> data4= new ArrayList<>();
+    ArrayList<String> data41= new ArrayList<>();
+    ArrayList<String> data42= new ArrayList<>();
     String data3;
     String data5;
     LayoutInflater inflater;
     DatabaseReference juju;
 
-    public CustomAdapter2(Context context, ArrayList<String> data,ArrayList<String> data2, String data3, ArrayList<String> data4, String data5){
+    public CustomAdapter2(Context context, ArrayList<String> data,ArrayList<String> data2, String data3, ArrayList<String> data4, String data5, ArrayList<String> data41, ArrayList<String> data42){
         this.con=context;
         this.data=data;
         this.data2=data2;
         this.data3=data3;
         this.data4=data4;
         this.data5=data5;
+        this.data41=data41;
+        this.data42=data42;
         inflater=(LayoutInflater.from(context));
     }
 
@@ -71,11 +76,15 @@ public class CustomAdapter2 extends BaseAdapter {
         }
         TextView datas=row.findViewById(R.id.textVieww5);
         TextView datas2=row.findViewById(R.id.textVieww4);
+        TextView datas3=row.findViewById(R.id.textView22);
+        TextView datas4=row.findViewById(R.id.textView86);
         final Button button=row.findViewById(R.id.button23);
         final ListView lisst=row.findViewById(R.id.lilis);
         final String datax=data5+"f";
         datas.setText(data.get(position));
         datas2.setText(data2.get(position));
+        datas3.setText(data41.get(position));
+        datas4.setText(data42.get(position));
 
         juju=FirebaseDatabase.getInstance().getReference().child("Proyek").child(data3).child(datax);
         button.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +97,10 @@ public class CustomAdapter2 extends BaseAdapter {
     }
 
     public void ganti(int position, String datax, final ViewGroup parent){
+        final ProgressDialog dialog=new ProgressDialog((Activity)parent.getContext());
+        dialog.setMessage("Tunggu Sebentar");
+        dialog.show();
+
         FirebaseDatabase.getInstance().getReference().child("Welders").child(data4.get(position)).child("tpos").setValue(datax);
         DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders").child(data4.get(position)).child("pid");
         res.setValue(data3);
@@ -102,13 +115,13 @@ public class CustomAdapter2 extends BaseAdapter {
                 String ih=Integer.toString(jul);
                 getstr(k);
 
-//                        notifyDataSetChanged();
                 juju.setValue(ih);
+                dialog.dismiss();
 
-//                        notifyDataSetChanged();
-
-                if (jul==0){
+                if (jul<=0){
+                    dialog.dismiss();
                     ((Activity)parent.getContext()).finish();
+
                 }
             }
 
