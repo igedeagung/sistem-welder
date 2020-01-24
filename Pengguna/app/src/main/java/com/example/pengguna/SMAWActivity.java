@@ -321,7 +321,7 @@ public class SMAWActivity extends AppCompatActivity {
         if(fin2.equals("Stainless Steel")){
             ctrr.clone(constraintt2);
             ctrr.connect(R.id.textView24, ConstraintSet.BOTTOM, R.id.sfl2, ConstraintSet.TOP, 0);
-            ctrr.connect(R.id.sfl2, ConstraintSet.BOTTOM, R.id.editText10, ConstraintSet.TOP, 150);
+            ctrr.connect(R.id.sfl2, ConstraintSet.BOTTOM, R.id.editText10, ConstraintSet.TOP, 220);
             ctrr.applyTo(constraintt2);
 
             frem.setVisibility(View.GONE);

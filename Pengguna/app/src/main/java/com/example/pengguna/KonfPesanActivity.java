@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class KonfPesanActivity extends AppCompatActivity {
@@ -35,6 +40,7 @@ public class KonfPesanActivity extends AppCompatActivity {
     private String alamatko="0";
     private ProgressDialog diialog;
     private EditText alamakom;
+    private String prof="Tidak Ada";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,45 @@ public class KonfPesanActivity extends AppCompatActivity {
         hargatottal=Integer.parseInt(proyeku.getHarga().replace(".", ""));
 
         final TextView jumlh=findViewById(R.id.textView4);
+
+        Spinner spinner= findViewById(R.id.spinner);
+        List<String> kategori=new ArrayList<>();
+        kategori.add("Tidak Ada");
+        kategori.add("BKI");
+        kategori.add("LR");
+        kategori.add("BV");
+
+        ArrayAdapter<String> dataadapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, kategori);
+        dataadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(dataadapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                prof=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        TextView vview=findViewById(R.id.textView120);
+
+        if(proyeku.getNamaproyek().equals("Kapal Ferro") ||proyeku.getNamaproyek().equals("Kapal Aluminium")){
+            spinner.setVisibility(View.VISIBLE);
+            vview.setVisibility(View.VISIBLE);
+        }
+        if(proyeku.getNamaproyek().equals("Carbon Steel")){
+            if((proyeku.getTipe().equals("SMAW")||proyeku.getTipe().equals("SMAW/GTAW"))&&!proyeku.getJumlah5().equals("0")){
+                spinner.setVisibility(View.VISIBLE);
+                vview.setVisibility(View.VISIBLE);
+            }
+            if(proyeku.getTipe().equals("GTAW")&&!proyeku.getJumlah3().equals("0")){
+                spinner.setVisibility(View.VISIBLE);
+                vview.setVisibility(View.VISIBLE);
+            }
+        }
 
         ImageButton minhp=findViewById(R.id.imageButton2);
         minhp.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +198,20 @@ public class KonfPesanActivity extends AppCompatActivity {
             }
         });
 
+        TextView tebel=findViewById(R.id.textView139);
+        final EditText tebell=findViewById(R.id.editText36);
+        TextView diam=findViewById(R.id.textView140);
+        final EditText diamm=findViewById(R.id.editText37);
+
+        if(proyeku.getNamaproyek().equals("Steel Structure")||proyeku.getNamaproyek().equals("Las Umum")){
+            tebel.setVisibility(View.GONE);
+            tebell.setVisibility(View.GONE);
+        }
+        if(proyeku.getJenisproyek().equals("Perpipaan")||proyeku.getNamaproyek().equals("Offshore/Onshore")){
+            diam.setVisibility(View.VISIBLE);
+            diamm.setVisibility(View.VISIBLE);
+        }
+
         alamakom=findViewById(R.id.editText34);
         alamakom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +253,13 @@ public class KonfPesanActivity extends AppCompatActivity {
                 }
                 proyeku.setAlamako(alamatko);
                 proyeku.setHargatotal(Integer.toString(hargatottal));
+                proyeku.setSertifm(prof);
+                String ketebalan="0";
+                ketebalan=tebell.getText().toString();
+                String diameter="0";
+                diameter=diamm.getText().toString();
+                proyeku.setDiameter(diameter);
+                proyeku.setTebal(ketebalan);
 
                 FirebaseDatabase.getInstance().getReference().child("Proyek").push().setValue(proyeku).addOnSuccessListener(KonfPesanActivity.this, new OnSuccessListener<Void>() {
                     @Override

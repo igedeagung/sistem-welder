@@ -35,4 +35,5 @@
         <item>Posisi 1G, 2G, 3G, 4G dan 1G, 2G, 5G, 6G</item>
         <item>Posisi 1G, 2G, 3G, 4G; 1G, 2G, 5G, 6G dan 6GR</item>
     </array>
+    <string name="title_activity_maps">Map</string>
 </resources>

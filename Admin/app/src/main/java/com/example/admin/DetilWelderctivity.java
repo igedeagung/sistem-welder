@@ -445,7 +445,7 @@ public class DetilWelderctivity extends AppCompatActivity {
 
                         ConstraintSet set=new ConstraintSet();
                         set.clone(mylayout);
-                        set.connect(R.id.textView28, ConstraintSet.BOTTOM, R.id.textView29, ConstraintSet.TOP, 50);
+                        set.connect(R.id.textView28, ConstraintSet.BOTTOM, R.id.textView30, ConstraintSet.TOP, 50);
 
                         set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
                         set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
@@ -474,7 +474,7 @@ public class DetilWelderctivity extends AppCompatActivity {
 
                                         ConstraintSet set=new ConstraintSet();
                                         set.clone(mylayout);
-                                        set.connect(R.id.textView28, ConstraintSet.BOTTOM, R.id.textView29, ConstraintSet.TOP, 30+(400*(hasil.length)));
+                                        set.connect(R.id.textView28, ConstraintSet.BOTTOM, R.id.textView30, ConstraintSet.TOP, 30+(400*(hasil.length)));
 
                                         set.constrainHeight(imagi.getId(), 400);
                                         set.constrainWidth(imagi.getId(), 300);
@@ -508,7 +508,7 @@ public class DetilWelderctivity extends AppCompatActivity {
 
                     ConstraintSet set=new ConstraintSet();
                     set.clone(mylayout);
-                    set.connect(R.id.textView28, ConstraintSet.BOTTOM, R.id.textView29, ConstraintSet.TOP, 50);
+                    set.connect(R.id.textView28, ConstraintSet.BOTTOM, R.id.textView30, ConstraintSet.TOP, 50);
 
                     set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
                     set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
@@ -524,6 +524,771 @@ public class DetilWelderctivity extends AppCompatActivity {
             }
         });
 
+        ref2.child("sertifikasilr").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=4000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView30, ConstraintSet.BOTTOM, R.id.textView31, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView30, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+300;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_lr/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView30, ConstraintSet.BOTTOM, R.id.textView31, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView30, ConstraintSet.BOTTOM, 5+(400*(juml-300)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=4000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView30, ConstraintSet.BOTTOM, R.id.textView31, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView30, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref2.child("sertifikasibv").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=5000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView31, ConstraintSet.BOTTOM, R.id.textView32, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView31, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+400;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_bv/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView31, ConstraintSet.BOTTOM, R.id.textView32, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView31, ConstraintSet.BOTTOM, 5+(400*(juml-400)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=5000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView31, ConstraintSet.BOTTOM, R.id.textView32, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView31, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("sertifikasimigas").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=6000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView32, ConstraintSet.BOTTOM, R.id.textView33, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView32, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+500;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_migas/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView32, ConstraintSet.BOTTOM, R.id.textView33, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView32, ConstraintSet.BOTTOM, 5+(400*(juml-500)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=6000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView32, ConstraintSet.BOTTOM, R.id.textView33, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView32, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref2.child("sertifikasioffshore").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=7000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView33, ConstraintSet.BOTTOM, R.id.textView34, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView33, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+600;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_offshore/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView33, ConstraintSet.BOTTOM, R.id.textView34, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView33, ConstraintSet.BOTTOM, 5+(400*(juml-600)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=7000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView33, ConstraintSet.BOTTOM, R.id.textView34, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView33, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("sertifikasikapal").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=8000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView34, ConstraintSet.BOTTOM, R.id.textView35, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView34, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+700;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_kapal/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView34, ConstraintSet.BOTTOM, R.id.textView35, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView34, ConstraintSet.BOTTOM, 5+(400*(juml-700)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=8000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView34, ConstraintSet.BOTTOM, R.id.textView35, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView34, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("sertifikasisteel").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=9000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView35, ConstraintSet.BOTTOM, R.id.textView36, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView35, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+800;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_steel/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView35, ConstraintSet.BOTTOM, R.id.textView36, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView35, ConstraintSet.BOTTOM, 5+(400*(juml-800)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=9000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView35, ConstraintSet.BOTTOM, R.id.textView36, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView35, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref2.child("sertifikasipipa").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=10000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView36, ConstraintSet.BOTTOM, R.id.textView37, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView36, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+900;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_pipa/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView36, ConstraintSet.BOTTOM, R.id.textView37, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView36, ConstraintSet.BOTTOM, 5+(400*(juml-900)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=10000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView36, ConstraintSet.BOTTOM, R.id.textView37, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView36, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.child("sertifikasiindustri").addValueEventListener(new ValueEventListener() {
+            String key;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("0")){
+                        TextView imagi=new TextView(DetilWelderctivity.this);
+                        imagi.setText("Tidak Ada");
+                        int id=11000;
+                        imagi.setId(id);
+
+                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                        mylayout.addView(imagi);
+
+                        ConstraintSet set=new ConstraintSet();
+                        set.clone(mylayout);
+                        set.connect(R.id.textView37, ConstraintSet.BOTTOM, R.id.textView29, ConstraintSet.TOP, 50);
+
+                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView37, ConstraintSet.BOTTOM, 5);
+
+                        set.applyTo(mylayout);
+                    }
+                    else{
+                        final String[] hasil=key.split(", ");
+                        FirebaseStorage stg=FirebaseStorage.getInstance();
+                        for(int i=0; i<hasil.length; i++){
+                            final int juml=i+1001;
+                            StorageReference stgrf=stg.getReferenceFromUrl("gs://sistem-7f12e.appspot.com/sertifikasi_welder_industri/").child(hasil[i]);
+                            try {
+                                final File file=File.createTempFile("image", hasil[i].substring(hasil[i].lastIndexOf(".")+1));
+                                stgrf.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+                                        ImageView imagi=new ImageView(DetilWelderctivity.this);
+                                        imagi.setImageBitmap(bitmap);
+                                        imagi.setId(juml);
+
+                                        ConstraintLayout mylayout= findViewById(R.id.parentt);
+                                        mylayout.addView(imagi);
+
+                                        ConstraintSet set=new ConstraintSet();
+                                        set.clone(mylayout);
+                                        set.connect(R.id.textView37, ConstraintSet.BOTTOM, R.id.textView29, ConstraintSet.TOP, 30+(400*(hasil.length)));
+
+                                        set.constrainHeight(imagi.getId(), 400);
+                                        set.constrainWidth(imagi.getId(), 300);
+
+                                        set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                                        set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView37, ConstraintSet.BOTTOM, 5+(400*(juml-1001)));
+
+                                        set.applyTo(mylayout);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DetilWelderctivity.this, "Sertifikasi tidak valid", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                else{
+                    TextView imagi=new TextView(DetilWelderctivity.this);
+                    imagi.setText("Tidak Ada");
+                    int id=11000;
+                    imagi.setId(id);
+
+                    ConstraintLayout mylayout= findViewById(R.id.parentt);
+                    mylayout.addView(imagi);
+
+                    ConstraintSet set=new ConstraintSet();
+                    set.clone(mylayout);
+                    set.connect(R.id.textView37, ConstraintSet.BOTTOM, R.id.textView29, ConstraintSet.TOP, 50);
+
+                    set.connect(imagi.getId(), ConstraintSet.LEFT, R.id.parentt, ConstraintSet.LEFT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.RIGHT, R.id.parentt, ConstraintSet.RIGHT, 0);
+                    set.connect(imagi.getId(), ConstraintSet.TOP, R.id.textView37, ConstraintSet.BOTTOM, 5);
+
+                    set.applyTo(mylayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         ref2.child("sertifikasitoefl").addValueEventListener(new ValueEventListener() {
             String key;
             @Override

@@ -32,7 +32,7 @@
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
+        android:layout_width="150sp"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
         android:text="Lihat Proyek"

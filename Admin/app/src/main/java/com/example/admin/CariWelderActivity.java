@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class CariWelderActivity extends AppCompatActivity {
         final String pessan3=bundle.getString("key");
         final String julah=bundle.getString("jumlahnya");
         final String marine=bundle.getString("marine");
+        final String marine2=bundle.getString("sertif");
 
         if(pessan2.contains("6GR")){
             flag=3;
@@ -88,6 +91,7 @@ public class CariWelderActivity extends AppCompatActivity {
             String keya;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 keya=dataSnapshot.getValue().toString();
                 final LatLng loc1=getLocationFromAddress(getApplicationContext(), keya);
 
@@ -100,6 +104,7 @@ public class CariWelderActivity extends AppCompatActivity {
 
                     String alamats;
                     String flagmar="0";
+                    String flagser="0";
                     ArrayList<String> hasil=new ArrayList<>();
                     ArrayList<String> hasil2=new ArrayList<>();
                     ArrayList<String> hasil3=new ArrayList<>();
@@ -147,197 +152,135 @@ public class CariWelderActivity extends AppCompatActivity {
                             int hasilrating;
                             int hasilpeng;
 
+                            //mendapatkan jarak
+                            double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
+
+                            //mendapatkan pembobotan jarak
+                            if((bedajrk/1000)<=25){
+                                hasiljarak=5;
+                            }
+                            else if((bedajrk/1000)<=275){
+                                hasiljarak=4;
+                            }
+                            else if((bedajrk/1000)<=900){
+                                hasiljarak=3;
+                            }
+                            else if((bedajrk/1000)<=3000){
+                                hasiljarak=2;
+                            }
+                            else{
+                                hasiljarak=1;
+                            }
+
+                            //mendapatkan pembobotan jumlah proyek
+                            if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
+                                hasilpeng=1;
+                            }
+                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
+                                hasilpeng=2;
+                            }
+                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
+                                hasilpeng=3;
+                            }
+                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
+                                hasilpeng=5;
+                            }
+                            else{
+                                hasilpeng=5;
+                            }
+
+                            //mendapatkan pembobotan rating
+                            if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
+                                hasilrating=1;
+                            }
+                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
+                                hasilrating=2;
+                            }
+                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
+                                hasilrating=3;
+                            }
+                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
+                                hasilrating=5;
+                            }
+                            else{
+                                hasilrating=5;
+                            }
+
+                            //menghitung prioritas
+                            double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
+                            String jarak2=String.format("%.2f", bedajrk/1000);
+                            DecimalFormat df=new DecimalFormat("00000.00");
+                            String jaraks=df.format(10000-bedajrk/1000);
+                            String prio=String.format("%.2f", prioritas);
+                            String text="Rating = "+post.child("rating").getValue().toString()+"\nJumlah Proyek = "+post.child("jumlahproyek").getValue().toString()+"\nJarak = "+jarak2+"km";
+
                             if(pessan.equals("OAW")){
                                 if(acc.equals("1")&&sibuk.equals("0")){
-                                    //mendapatkan jarak
-                                    double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
-
-                                    //mendapatkan pembobotan jarak
-                                    if((bedajrk/1000)<=25){
-                                        hasiljarak=5;
-                                    }
-                                    else if((bedajrk/1000)<=275){
-                                        hasiljarak=4;
-                                    }
-                                    else if((bedajrk/1000)<=900){
-                                        hasiljarak=3;
-                                    }
-                                    else if((bedajrk/1000)<=3000){
-                                        hasiljarak=2;
-                                    }
-                                    else{
-                                        hasiljarak=1;
-                                    }
-
-                                    //mendapatkan pembobotan jumlah proyek
-                                    if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
-                                        hasilpeng=1;
-                                    }
-                                    else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
-                                        hasilpeng=2;
-                                    }
-                                    else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
-                                        hasilpeng=3;
-                                    }
-                                    else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
-                                        hasilpeng=5;
-                                    }
-                                    else{
-                                        hasilpeng=5;
-                                    }
-
-                                    //mendapatkan pembobotan rating
-                                    if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
-                                        hasilrating=1;
-                                    }
-                                    else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
-                                        hasilrating=2;
-                                    }
-                                    else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
-                                        hasilrating=3;
-                                    }
-                                    else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
-                                        hasilrating=5;
-                                    }
-                                    else{
-                                        hasilrating=5;
-                                    }
-
-                                    //menghitung prioritas
-                                    double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
-                                    String jarak2=String.format("%.2f", bedajrk/1000);
-                                    DecimalFormat df=new DecimalFormat("00000.00");
-                                    String jaraks=df.format(10000-bedajrk/1000);
-                                    String prio=String.format("%.2f", prioritas);
-                                    String text="Rating= "+post.child("rating").getValue().toString()+"\nJumlah Proyek= "+post.child("jumlahproyek").getValue().toString()+"\nJarak= "+jarak2+"km";
-
                                     //prioritas disimpan
-                                    hasil4.add("Prioritas= "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                    hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                 }
                             }
                             else{
-                                if(marine.equals("Konstruksi Maritim")){
-                                    if(!flagmar.equals("0")){
-                                        if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                                            double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
-                                            if((bedajrk/1000)<=25){
-                                                hasiljarak=5;
-                                            }
-                                            else if((bedajrk/1000)<=275){
-                                                hasiljarak=4;
-                                            }
-                                            else if((bedajrk/1000)<=900){
-                                                hasiljarak=3;
-                                            }
-                                            else if((bedajrk/1000)<=3000){
-                                                hasiljarak=2;
-                                            }
-                                            else{
-                                                hasiljarak=1;
-                                            }
-
-                                            if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
-                                                hasilpeng=1;
-                                            }
-                                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
-                                                hasilpeng=2;
-                                            }
-                                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
-                                                hasilpeng=3;
-                                            }
-                                            else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
-                                                hasilpeng=5;
-                                            }
-                                            else{
-                                                hasilpeng=5;
-                                            }
-
-                                            if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
-                                                hasilrating=1;
-                                            }
-                                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
-                                                hasilrating=2;
-                                            }
-                                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
-                                                hasilrating=3;
-                                            }
-                                            else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
-                                                hasilrating=5;
-                                            }
-                                            else{
-                                                hasilrating=5;
-                                            }
-
-                                            double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
-                                            String jarak2=String.format("%.2f", bedajrk/1000);
-                                            DecimalFormat df=new DecimalFormat("00000.00");
-                                            String jaraks=df.format(10000-bedajrk/1000);
-                                            String prio=String.format("%.2f", prioritas);
-                                            String text="Rating= "+post.child("rating").getValue().toString()+"\nJumlah Proyek= "+post.child("jumlahproyek").getValue().toString()+"\nJarak= "+jarak2+"km";
-
-                                            hasil4.add("Prioritas= "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                if(marine2.equals("BKI")){
+                                    if(post.child("sertifikasimarine").exists()){
+                                        if(!post.child("sertifikasimarine").getValue().toString().equals("0")){
+                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                        }
+                                    }
+                                }
+                                else if(marine2.equals("LR")){
+                                    if(post.child("sertifikasilr").exists()){
+                                        if(!post.child("sertifikasilr").getValue().toString().equals("0")){
+                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                        }
+                                    }
+                                }
+                                else if(marine2.equals("BV")){
+                                    if(post.child("sertifikasibv").exists()){
+                                        if(!post.child("sertifikasibv").getValue().toString().equals("0")){
+                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                         }
                                     }
                                 }
                                 else{
-                                    if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
-                                        double bedajrk=distance(loc1.latitude,loc1.longitude, loc2.latitude, loc2.longitude);
-                                        if((bedajrk/1000)<=25){
-                                            hasiljarak=5;
+                                    if(marine.equals("Konstruksi Maritim")){
+                                        if(post.child("sertifikasimarine").exists()&&post.child("sertifikasibv").exists()&&post.child("sertifikasilr").exists()){
+                                            if(!flagmar.equals("0")||!post.child("sertifikasibv").getValue().toString().equals("0")||!post.child("sertifikasilr").getValue().toString().equals("0")){
+                                                if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                    hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                                }
+                                            }
                                         }
-                                        else if((bedajrk/1000)<=275){
-                                            hasiljarak=4;
+                                    }
+                                    else if(marine.equals("Carbon Steel")){
+                                        if((pessan.equals("SMAW")||pessan.equals("SMAW/GTAW"))&&julah.equals("jumlah5")){
+                                            if(post.child("sertifikasimarine").exists()&&post.child("sertifikasibv").exists()&&post.child("sertifikasilr").exists()){
+                                                if(!flagmar.equals("0")||!post.child("sertifikasibv").getValue().toString().equals("0")||!post.child("sertifikasilr").getValue().toString().equals("0")){
+                                                    if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                        hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                                    }
+                                                }
+                                            }
                                         }
-                                        else if((bedajrk/1000)<=900){
-                                            hasiljarak=3;
-                                        }
-                                        else if((bedajrk/1000)<=3000){
-                                            hasiljarak=2;
-                                        }
-                                        else{
-                                            hasiljarak=1;
-                                        }
-
-                                        if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=4){
-                                            hasilpeng=1;
-                                        }
-                                        else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=8){
-                                            hasilpeng=2;
-                                        }
-                                        else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=12){
-                                            hasilpeng=3;
-                                        }
-                                        else if(Integer.parseInt(post.child("jumlahproyek").getValue().toString())<=16){
-                                            hasilpeng=5;
+                                        else if (pessan.equals("GTAW")&&julah.equals("jumlah3")){
+                                            if(post.child("sertifikasimarine").exists()&&post.child("sertifikasibv").exists()&&post.child("sertifikasilr").exists()){
+                                                if(!flagmar.equals("0")||!post.child("sertifikasibv").getValue().toString().equals("0")||!post.child("sertifikasilr").getValue().toString().equals("0")){
+                                                    if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                        hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                                    }
+                                                }
+                                            }
                                         }
                                         else{
-                                            hasilpeng=5;
+                                            if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            }
                                         }
-
-                                        if(Double.parseDouble(post.child("rating").getValue().toString())<=1){
-                                            hasilrating=1;
+                                    }
+                                    else{
+                                        if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                         }
-                                        else if(Double.parseDouble(post.child("rating").getValue().toString())<=2){
-                                            hasilrating=2;
-                                        }
-                                        else if(Double.parseDouble(post.child("rating").getValue().toString())<=3){
-                                            hasilrating=3;
-                                        }
-                                        else if(Double.parseDouble(post.child("rating").getValue().toString())<=4){
-                                            hasilrating=5;
-                                        }
-                                        else{
-                                            hasilrating=5;
-                                        }
-
-                                        double prioritas=0.45*hasiljarak+hasilpeng*0.45+hasilrating*0.1;
-                                        String jarak2=String.format("%.2f", bedajrk/1000);
-                                        DecimalFormat df=new DecimalFormat("00000.00");
-                                        String jaraks=df.format(10000-bedajrk/1000);
-                                        String prio=String.format("%.2f", prioritas);
-                                        String text="Rating= "+post.child("rating").getValue().toString()+"\nJumlah Proyek= "+post.child("jumlahproyek").getValue().toString()+"\nJarak= "+jarak2+"km";
-
-                                        hasil4.add("Prioritas= "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
                                     }
                                 }
                             }

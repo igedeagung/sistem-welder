@@ -4,6 +4,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.io.Serializable;
 
 public class Proyek implements Serializable{
+    private String diameter;
+    private String tebal;
     private String sudahnilai;
     private String alamat;
     private String jenisproyek;
@@ -40,9 +42,28 @@ public class Proyek implements Serializable{
     private String hargaako;
     private String alamako;
     private String hargatotal;
+    private String sertifm;
 
     public Proyek()
     {
+    }
+    public String getDiameter() {
+        return diameter;
+    }
+    public void setDiameter(String diameter) {
+        this.diameter = diameter;
+    }
+    public String getTebal() {
+        return tebal;
+    }
+    public void setTebal(String tebal) {
+        this.tebal = tebal;
+    }
+    public String getSertifm() {
+        return sertifm;
+    }
+    public void setSertifm(String sertifm) {
+        this.sertifm = sertifm;
     }
     public String getHelper() {
         return helper;
@@ -280,6 +301,9 @@ public class Proyek implements Serializable{
         return " "+jenisproyek+"" +
                 "" +namaproyek+"" +
                 "" +tipe+"" +
+                "" +diameter+"" +
+                "" +tebal+"" +
+                "" +sertifm+"" +
                 "" +sudahnilai+"" +
                 "" +pakaimesin+"" +
                 "" +hargamesin+"" +

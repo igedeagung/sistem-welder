@@ -289,7 +289,6 @@ public class SMGTAWActivity extends AppCompatActivity {
 
         if(fin3.equals("Kapal Ferro" )|| fin2.equals("Onshore/Offshore") ){
             ctrr.clone(constraintt2);
-            ctrr.connect(R.id.textView49, ConstraintSet.BOTTOM, R.id.frameLayout8, ConstraintSet.TOP, 0);
             ctrr.applyTo(constraintt2);
 
             frem3.setVisibility(View.GONE);
@@ -299,7 +298,6 @@ public class SMGTAWActivity extends AppCompatActivity {
         }
         if(fin2.equals("Stainless Steel") || fin2.equals("Non Ferro")|| fin2.equals("Pressure Tank")){
             ctrr.clone(constraintt2);
-            ctrr.connect(R.id.textView49, ConstraintSet.BOTTOM, R.id.frameLayout9, ConstraintSet.TOP, 0);
             ctrr.applyTo(constraintt2);
 
             frem.setVisibility(View.GONE);
@@ -309,7 +307,6 @@ public class SMGTAWActivity extends AppCompatActivity {
         }
         if (fin2.equals("Carbon Steel")){
             ctrr.clone(constraintt2);
-            ctrr.connect(R.id.textView49, ConstraintSet.BOTTOM, R.id.frameLayout20, ConstraintSet.TOP, 0);
             ctrr.applyTo(constraintt2);
 
             frem.setVisibility(View.GONE);
@@ -318,8 +315,7 @@ public class SMGTAWActivity extends AppCompatActivity {
         }
         if(fin2.equals("Storage Tank")){
             ctrr.clone(constraintt2);
-            ctrr.connect(R.id.textView69, ConstraintSet.BOTTOM, R.id.frameLayout10, ConstraintSet.TOP, 50);
-            ctrr.connect(R.id.textView49, ConstraintSet.BOTTOM, R.id.textView69, ConstraintSet.TOP, 0);
+            ctrr.connect(R.id.textView69, ConstraintSet.BOTTOM, R.id.frameLayout10, ConstraintSet.TOP, 0);
             ctrr.applyTo(constraintt2);
 
             tulisan.setText("Material Stainless Steel");

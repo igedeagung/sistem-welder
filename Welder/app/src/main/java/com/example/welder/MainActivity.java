@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private int flag1, flag2;
     private ProgressBar pgb;
+    private Thread thread=null;
+    private int i=0;
 
     private static final int REQUEST_CODE_PERMISSION = 2;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -52,42 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FusedLocationProviderClient mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocation.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null){
-                    Button buton=findViewById(R.id.button4);
-                    buton.setText("Lat : " + location.getLatitude() + " Long : " + location.getLongitude());
-                    // Do it all with location
-                    Log.d("My Current location", "Lat : " + location.getLatitude() + " Long : " + location.getLongitude());
-                    // Display in Toast
-                    Toast.makeText(MainActivity.this,
-                            "Lat : " + location.getLatitude() + " Long : " + location.getLongitude(),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-//        // create class object
-//        gps = new GPSTracker(MainActivity.this);
-//
-//        // check if GPS enabled
-//        if(gps.canGetLocation()){
-//
-//            double latitude = gps.getLatitude();
-//            double longitude = gps.getLongitude();
-//
-//            // \n is for new line
-//            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
-//                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-//        }else{
-//            // can't get location
-//            // GPS or Network is not enabled
-//            // Ask user to enable GPS/network in settings
-//            gps.showSettingsAlert();
-//        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,7 +70,38 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         else{
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            thread = new Thread() {
+
+                @Override
+                public void run() {
+                    try {
+                        while (!thread.isInterrupted()) {
+                            Thread.sleep(5000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FusedLocationProviderClient mFusedLocation = LocationServices.getFusedLocationProviderClient(MainActivity.this);
+                                    mFusedLocation.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
+                                        @Override
+                                        public void onSuccess(Location location) {
+                                            if (location != null){
+                                                Button buton=findViewById(R.id.button4);
+                                                FirebaseDatabase.getInstance().getReference().child("Welders").child(uid).child("latlong").setValue(location.getLatitude()+","+location.getLongitude());
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    } catch (InterruptedException e) {
+                    }
+                }
+            };
+
+            thread.start();
+
             final DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Welders").child(uid);
             Button buton=findViewById(R.id.button9);
             buton.setOnClickListener(new View.OnClickListener() {

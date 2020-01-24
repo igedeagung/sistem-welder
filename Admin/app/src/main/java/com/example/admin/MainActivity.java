@@ -37,63 +37,65 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intro);
             finish();
         }
+        else{
+            String uid=user.getUid();
 
-        String uid=user.getUid();
 
 
+            FirebaseDatabase.getInstance().getReference().child("Admin").child(uid).child("jenis").addListenerForSingleValueEvent(new ValueEventListener() {
+                String key;
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    key=dataSnapshot.getValue().toString();
+                    if(key.equals("Manajer Lapangan")){
+                        Button btn=findViewById(R.id.button4);
+                        btn.setVisibility(View.INVISIBLE);
+                        Button btn2=findViewById(R.id.button14);
+                        btn2.setVisibility(View.INVISIBLE);
 
-        FirebaseDatabase.getInstance().getReference().child("Admin").child(uid).child("jenis").addListenerForSingleValueEvent(new ValueEventListener() {
-            String key;
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                key=dataSnapshot.getValue().toString();
-                if(key.equals("Manajer Lapangan")){
-                    Button btn=findViewById(R.id.button4);
-                    btn.setVisibility(View.INVISIBLE);
-                    Button btn2=findViewById(R.id.button14);
-                    btn2.setVisibility(View.INVISIBLE);
 
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-            }
-        });
+            Button buttonku=findViewById(R.id.button14);
+            buttonku.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent welderku=new Intent(MainActivity.this, ClassWelderActivity.class);
+                    startActivity(welderku);
+                }
+            });
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+            Button buttonnya=findViewById(R.id.button15);
+            buttonnya.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent welderku=new Intent(MainActivity.this, JenisProyekActivity.class);
+                    startActivity(welderku);
+                }
+            });
 
-        Button buttonku=findViewById(R.id.button14);
-        buttonku.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent welderku=new Intent(MainActivity.this, ClassWelderActivity.class);
-                startActivity(welderku);
-            }
-        });
+            Button buttondia=findViewById(R.id.button4);
+            buttondia.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent welderku=new Intent(MainActivity.this, SMAWListActivity.class);
+                    welderku.putExtra("tipe", "pengguna");
 
-        Button buttonnya=findViewById(R.id.button15);
-        buttonnya.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent welderku=new Intent(MainActivity.this, JenisProyekActivity.class);
-                startActivity(welderku);
-            }
-        });
+                    startActivity(welderku);
+                }
+            });
+        }
 
-        Button buttondia=findViewById(R.id.button4);
-        buttondia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent welderku=new Intent(MainActivity.this, SMAWListActivity.class);
-                welderku.putExtra("tipe", "pengguna");
-
-                startActivity(welderku);
-            }
-        });
     }
 
     @Override
