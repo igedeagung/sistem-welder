@@ -3,6 +3,7 @@ package com.example.admin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -56,6 +57,7 @@ public class CariWelderActivity extends AppCompatActivity {
         final String julah=bundle.getString("jumlahnya");
         final String marine=bundle.getString("marine");
         final String marine2=bundle.getString("sertif");
+        final String namap=bundle.getString("namap");
 
         if(pessan2.contains("6GR")){
             flag=3;
@@ -85,8 +87,34 @@ public class CariWelderActivity extends AppCompatActivity {
         if(pessan.equals("OAW")){
             spekk="spesifikasi6";
         }
+        FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan3).child("alamat").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DatabaseReference res= FirebaseDatabase.getInstance().getReference().child("Welders");
+                res.orderByChild(spekk).equalTo(pessan).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for(DataSnapshot post : dataSnapshot.getChildren() ){
+                            String hhh=post.getKey();
+                            getRating(hhh);
+                        }
 
 
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan3).child("alamat").addValueEventListener(new ValueEventListener() {
             String keya;
             @Override
@@ -132,8 +160,7 @@ public class CariWelderActivity extends AppCompatActivity {
                             LatLng loc2=getLocationFromAddress(getApplicationContext(), alamats);
 
                             //get rating
-                            getRating(keyy);
-
+                            //getRating(keyy);
 
                             if(post.child("sertifikasimarine").exists()){
                                 flagmar=post.child("sertifikasimarine").getValue().toString();
@@ -224,21 +251,27 @@ public class CariWelderActivity extends AppCompatActivity {
                                 if(marine2.equals("BKI")){
                                     if(post.child("sertifikasimarine").exists()){
                                         if(!post.child("sertifikasimarine").getValue().toString().equals("0")){
-                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            }
                                         }
                                     }
                                 }
                                 else if(marine2.equals("LR")){
                                     if(post.child("sertifikasilr").exists()){
                                         if(!post.child("sertifikasilr").getValue().toString().equals("0")){
-                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            }
                                         }
                                     }
                                 }
                                 else if(marine2.equals("BV")){
                                     if(post.child("sertifikasibv").exists()){
                                         if(!post.child("sertifikasibv").getValue().toString().equals("0")){
-                                            hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                            }
                                         }
                                     }
                                 }
@@ -252,7 +285,7 @@ public class CariWelderActivity extends AppCompatActivity {
                                             }
                                         }
                                     }
-                                    else if(marine.equals("Carbon Steel")){
+                                    else if(namap.equals("Carbon Steel")){
                                         if((pessan.equals("SMAW")||pessan.equals("SMAW/GTAW"))&&julah.equals("jumlah5")){
                                             if(post.child("sertifikasimarine").exists()&&post.child("sertifikasibv").exists()&&post.child("sertifikasilr").exists()){
                                                 if(!flagmar.equals("0")||!post.child("sertifikasibv").getValue().toString().equals("0")||!post.child("sertifikasilr").getValue().toString().equals("0")){
@@ -388,8 +421,10 @@ public class CariWelderActivity extends AppCompatActivity {
             ArrayList<String> key1=new ArrayList<>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ProgressBar barbar=findViewById(R.id.progressBar3);
                 key.clear();
                 key1.clear();
+                barbar.setVisibility(View.VISIBLE);
                 for(DataSnapshot post:dataSnapshot.getChildren()){
                     key.add(post.child("pid").getValue().toString());
                 }
@@ -400,32 +435,34 @@ public class CariWelderActivity extends AppCompatActivity {
                             String kes;
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                kes=dataSnapshot.getValue().toString();
-                                if(kes.equals("1")){
-                                    res.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            key1.add(dataSnapshot.getValue().toString());
-                                            double loh=0;
-                                            for(int i=0; i<key1.size(); i++){
-                                                loh+=Integer.parseInt(key1.get(i));
+                                if(dataSnapshot.exists()){
+                                    kes=dataSnapshot.getValue().toString();
+                                    if(kes.equals("1")){
+                                        res.child("sudahnilai").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                key1.add(dataSnapshot.getValue().toString());
+                                                double loh=0;
+                                                for(int i=0; i<key1.size(); i++){
+                                                    loh+=Integer.parseInt(key1.get(i));
+                                                }
+                                                if(key1.size()>0){
+                                                    loh=loh/(key1.size());
+                                                    FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue(String.format("%.1f", loh));
+                                                }
+                                                else{
+                                                    FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue("0.0");
+                                                }
+
+
                                             }
-                                            if(key1.size()>0){
-                                                loh=loh/(key1.size());
-                                                FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue(String.format("%.1f", loh));
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                             }
-                                            else{
-                                                FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue("0.0");
-                                            }
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
 
@@ -439,6 +476,7 @@ public class CariWelderActivity extends AppCompatActivity {
                 else{
                     FirebaseDatabase.getInstance().getReference().child("Welders").child(keyy).child("rating").setValue("0.0");
                 }
+                barbar.setVisibility(View.INVISIBLE);
             }
 
             @Override

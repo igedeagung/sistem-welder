@@ -73,8 +73,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 if(hh.size()>0){
                     for(i=0; i<hh.size(); i++){
-//                        MarkerOptions s =new MarkerOptions().position(new LatLng(0,0));
-//                        mark[i]=mMap.addMarker(s);
+
+                    }
+                    for(i=0; i<hh.size(); i++){
+
                         String lat;
                         String longi;
                         if(dataSnapshot.exists()){
@@ -87,9 +89,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             longi="0";
                         }
                         LatLng sydney = new LatLng(Double.parseDouble(lat), Double.parseDouble(longi));
+                        MarkerOptions s =new MarkerOptions().position(sydney);
+//                        mMap.addMarker(new MarkerOptions().position(sydney));
 
-                        mMap.addMarker(new MarkerOptions().position(sydney));
-//                            mark[i].setPosition(sydney);
+                            if(mark[i]==null){
+                                mark[i]=mMap.addMarker(s);
+                            }
+                            else{
+                                mark[i].remove();
+                                mark[i].setPosition(sydney);
+                            }
+                            mark[i].setTitle(hh2.get(i));
+
 //
 //                            LatLng sydney = new LatLng(0, 0);
 //                            mMap.addMarker(new MarkerOptions().position(sydney)).setTitle(dataSnapshot.child("namalengkap").getValue().toString());

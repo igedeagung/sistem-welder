@@ -538,6 +538,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("marine", jenis.getText().toString());
                 TextView view3=findViewById(R.id.textView87);
                 pindahh.putExtra("sertif", view3.getText().toString());
+                pindahh.putExtra("namap", nama.getText().toString());
 
                 startActivity(pindahh);
             }
@@ -555,6 +556,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("marine", jenis.getText().toString());
                 TextView view3=findViewById(R.id.textView87);
                 pindahh.putExtra("sertif", view3.getText().toString());
+                pindahh.putExtra("namap", nama.getText().toString());
 
                 startActivity(pindahh);
             }
@@ -828,6 +830,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("marine", jenis.getText().toString());
                 TextView view3=findViewById(R.id.textView87);
                 pindahh.putExtra("sertif", view3.getText().toString());
+                pindahh.putExtra("namap", nama.getText().toString());
 
                 startActivity(pindahh);
             }
@@ -845,6 +848,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("marine", jenis.getText().toString());
                 TextView view3=findViewById(R.id.textView87);
                 pindahh.putExtra("sertif", view3.getText().toString());
+                pindahh.putExtra("namap", nama.getText().toString());
 
                 startActivity(pindahh);
             }
@@ -862,6 +866,7 @@ public class DetilProyekActivity extends AppCompatActivity {
                 pindahh.putExtra("marine", jenis.getText().toString());
                 TextView view3=findViewById(R.id.textView87);
                 pindahh.putExtra("sertif", view3.getText().toString());
+                pindahh.putExtra("namap", nama.getText().toString());
 
                 startActivity(pindahh);
             }

@@ -747,6 +747,7 @@ public class ListProyekActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 final String hasil= String.valueOf(rating.getProgress());
                 FirebaseDatabase.getInstance().getReference().child("Proyek").child(pessan).child("sudahnilai").setValue(hasil);
+
                 dialog.dismiss();
                 buttonku.setVisibility(View.GONE);
             }
