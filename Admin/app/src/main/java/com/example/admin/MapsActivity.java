@@ -68,7 +68,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot post: dataSnapshot.getChildren()){
-                    hh.add(post.child("latlong").getValue().toString());
+                    if(post.child("latlong").exists()){
+                        hh.add(post.child("latlong").getValue().toString());
+                    }
+                    else{
+                        hh.add("0,0");
+                    }
+
                     hh2.add(post.child("namalengkap").getValue().toString());
                 }
                 if(hh.size()>0){
@@ -79,15 +85,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         String lat;
                         String longi;
-                        if(dataSnapshot.exists()){
+
                             String key[]=hh.get(i).split(",");
                             lat=key[0];
                             longi=key[1];
-                        }
-                        else{
-                            lat="0";
-                            longi="0";
-                        }
+//                        }
+//                        else{
+//                            lat="0";
+//                            longi="0";
+//                        }
                         LatLng sydney = new LatLng(Double.parseDouble(lat), Double.parseDouble(longi));
                         MarkerOptions s =new MarkerOptions().position(sydney);
 //                        mMap.addMarker(new MarkerOptions().position(sydney));

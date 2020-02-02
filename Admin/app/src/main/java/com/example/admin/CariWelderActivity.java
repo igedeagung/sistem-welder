@@ -99,8 +99,6 @@ public class CariWelderActivity extends AppCompatActivity {
                             String hhh=post.getKey();
                             getRating(hhh);
                         }
-
-
                     }
 
                     @Override
@@ -277,6 +275,15 @@ public class CariWelderActivity extends AppCompatActivity {
                                 }
                                 else{
                                     if(marine.equals("Konstruksi Maritim")){
+                                        if(post.child("sertifikasimigas").exists()){
+                                            if(!post.child("sertifikasimigas").getValue().toString().equals("0")){
+                                                if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){
+                                                    hasil4.add("Prioritas = "+prio+"-"+jaraks+"-"+text+"-"+post.child("namalengkap").getValue().toString()+"-"+post.child("alamatdomisili").getValue().toString()+"-"+post.getKey());
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if(namap.equals("Offshore/Onshore")){
                                         if(post.child("sertifikasimarine").exists()&&post.child("sertifikasibv").exists()&&post.child("sertifikasilr").exists()){
                                             if(!flagmar.equals("0")||!post.child("sertifikasibv").getValue().toString().equals("0")||!post.child("sertifikasilr").getValue().toString().equals("0")){
                                                 if(acc.equals("1")&&sibuk.equals("0")&&flagg>=flag){

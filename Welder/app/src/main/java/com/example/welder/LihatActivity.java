@@ -101,6 +101,33 @@ public class LihatActivity extends AppCompatActivity {
                     }
                 });
 
+                res.child("tanggalmulai").addListenerForSingleValueEvent(new ValueEventListener() {
+                    String kket;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        kket=dataSnapshot.getValue().toString();
+                        res.child("tanggalselesai").addListenerForSingleValueEvent(new ValueEventListener() {
+                            String kket2;
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                kket2=dataSnapshot.getValue().toString();
+                                TextView view=findViewById(R.id.textView41);
+                                view.setText(kket+" - "+kket2);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 res.child("jumlah1").addListenerForSingleValueEvent(new ValueEventListener() {
                     String keys;
                     @Override

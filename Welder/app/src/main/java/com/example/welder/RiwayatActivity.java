@@ -39,6 +39,7 @@ public class RiwayatActivity extends AppCompatActivity {
         final ProgressBar barbar=findViewById(R.id.progressBar);
         barbar.setVisibility(View.VISIBLE);
         final TextView piew=findViewById(R.id.textView25);
+        barbar.setVisibility(View.INVISIBLE);
 
         FirebaseDatabase.getInstance().getReference().child("Transaksi").orderByChild("wid").equalTo(uid).addValueEventListener(new ValueEventListener() {
             ArrayList<String> key=new ArrayList<>();
@@ -82,6 +83,10 @@ public class RiwayatActivity extends AppCompatActivity {
 
                                         }
                                     });
+                                }
+                                else{
+                                    barbar.setVisibility(View.INVISIBLE);
+                                    piew.setVisibility(View.VISIBLE);
                                 }
                             }
 
